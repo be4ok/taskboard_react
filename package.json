@@ -65,7 +65,7 @@
 
   "proxy": {
     "/api": {
-      "target": "/https://taskboard-39.herokuapp.com/api",
+      "target": "https://taskboard-39.herokuapp.com/api",
       "ws": true
     }
   },
