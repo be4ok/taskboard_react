@@ -2,10 +2,11 @@ import axios from "axios";
 import {GET_ERRORS, SET_CURRENT_USER} from "./types";
 import setJWTToken from "../securityUtils/setJWTToken";
 import jwt_decode from "jwt-decode";
+import {PROXY_LINK} from "../proxy";
 
 export const createNewUser = (newUser, history) => async dispatch => {
     try {
-        await axios.post("/api/users/register", newUser);
+        await axios.post(`${PROXY_LINK}/api/users/register`, newUser);
         history.push("/login");
         dispatch({
             type: GET_ERRORS,
@@ -21,7 +22,7 @@ export const createNewUser = (newUser, history) => async dispatch => {
 
 export const login = LoginRequest => async dispatch => {
     try {
-        const res = await axios.post("/api/users/login", LoginRequest);
+        const res = await axios.post(`${PROXY_LINK}/api/users/login`, LoginRequest);
         const {token} = res.data;
         localStorage.setItem("jwtToken", token);
         setJWTToken(token);

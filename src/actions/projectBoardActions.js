@@ -1,10 +1,11 @@
 import axios from "axios";
 import {GET_ERRORS, GET_PROJECT_BOARDS, DELETE_PROJECT_BOARD, GET_PROJECT_BOARD} from "./types";
+import {PROXY_LINK} from "../proxy";
 
 export const getProjectBoard = (pb_id, history) => async dispatch => {
 
     try {
-        const res = await axios.get(`/api/boards/${pb_id}`);
+        const res = await axios.get(`${PROXY_LINK}/api/boards/${pb_id}`);
         dispatch({
             type: GET_PROJECT_BOARD,
             payload: res.data
@@ -21,7 +22,7 @@ export const getProjectBoard = (pb_id, history) => async dispatch => {
 };
 
 export const getProjectBoards = () => async dispatch => {
-    const res = await axios.get("/api/boards");
+    const res = await axios.get(`${PROXY_LINK}/api/boards`);
     dispatch({
         type: GET_PROJECT_BOARDS,
         payload: res.data
@@ -30,7 +31,7 @@ export const getProjectBoards = () => async dispatch => {
 
 export const addProjectBoard = (project_board, history) => async dispatch => {
     try {
-        await axios.post("/api/boards", project_board);
+        await axios.post(`${PROXY_LINK}/api/boards`, project_board);
         history.push("/board");
         dispatch({
             type: GET_ERRORS,
@@ -46,7 +47,7 @@ export const addProjectBoard = (project_board, history) => async dispatch => {
 
 export const updateProjectBoard = (project_board, history) => async dispatch => {
     try {
-        await axios.put("/api/boards", project_board);
+        await axios.put(`${PROXY_LINK}/api/boards`, project_board);
         history.push("/board");
         dispatch({
             type: GET_ERRORS,
@@ -63,7 +64,7 @@ export const updateProjectBoard = (project_board, history) => async dispatch => 
 export const deleteProjectBoard = pb_id => async dispatch => {
     
     if (window.confirm(`Do you want to delete the board ID: ${pb_id} with all tasks inside? This action cannot be undone!`)) {
-        await axios.delete(`/api/boards/${pb_id}`);
+        await axios.delete(`${PROXY_LINK}/api/boards/${pb_id}`);
         dispatch({
             type: DELETE_PROJECT_BOARD,
             payload: pb_id

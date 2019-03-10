@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import axios from "axios/index";
+import {PROXY_LINK} from "../../proxy";
 
 class CountOfTasks extends Component{
 
@@ -20,7 +21,7 @@ class CountOfTasks extends Component{
 
     componentWillMount() {
 
-        axios.get(`/api/boards/${this.props.board.id}/count`)
+        axios.get(`${PROXY_LINK}/api/boards/${this.props.board.id}/count`)
             .then(res => this.setState({
                 count: res.data,
             }));

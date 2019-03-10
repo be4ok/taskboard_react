@@ -1,10 +1,10 @@
 import axios from "axios";
 import {GET_ERRORS, GET_PROJECT_TASKS, DELETE_PROJECT_TASK, GET_PROJECT_TASK, GET_PROJECT_TASK_COUNT} from "./types";
-
+import {PROXY_LINK} from "../proxy";
 
 
 export const getProjectTask = pt_id => async dispatch => {
-    const res = await axios.get(`/api/boards/tasks/${pt_id}`);
+    const res = await axios.get(`${PROXY_LINK}/api/boards/tasks/${pt_id}`);
     dispatch({
         type: GET_PROJECT_TASK,
         payload: res.data
@@ -17,7 +17,7 @@ export const getProjectTask = pt_id => async dispatch => {
 };
 
 export const getProjectTasks = pd_id => async dispatch => {
-    const res = await axios.get(`/api/boards/${pd_id}/tasks`);
+    const res = await axios.get(`${PROXY_LINK}/api/boards/${pd_id}/tasks`);
     dispatch({
         type: GET_PROJECT_TASKS,
         payload: res.data
@@ -26,7 +26,7 @@ export const getProjectTasks = pd_id => async dispatch => {
 
 export const addProjectTask = (project_task, pb_id, history) => async dispatch => {
     try {
-        await axios.post("/api/boards/tasks", project_task);
+        await axios.post(`${PROXY_LINK}/api/boards/tasks`, project_task);
         history.push(`/board/${pb_id}/taskboard`);
         dispatch({
             type: GET_ERRORS,
@@ -42,7 +42,7 @@ export const addProjectTask = (project_task, pb_id, history) => async dispatch =
 
 export const updateProjectTask = (project_task, pb_id, history) => async dispatch => {
     try {
-        await axios.put("/api/boards/tasks", project_task);
+        await axios.put(`${PROXY_LINK}/api/boards/tasks`, project_task);
         history.push(`/board/${pb_id}/taskboard`);
         dispatch({
             type: GET_ERRORS,
@@ -59,7 +59,7 @@ export const updateProjectTask = (project_task, pb_id, history) => async dispatc
 export const deleteProjectTask = pt_id => async dispatch => {
 
     if (window.confirm(`Do you want to delete the task ID: ${pt_id}? This action cannot be undone!`)) {
-        await axios.delete(`/api/boards/tasks/${pt_id}`);
+        await axios.delete(`${PROXY_LINK}/api/boards/tasks/${pt_id}`);
         dispatch({
             type: DELETE_PROJECT_TASK,
             payload: pt_id
@@ -69,7 +69,7 @@ export const deleteProjectTask = pt_id => async dispatch => {
 
 export const getProjectTaskCount = (pb_id) => async dispatch => {
 
-    const res = await axios.get(`/api/boards/${pb_id}/count`);
+    const res = await axios.get(`${PROXY_LINK}/api/boards/${pb_id}/count`);
     dispatch({
         type: GET_PROJECT_TASK_COUNT,
         payload: res.data
