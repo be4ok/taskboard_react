@@ -6,8 +6,8 @@
   "runtime~main.js": "/static/js/runtime~main.229c360f.js",
   "static/media/loading.svg": "/static/media/loading.d6b5e158.svg",
   "static/media/form.css": "/static/media/edit.41b4b352.svg",
-  "static/css/1.3c5484fc.chunk.css.map": "/static/css/1.3c5484fc.chunk.css.map",
   "static/css/main.a425e83a.chunk.css.map": "/static/css/main.a425e83a.chunk.css.map",
+  "static/css/1.3c5484fc.chunk.css.map": "/static/css/1.3c5484fc.chunk.css.map",
   "index.html": "/index.html",
   "precache-manifest.cfbc310d66d26fe6b122f2757a838404.js": "/precache-manifest.cfbc310d66d26fe6b122f2757a838404.js",
   "service-worker.js": "/service-worker.js"
