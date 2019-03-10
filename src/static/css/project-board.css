@@ -1,0 +1,13 @@
+.board-item {
+    cursor: pointer;
+}
+
+.task-count {
+    float: right;
+    color: #808080;
+}
+
+.board-id {
+    float: left;
+    color: #808080;
+}

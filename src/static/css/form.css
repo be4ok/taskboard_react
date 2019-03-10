@@ -1,0 +1,74 @@
+.title-input {
+    height: 1.875rem;
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.float-edit {
+    position: relative;
+    flex: 0 0 5%;
+    max-width: 5%;
+    display: table-cell;
+    vertical-align: middle;
+    text-align: center;
+    background: url("../img/edit.svg") no-repeat center center;
+}
+
+.float-edit:hover {
+    cursor: pointer;
+}
+
+.float-form {
+    display: flex;
+    flex-wrap: wrap;
+    margin-right: -15px;
+    margin-left: -15px;
+}
+
+.float-input {
+    position: relative;
+    width: 100%;
+    padding-right: 15px;
+    padding-left: 15px;
+    flex: 0 0 95%;
+    max-width: 95%;
+}
+
+.float-input-ac {
+    position: relative;
+    width: 100%;
+    padding-right: 15px;
+    padding-left: 15px;
+    flex: 0 0 95%;
+    max-width: 95%;
+    min-height: 77px;
+}
+
+.error-text {
+    color: red;
+    font-size: small;
+}
+
+.input-length {
+    font-size: small;
+    float: right;
+    color: #808080;
+}
+
+.input-length-alert {
+    font-size: small;
+    float: right;
+    color: red;
+}
+
+.buttons-container {
+    display: flex;
+}
+
+.buttons-group {
+    margin: auto;
+}
+
+.button-item {
+    margin: 0 1em;
+}
