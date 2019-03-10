@@ -123,9 +123,6 @@ module.exports = function(webpackEnv) {
         ? 'inline-source-map'
         : false
       : isEnvDevelopment && 'cheap-module-source-map',
-      devServer: {
-          disableHostCheck: true
-      },
     // These are the "entry points" to our application.
     // This means they will be the "root" imports that are included in JS bundle.
     entry: [
