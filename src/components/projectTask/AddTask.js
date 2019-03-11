@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {Link} from "react-router-dom";
 import classnames from "classnames";
-import validationUtils from "../validationUtils";
+import validationUtils from "../../validation/validationUtils";
 import {connect} from "react-redux";
 import PropTypes from "prop-types";
 import {addProjectTask, getProjectTask, updateProjectTask} from "../../actions/projectTaskActions";
@@ -23,7 +23,7 @@ class AddTask extends Component {
 
         this.state = {
             task: this.emptyTask,
-            validation: {}
+            errors: {}
         };
 
         this.onChange = this.onChange.bind(this);
@@ -35,7 +35,7 @@ class AddTask extends Component {
     componentWillReceiveProps(nextProps) {
 
         this.setState({
-            validation: nextProps.validation
+            errors: nextProps.errors
         });
     }
 
@@ -83,10 +83,10 @@ class AddTask extends Component {
 
     render() {
 
-        const {task, validation} = this.state;
+        const {task, errors} = this.state;
 
-        const summaryValidMessage = validationUtils(validation, 'summary');
-        const acceptanceCritValidMessage = validationUtils(validation, 'acceptanceCriteria');
+        const summaryValidMessage = validationUtils(errors, 'summary');
+        const acceptanceCritValidMessage = validationUtils(errors, 'acceptanceCriteria');
 
         return (
             <div className="addProjectTask">
@@ -195,11 +195,11 @@ class AddTask extends Component {
 
 AddTask.propTypes = {
     addProjectTask: PropTypes.func.isRequired,
-    validation: PropTypes.object.isRequired
+    errors: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
-    validation: state.validation
+    errors: state.errors
 });
 
 export default connect(mapStateToProps, {addProjectTask})(AddTask)

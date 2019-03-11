@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import {connect} from "react-redux";
 import classnames from "classnames";
 import  {login} from "../../actions/securityActions";
-import validationUtils from "../validationUtils";
+import validationUtils from "../../validation/validationUtils";
 import authenticationErrorHandle from "../../securityUtils/authenticationErrorHandle"
 
 class Login extends Component {
@@ -13,7 +13,7 @@ class Login extends Component {
         this.state = {
             username: "",
             password: "",
-            validation: {}
+            errors: {}
         };
         this.onChange = this.onChange.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
@@ -27,8 +27,8 @@ class Login extends Component {
     
     componentWillReceiveProps(nextProps) {
 
-        if (nextProps.validation) {
-            this.setState({validation: nextProps.validation})
+        if (nextProps.errors) {
+            this.setState({errors: nextProps.errors})
         }
 
         if (nextProps.security.validToken) {
@@ -53,11 +53,11 @@ class Login extends Component {
 
     render() {
 
-        const {validation} = this.state;
+        const {errors} = this.state;
 
-        const usernameValidMessage = validationUtils(validation, 'username');
-        const passwordValidMessage = validationUtils(validation, 'password');
-        const authenticationError = authenticationErrorHandle(validation);
+        const usernameValidMessage = validationUtils(errors, 'username');
+        const passwordValidMessage = validationUtils(errors, 'password');
+        const authenticationError = authenticationErrorHandle(errors);
 
         return (
             <div className="login">
@@ -118,13 +118,13 @@ class Login extends Component {
 
 Login.propTypes = {
     login: PropTypes.func.isRequired,
-    validation: PropTypes.object.isRequired,
+    errors: PropTypes.object.isRequired,
     security: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
     security: state.security,
-    validation: state.validation
+    errors: state.errors
 });
 
 export default connect(mapStateToProps, {login}) (Login);

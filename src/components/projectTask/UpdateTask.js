@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
 import {Link} from "react-router-dom";
-import Loading from "../Loading";
+import Loading from "../../layout/Loading";
 import classnames from "classnames";
-import validationUtils from "../validationUtils";
+import validationUtils from "../../validation/validationUtils";
 import {connect} from "react-redux";
 import PropTypes from "prop-types";
 import {getProjectTask, updateProjectTask} from "../../actions/projectTaskActions";
@@ -15,7 +15,7 @@ class UpdateTask extends Component {
         this.state = {
             isEditMode: false,
             task: {},
-            validation: {}
+            errors: {}
         };
 
         this.onChange = this.onChange.bind(this);
@@ -31,10 +31,10 @@ class UpdateTask extends Component {
     componentWillReceiveProps(nextProps) {
 
         this.setState({
-            validation: nextProps.validation
+            errors: nextProps.errors
         });
 
-        if (!Object.keys(nextProps.validation).length) {
+        if (!Object.keys(nextProps.errors).length) {
             this.setState({
                 task: nextProps.project_task.project_task
             });
@@ -93,7 +93,7 @@ class UpdateTask extends Component {
 
     render() {
 
-        const {task, validation, isEditMode} = this.state;
+        const {task, errors, isEditMode} = this.state;
 
         /*        if (isLoading) {
                     return <Loading/>
@@ -105,8 +105,8 @@ class UpdateTask extends Component {
             boardId = task.board.id;
         }
 
-        const summaryValidMessage = validationUtils(validation, 'summary');
-        const acceptanceCritValidMessage = validationUtils(validation, 'acceptanceCriteria');
+        const summaryValidMessage = validationUtils(errors, 'summary');
+        const acceptanceCritValidMessage = validationUtils(errors, 'acceptanceCriteria');
 
         return (
             <div className="addProjectTask">
@@ -244,12 +244,12 @@ UpdateTask.propTypes = {
     getProjectTask: PropTypes.func.isRequired,
     updateProjectTask: PropTypes.func.isRequired,
     project_task: PropTypes.object.isRequired,
-    validation: PropTypes.object.isRequired
+    errors: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
     project_task: state.task,
-    validation: state.validation
+    errors: state.errors
 });
 
 export default connect(mapStateToProps, {getProjectTask, updateProjectTask})(UpdateTask)

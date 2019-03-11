@@ -3,7 +3,7 @@ import {createNewUser} from "../../actions/securityActions";
 import PropTypes from "prop-types";
 import {connect} from "react-redux";
 import classnames from "classnames";
-import validationUtils from "../validationUtils";
+import validationUtils from "../../validation/validationUtils";
 
 class Register extends Component {
 
@@ -14,7 +14,7 @@ class Register extends Component {
             username: "",
             password: "",
             confirmPassword: "",
-            validation: {}
+            errors: {}
         };
 
         this.onChange = this.onChange.bind(this);
@@ -28,8 +28,8 @@ class Register extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if (nextProps.validation) {
-            this.setState({validation: nextProps.validation});
+        if (nextProps.errors) {
+            this.setState({errors: nextProps.errors});
         }
     }
 
@@ -51,11 +51,11 @@ class Register extends Component {
 
     render() {
 
-        const {validation} = this.state;
+        const {errors} = this.state;
 
-        const usernameValidMessage = validationUtils(validation, 'username');
-        const passwordValidMessage = validationUtils(validation, 'password');
-        const confirmPasswordValidMessage = validationUtils(validation, 'confirmPassword');
+        const usernameValidMessage = validationUtils(errors, 'username');
+        const passwordValidMessage = validationUtils(errors, 'password');
+        const confirmPasswordValidMessage = validationUtils(errors, 'confirmPassword');
 
         return (
             <div className="register">
@@ -130,12 +130,12 @@ class Register extends Component {
 
 Register.propTypes = {
     createNewUser: PropTypes.func.isRequired,
-    validation: PropTypes.object.isRequired,
+    errors: PropTypes.object.isRequired,
     security: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
-    validation: state.validation,
+    errors: state.errors,
     security: state.security
 });
 export default connect(mapStateToProps, {createNewUser})(Register);

@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {Link} from "react-router-dom";
 import classnames from "classnames";
-import validationUtils from "../validationUtils";
+import validationUtils from "../../validation/validationUtils";
 import {connect} from "react-redux";
 import PropTypes from "prop-types";
 import {addProjectBoard} from "../../actions/projectBoardActions";
@@ -18,7 +18,7 @@ class AddBoard extends Component {
 
         this.state = {
             board: this.emptyBoard,
-            validation: {},
+            errors: {},
         };
 
         this.onChange = this.onChange.bind(this);
@@ -29,7 +29,7 @@ class AddBoard extends Component {
     componentWillReceiveProps(nextProps) {
 
             this.setState({
-                validation: nextProps.validation
+                errors: nextProps.errors
             });
     }
 
@@ -81,10 +81,10 @@ class AddBoard extends Component {
 
     render() {
 
-        const {board, validation} = this.state;
+        const {board, errors} = this.state;
 
-        const nameValidMessage = validationUtils(validation, 'name');
-        const descrValidMessage = validationUtils(validation, 'description');
+        const nameValidMessage = validationUtils(errors, 'name');
+        const descrValidMessage = validationUtils(errors, 'description');
 
         return (
             <div className="container">
@@ -168,11 +168,11 @@ class AddBoard extends Component {
 
 AddBoard.propTypes = {
     addProjectBoard: PropTypes.func.isRequired,
-    validation: PropTypes.object.isRequired
+    errors: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
-    validation: state.validation
+    errors: state.errors
 });
 
 export default connect(mapStateToProps, {addProjectBoard})(AddBoard);

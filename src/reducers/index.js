@@ -5,7 +5,7 @@ import securityReducer from "./securityReducer";
 import projectBoardReducer from "./projectBoardReducer";
 
 export default combineReducers({
-    validation: errorsReducer,
+    errors: errorsReducer,
     board: projectBoardReducer,
     task: projectTaskReducer,
     security: securityReducer

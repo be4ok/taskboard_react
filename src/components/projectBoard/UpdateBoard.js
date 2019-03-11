@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {Link} from "react-router-dom";
 import classnames from "classnames";
-import validationUtils from "../validationUtils";
+import validationUtils from "../../validation/validationUtils";
 import {connect} from "react-redux";
 import PropTypes from "prop-types";
 import {getProjectBoard, updateProjectBoard} from "../../actions/projectBoardActions";
@@ -15,7 +15,7 @@ class UpdateBoard extends Component {
             //isLoading: true,
             isEditMode: false,
             board: {},
-            validation: {}
+            errors: {}
         };
 
         this.onChange = this.onChange.bind(this);
@@ -31,10 +31,10 @@ class UpdateBoard extends Component {
     componentWillReceiveProps(nextProps) {
 
         this.setState({
-            validation: nextProps.validation
+            errors: nextProps.errors
         });
 
-        if (!Object.keys(nextProps.validation).length) {
+        if (!Object.keys(nextProps.errors).length) {
             this.setState({
                 board: nextProps.project_board.project_board
             });
@@ -79,7 +79,7 @@ class UpdateBoard extends Component {
 
 
     onEditClickHandler(e) {
-        this.setState({validation: {}});
+        this.setState({errors: {}});
         e.preventDefault();
         this.setState({isEditMode: !this.state.isEditMode});
     }
@@ -87,14 +87,14 @@ class UpdateBoard extends Component {
 
     render() {
 
-        const {board, isEditMode, validation} = this.state;
+        const {board, isEditMode, errors} = this.state;
 
         /*if (isLoading) {
             return <Loading/>
         }*/
 
-        const nameValidMessage = validationUtils(validation, 'name');
-        const descrValidMessage = validationUtils(validation, 'description');
+        const nameValidMessage = validationUtils(errors, 'name');
+        const descrValidMessage = validationUtils(errors, 'description');
 
 
         return (
@@ -201,12 +201,12 @@ UpdateBoard.propTypes = {
     getProjectBoard: PropTypes.func.isRequired,
     updateProjectBoard: PropTypes.func.isRequired,
     project_board: PropTypes.object.isRequired,
-    validation: PropTypes.object.isRequired
+    errors: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
     project_board: state.board,
-    validation: state.validation
+    errors: state.errors
 });
 
 export default connect(mapStateToProps, {getProjectBoard, updateProjectBoard})(UpdateBoard);

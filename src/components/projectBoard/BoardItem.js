@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {Link} from "react-router-dom";
-import CountOfTasks from './CountOfTasks';
+import CountOfTasks from '../projectTask/CountOfTasks';
 import {connect} from "react-redux";
 import PropTypes from "prop-types";
 import {deleteProjectBoard} from "../../actions/projectBoardActions";
