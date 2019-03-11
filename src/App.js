@@ -3,7 +3,7 @@ import './App.css';
 import './static/css/form.css';
 import './static/css/project-board.css';
 import "bootstrap/dist/css/bootstrap.min.css";
-import NavBar from "./layout/NavBar";
+import NavBar from "./components/layout/NavBar";
 import TaskBoard from "./components/projectTask/TaskBoard";
 import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
 import {Provider} from "react-redux";
@@ -15,7 +15,7 @@ import AddBoard from "./components/projectBoard/AddBoard"
 import UpdateBoard from "./components/projectBoard/UpdateBoard";
 import Login from "./components/userManagment/Login";
 import Register from "./components/userManagment/Register";
-import Landing from "./layout/Landing";
+import Landing from "./components/layout/Landing";
 import jwt_decode from "jwt-decode";
 import setJWTToken from "./securityUtils/setJWTToken";
 import {SET_CURRENT_USER} from "./actions/types";

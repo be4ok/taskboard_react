@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {Link} from "react-router-dom";
-import Loading from "../../layout/Loading";
+import Loading from "../layout/Loading";
 import classnames from "classnames";
 import validationUtils from "../../validation/validationUtils";
 import {connect} from "react-redux";

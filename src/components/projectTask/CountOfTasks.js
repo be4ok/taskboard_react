@@ -33,7 +33,7 @@ class CountOfTasks extends Component{
         const {count} = this.state;
 
         return(
-            <span>{count}</span>
+            <p className="task-count">Tasks: {count}</p>
         );
     }
 }

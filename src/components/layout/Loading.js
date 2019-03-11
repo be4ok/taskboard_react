@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import loading from '../static/img/loading.svg'
+import loading from '../../static/img/loading.svg'
 
 export default function Loading () {
     return <div>

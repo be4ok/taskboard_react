@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import TaskItem from "./TaskItem";
 import {Link} from "react-router-dom";
-import Loading from "../../layout/Loading";
+import Loading from "../layout/Loading";
 import axios from "axios/index";
 import {connect} from "react-redux";
 import PropTypes from "prop-types";

@@ -74,14 +74,15 @@ class ProjectBoard extends Component {
 
                 <hr/>
 
-                <div className="row">
                     {
-                        boardsArray.length === 0 && <div className="card-header text-center alert-info">No boards</div>
+                        boardsArray.length === 0 &&
+                        <div className="card-header text-center alert-info">
+                            No boards.
+                            <Link to={"/board/add"} className="card-link" > Create new board</Link>
+                        </div>
                     }
 
                     {boardsArray}
-
-                </div>
 
             </div>
         );

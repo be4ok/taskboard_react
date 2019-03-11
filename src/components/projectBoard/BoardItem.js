@@ -21,35 +21,40 @@ class BoardItem extends Component {
         const {board} = this.props;
 
 
-
         return (
-            <div className="col-sm-6">
-                <div className="card border-primary mb-3">
-                    <div onClick={this.clickOpenBoardHandle.bind(this)} className="card-header board-item">
-
-                        <div className="board-id">#{board.id}</div>
-                        <div className="task-count">Tasks: <CountOfTasks board={board}/></div>
-
+            <div className="container">
+                <div className="card card-body border-primary bg-light mb-3">
+                    <div className="row">
+                        <div className="col-2">
+                            <span className="mx-auto">#{board.id}
+                                <CountOfTasks board={board}/>
+                                </span>
                         </div>
+                        <div className="col-lg-6 col-md-4 col-8">
+                            <h3>{board.name}</h3>
+                            <p>{board.description}</p>
+                        </div>
+                        <div className="col-md-4 d-none d-lg-block">
+                            <ul className="list-group">
+                                <Link to={`/board/${board.id}/taskboard`}>
+                                    <li className="list-group-item board">
+                                        <i className="fa fa-flag-checkered pr-1"> Open Board </i>
+                                    </li>
+                                </Link>
+                                <Link to={`/board/edit/${board.id}`}>
+                                    <li className="list-group-item update">
+                                        <i className="fa fa-edit pr-1"> Update Project Info</i>
+                                    </li>
+                                </Link>
 
-                    <div className="card-body">
-                        <h5 className="card-title">{board.name}</h5>
-                        <p className="card-text">{board.description}</p>
-
-                        <Link to={"/board/" + board.id + "/taskboard"} className="btn btn-outline-success btn-sm">
-                            Open
-                        </Link>
-
-                        <Link to={"/board/edit/" + board.id} className="btn btn-outline-primary btn-sm ml-4">
-                            Edit
-                        </Link>
-
-                        <button
-                            className="btn btn-outline-danger ml-4 btn-sm"
-                            onClick={this.remove.bind(this, board.id)}
-                        >
-                            Delete
-                        </button>
+                                <li
+                                    className="list-group-item delete"
+                                    onClick={this.remove.bind(this, board.id)}
+                                >
+                                    <i className="fa fa-minus-circle pr-1"> Delete Project</i>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -65,7 +70,7 @@ BoardItem.propTypes = {
 };
 
 const mapStateToProps = state => ({
-   //project_task_count: state.project_task.project_task_count
+    //project_task_count: state.project_task.project_task_count
 });
 
 export default connect(mapStateToProps, {deleteProjectBoard, getProjectTaskCount})(BoardItem);

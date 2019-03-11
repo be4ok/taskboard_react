@@ -21,7 +21,7 @@ class TaskItem extends Component {
 
         return (
 
-            <div className="card mb-1 bg-light">
+            <div className="card mb-1 bg-light mb-3">
 
                 <div className="card-header text-primary">
                     #{task.id}
