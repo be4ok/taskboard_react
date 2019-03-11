@@ -118,7 +118,7 @@ class Register extends Component {
                                     {confirmPasswordValidMessage}
 
                                 </div>
-                                <input type="submit" className="btn btn-info btn-block mt-4"/>
+                                <input type="submit" value="Sign-up" className="btn btn-info btn-block mt-4"/>
                             </form>
                         </div>
                     </div>
