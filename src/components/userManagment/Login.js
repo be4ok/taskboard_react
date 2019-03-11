@@ -4,6 +4,7 @@ import {connect} from "react-redux";
 import classnames from "classnames";
 import  {login} from "../../actions/securityActions";
 import validationUtils from "../validationUtils";
+import authenticationErrorHandle from "../../securityUtils/authenticationErrorHandle"
 
 class Login extends Component {
 
@@ -56,6 +57,7 @@ class Login extends Component {
 
         const usernameValidMessage = validationUtils(validation, 'username');
         const passwordValidMessage = validationUtils(validation, 'password');
+        const authenticationError = authenticationErrorHandle(validation);
 
         return (
             <div className="login">
@@ -71,7 +73,7 @@ class Login extends Component {
                                     <input
                                         autoFocus
                                         type="text"
-                                        className={classnames("form-control form-control-lg", {"is-invalid": usernameValidMessage.length})}
+                                        className={classnames("form-control form-control-lg", {"is-invalid": usernameValidMessage.length || authenticationError})}
                                         placeholder="Username"
                                         name="username"
                                         value={this.state.username}
@@ -80,6 +82,7 @@ class Login extends Component {
                                     </div>
 
                                     {usernameValidMessage}
+                                    {authenticationError}
 
                                 </div>
 
@@ -89,7 +92,7 @@ class Login extends Component {
                                     <div>
                                     <input
                                         type="password"
-                                        className={classnames("form-control form-control-lg", {"is-invalid": passwordValidMessage.length})}
+                                        className={classnames("form-control form-control-lg", {"is-invalid": passwordValidMessage.length || authenticationError})}
                                         placeholder="Password"
                                         name="password"
                                         value={this.state.password}
@@ -98,6 +101,7 @@ class Login extends Component {
                                     </div>
 
                                     {passwordValidMessage}
+                                    {authenticationError}
 
                                 </div>
 
