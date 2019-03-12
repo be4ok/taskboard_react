@@ -1,16 +1,27 @@
 import axios from "axios";
-import {GET_ERRORS, GET_PROJECT_BOARDS, DELETE_PROJECT_BOARD, GET_PROJECT_BOARD} from "./types";
+import {GET_ERRORS, GET_PROJECT_BOARDS, DELETE_PROJECT_BOARD, GET_PROJECT_BOARD, PROJECT_BOARD_LOADING} from "./types";
 import {PROXY_LINK} from "../proxy";
+
+export function loading(isLoading) {
+    return {
+        type: PROJECT_BOARD_LOADING,
+        payload: isLoading
+    };
+}
 
 export const getProjectBoard = (pb_id, history) => async dispatch => {
 
     try {
+
+        dispatch(loading(true));
+
         const res = await axios.get(`${PROXY_LINK}/api/boards/${pb_id}`);
         dispatch({
             type: GET_PROJECT_BOARD,
             payload: res.data,
-            isLoading: false
         });
+
+        dispatch(loading(false));
 
         dispatch({
             type: GET_ERRORS,
@@ -23,12 +34,17 @@ export const getProjectBoard = (pb_id, history) => async dispatch => {
 };
 
 export const getProjectBoards = () => async dispatch => {
+
+    dispatch(loading(true));
+
     const res = await axios.get(`${PROXY_LINK}/api/boards`);
+
     dispatch({
         type: GET_PROJECT_BOARDS,
         payload: res.data,
-        isLoading: false
-    })
+    });
+
+    dispatch(loading(false));
 };
 
 export const addProjectBoard = (project_board, history) => async dispatch => {
@@ -64,7 +80,7 @@ export const updateProjectBoard = (project_board, history) => async dispatch => 
 };
 
 export const deleteProjectBoard = pb_id => async dispatch => {
-    
+
     if (window.confirm(`Do you want to delete the board ID: ${pb_id} with all tasks inside? This action cannot be undone!`)) {
         await axios.delete(`${PROXY_LINK}/api/boards/${pb_id}`);
         dispatch({

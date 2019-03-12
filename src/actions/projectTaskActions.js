@@ -1,14 +1,26 @@
 import axios from "axios";
-import {GET_ERRORS, GET_PROJECT_TASKS, DELETE_PROJECT_TASK, GET_PROJECT_TASK, GET_PROJECT_TASK_COUNT} from "./types";
+import {GET_ERRORS, GET_PROJECT_TASKS, DELETE_PROJECT_TASK, GET_PROJECT_TASK, GET_PROJECT_TASK_COUNT, PROJECT_TASK_LOADING} from "./types";
 import {PROXY_LINK} from "../proxy";
 
+export function loading(isLoading) {
+    return {
+        type: PROJECT_TASK_LOADING,
+        payload: isLoading
+    };
+}
 
 export const getProjectTask = pt_id => async dispatch => {
+
+    dispatch(loading(true));
+
     const res = await axios.get(`${PROXY_LINK}/api/boards/tasks/${pt_id}`);
+
     dispatch({
         type: GET_PROJECT_TASK,
         payload: res.data
     });
+
+    dispatch(loading(false));
 
     dispatch({
         type: GET_ERRORS,
@@ -17,11 +29,17 @@ export const getProjectTask = pt_id => async dispatch => {
 };
 
 export const getProjectTasks = pd_id => async dispatch => {
+
+    dispatch(loading(true));
+
     const res = await axios.get(`${PROXY_LINK}/api/boards/${pd_id}/tasks`);
+
     dispatch({
         type: GET_PROJECT_TASKS,
         payload: res.data
-    })
+    });
+
+    dispatch(loading(false));
 };
 
 export const addProjectTask = (project_task, pb_id, history) => async dispatch => {

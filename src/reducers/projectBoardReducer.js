@@ -1,5 +1,9 @@
-
-import {DELETE_PROJECT_BOARD, GET_PROJECT_BOARDS, GET_PROJECT_BOARD} from "../actions/types";
+import {
+    DELETE_PROJECT_BOARD,
+    GET_PROJECT_BOARDS,
+    GET_PROJECT_BOARD,
+    PROJECT_BOARD_LOADING
+} from "../actions/types";
 
 const initialState = {
     project_boards: [],
@@ -7,20 +11,25 @@ const initialState = {
     isLoading: true
 };
 
-export default function(state = initialState, action) {
+export default function (state = initialState, action) {
     switch (action.type) {
+
+        case PROJECT_BOARD_LOADING:
+            return {
+                ...state,
+                isLoading: action.payload
+            };
+
         case GET_PROJECT_BOARDS:
             return {
                 ...state,
-                project_boards: action.payload,
-                isLoading: action.isLoading
+                project_boards: action.payload
             };
 
         case GET_PROJECT_BOARD:
             return {
                 ...state,
-                project_board: action.payload,
-                isLoading: action.isLoading
+                project_board: action.payload
             };
 
         case DELETE_PROJECT_BOARD:

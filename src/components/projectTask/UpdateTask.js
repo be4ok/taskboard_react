@@ -41,15 +41,6 @@ class UpdateTask extends Component {
         }
     }
 
-
-    /*componentDidMount() {
-        fetch(`../../../api/boards/tasks/${this.props.match.params.id}`)
-            .then(res => res.json())
-            .then(data => this.setState({task: data}));
-        this.setState({isLoading: false})
-    }*/
-
-
     onChange(e) {
         const value = e.target.value;
         const name = e.target.name;
@@ -62,26 +53,6 @@ class UpdateTask extends Component {
         e.preventDefault();
         const {task} = this.state;
         this.props.updateProjectTask(task, task.board.id, this.props.history)
-
-
-        /*await fetch('../../../api/boards/tasks', {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(task)
-        })
-            .then(responseObject => {
-                if (!responseObject.ok) {
-                    throw responseObject.json();
-                }
-                this.setState({validation: []});
-                this.props.history.push("/board/" + task.board.id + "/taskboard");
-
-            }).catch(error => {
-                error.then(res => this.setState({validation: res}));
-            });*/
     }
 
 
@@ -94,10 +65,11 @@ class UpdateTask extends Component {
     render() {
 
         const {task, errors, isEditMode} = this.state;
+        const {isLoading} = this.props;
 
-        /*        if (isLoading) {
-                    return <Loading/>
-                }*/
+        if (isLoading) {
+            return <Loading/>
+        }
 
         let boardId;
 
@@ -244,12 +216,14 @@ UpdateTask.propTypes = {
     getProjectTask: PropTypes.func.isRequired,
     updateProjectTask: PropTypes.func.isRequired,
     project_task: PropTypes.object.isRequired,
-    errors: PropTypes.object.isRequired
+    errors: PropTypes.object.isRequired,
+    isLoading: PropTypes.bool.isRequired
 };
 
 const mapStateToProps = state => ({
     project_task: state.task,
-    errors: state.errors
+    errors: state.errors,
+    isLoading: state.task.isLoading
 });
 
 export default connect(mapStateToProps, {getProjectTask, updateProjectTask})(UpdateTask)

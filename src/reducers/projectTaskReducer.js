@@ -1,13 +1,27 @@
 
-import {DELETE_PROJECT_TASK, GET_PROJECT_TASKS, GET_PROJECT_TASK, GET_PROJECT_TASK_COUNT} from "../actions/types";
+import {
+    DELETE_PROJECT_TASK,
+    GET_PROJECT_TASKS,
+    GET_PROJECT_TASK,
+    GET_PROJECT_TASK_COUNT,
+    PROJECT_TASK_LOADING
+} from "../actions/types";
 
 const initialState = {
     project_tasks: [],
-    project_task: {}
+    project_task: {},
+    isLoading: true
 };
 
 export default function(state = initialState, action) {
     switch (action.type) {
+
+        case PROJECT_TASK_LOADING:
+            return {
+                ...state,
+                isLoading: action.payload
+            };
+
         case GET_PROJECT_TASKS:
             return {
                 ...state,

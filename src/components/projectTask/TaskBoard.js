@@ -2,54 +2,11 @@ import React, {Component} from 'react';
 import TaskItem from "./TaskItem";
 import {Link} from "react-router-dom";
 import Loading from "../layout/Loading";
-import axios from "axios/index";
 import {connect} from "react-redux";
 import PropTypes from "prop-types";
 import {getProjectTasks} from "../../actions/projectTaskActions";
 
 class TaskBoard extends Component {
-
-    /*constructor(props) {
-        super(props);
-        this.state = {
-            isLoading: true,
-            tasks: {}
-        };
-
-        this.remove = this.remove.bind(this)
-    }*/
-
-    /*    componentWillMount() {
-            fetch(`../../api/boards/${this.props.match.params.id}/tasks`)
-                .then(response => response.json())
-                .then(data => this.setState({
-                    tasks: data,
-                    isLoading: false
-                }))
-        }*/
-
-    /*componentWillMount() {
-
-        axios.get(`../../api/boards/${this.props.match.params.id}/tasks`)
-            .then(res => this.setState({
-                tasks: res.data,
-                isLoading: false
-            }));
-
-    }*/
-
-    /*remove(id) {
-        fetch(`../../api/boards/tasks/${id}`, {
-            method: 'DELETE',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            }
-        }).then(() => {
-            let updatedTasks = [...this.state.tasks].filter(i => i.id !== id);
-            this.setState({tasks: updatedTasks});
-        });
-    }*/
 
     componentDidMount() {
         this.props.getProjectTasks(this.props.match.params.id);
@@ -58,10 +15,7 @@ class TaskBoard extends Component {
     render() {
 
         const {project_tasks} = this.props.project_tasks;
-
-        /*if (isLoading) {
-            return <Loading />
-        }*/
+        const {isLoading} = this.props;
 
         const todoItems = [];
         const inProgressItems = [];
@@ -83,6 +37,11 @@ class TaskBoard extends Component {
             }
         });
 
+        const taskItems =
+            <React.Fragment>
+
+            </React.Fragment>;
+
         return (
 
             <div className="container">
@@ -101,9 +60,9 @@ class TaskBoard extends Component {
                             </div>
                         </div>
 
-                        {
-                            todoItems.length > 0 ? todoItems :
-                                <div className="card-header text-center alert-info">No tasks</div>
+                        {!isLoading &&
+                        (todoItems.length > 0 ? todoItems :
+                            <div className="card-header text-center alert-info">No tasks</div>)
                         }
 
                     </div>
@@ -114,9 +73,9 @@ class TaskBoard extends Component {
                             </div>
                         </div>
 
-                        {
-                            inProgressItems.length > 0 ? inProgressItems :
-                                <div className="card-header text-center alert-info">No tasks</div>
+                        {!isLoading &&
+                        (inProgressItems.length > 0 ? inProgressItems :
+                            <div className="card-header text-center alert-info">No tasks</div>)
                         }
 
                     </div>
@@ -127,13 +86,16 @@ class TaskBoard extends Component {
                             </div>
                         </div>
 
-                        {
-                            doneItems.length > 0 ? doneItems :
-                                <div className="card-header text-center alert-info">No tasks</div>
+                        {!isLoading &&
+                        (doneItems.length > 0 ? doneItems :
+                            <div className="card-header text-center alert-info">No tasks</div>)
                         }
 
                     </div>
                 </div>
+
+                {isLoading && <Loading/>}
+
             </div>
         );
     }
@@ -141,11 +103,13 @@ class TaskBoard extends Component {
 
 TaskBoard.propTypes = {
     getProjectTasks: PropTypes.func.isRequired,
-    project_tasks: PropTypes.object.isRequired
+    project_tasks: PropTypes.object.isRequired,
+    isLoading: PropTypes.bool.isRequired
 };
 
 const mapStateToProps = state => ({
-    project_tasks: state.task
+    project_tasks: state.task,
+    isLoading: state.task.isLoading
 });
 
 export default connect(mapStateToProps, {getProjectTasks})(TaskBoard);
