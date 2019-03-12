@@ -1,15 +1,32 @@
 import React, {Component} from 'react';
 import {Link} from "react-router-dom";
-import CountOfTasks from '../projectTask/CountOfTasks';
 import {connect} from "react-redux";
 import PropTypes from "prop-types";
 import {deleteProjectBoard} from "../../actions/projectBoardActions";
 import {getProjectTaskCount} from "../../actions/projectTaskActions";
+import axios from "axios/index";
+import {PROXY_LINK} from "../../proxy";
 
 class BoardItem extends Component {
 
+    constructor(props) {
+        super(props);
+        this.state = {
+            taskCount: 0
+        }
+    }
+
+
     clickOpenBoardHandle() {
         window.location.assign("/board/" + this.props.board.id + "/taskboard");
+    }
+
+    componentDidMount() {
+
+        const {board} = this.props;
+
+        axios.get(`${PROXY_LINK}/api/boards/${board.id}/count`)
+            .then(res => this.setState({taskCount: res.data}));
     }
 
     remove(pb_id) {
@@ -20,14 +37,13 @@ class BoardItem extends Component {
 
         const {board} = this.props;
 
-
         return (
             <div className="container">
                 <div className="card card-body border-primary bg-light mb-3">
                     <div className="row">
                         <div className="col-2">
                             <span className="mx-auto">#{board.id}
-                                <CountOfTasks board={board}/>
+                                <p className="task-count">Tasks: {this.state.taskCount}</p>
                                 </span>
                         </div>
                         <div className="col-lg-6 col-md-4 col-8">

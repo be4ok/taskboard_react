@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function validationUtils (errors, targetField) {
+const validationUtils = (errors, targetField) => {
 
     const messageArray = [];
 
@@ -15,4 +15,6 @@ export default function validationUtils (errors, targetField) {
 
     return messageArray;
 
-}
+};
+
+export default validationUtils

@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {Link} from "react-router-dom";
 import Loading from "../layout/Loading";
 import classnames from "classnames";
-import validationUtils from "../../validation/validationUtils";
+import validationUtils from "../../utils/validationUtils";
 import {connect} from "react-redux";
 import PropTypes from "prop-types";
 import {getProjectTask, updateProjectTask} from "../../actions/projectTaskActions";

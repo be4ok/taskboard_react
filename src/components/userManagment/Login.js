@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import {connect} from "react-redux";
 import classnames from "classnames";
 import  {login} from "../../actions/securityActions";
-import validationUtils from "../../validation/validationUtils";
+import validationUtils from "../../utils/validationUtils";
 import authenticationErrorHandle from "../../securityUtils/authenticationErrorHandle"
 
 class Login extends Component {
