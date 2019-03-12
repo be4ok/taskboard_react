@@ -3,7 +3,8 @@ import {DELETE_PROJECT_BOARD, GET_PROJECT_BOARDS, GET_PROJECT_BOARD} from "../ac
 
 const initialState = {
     project_boards: [],
-    project_board: {}
+    project_board: {},
+    isLoading: true
 };
 
 export default function(state = initialState, action) {
@@ -11,13 +12,15 @@ export default function(state = initialState, action) {
         case GET_PROJECT_BOARDS:
             return {
                 ...state,
-                project_boards: action.payload
+                project_boards: action.payload,
+                isLoading: action.isLoading
             };
 
         case GET_PROJECT_BOARD:
             return {
                 ...state,
-                project_board: action.payload
+                project_board: action.payload,
+                isLoading: action.isLoading
             };
 
         case DELETE_PROJECT_BOARD:

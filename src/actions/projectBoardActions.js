@@ -8,7 +8,8 @@ export const getProjectBoard = (pb_id, history) => async dispatch => {
         const res = await axios.get(`${PROXY_LINK}/api/boards/${pb_id}`);
         dispatch({
             type: GET_PROJECT_BOARD,
-            payload: res.data
+            payload: res.data,
+            isLoading: false
         });
 
         dispatch({
@@ -25,7 +26,8 @@ export const getProjectBoards = () => async dispatch => {
     const res = await axios.get(`${PROXY_LINK}/api/boards`);
     dispatch({
         type: GET_PROJECT_BOARDS,
-        payload: res.data
+        payload: res.data,
+        isLoading: false
     })
 };
 
