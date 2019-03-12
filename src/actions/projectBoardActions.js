@@ -49,7 +49,17 @@ export const getProjectBoards = () => async dispatch => {
 
 export const addProjectBoard = (project_board, history) => async dispatch => {
     try {
-        await axios.post(`${PROXY_LINK}/api/boards`, project_board);
+        await axios.post(
+            `${PROXY_LINK}/api/boards`,
+            project_board,
+            {
+                headers: {
+                    'Content-type': 'application/json; charset=utf-8',
+                    'Accept': 'application/json; charset=utf-8'
+                }
+            }
+    );
+
         history.push("/board");
         dispatch({
             type: GET_ERRORS,
@@ -65,7 +75,17 @@ export const addProjectBoard = (project_board, history) => async dispatch => {
 
 export const updateProjectBoard = (project_board, history) => async dispatch => {
     try {
-        await axios.put(`${PROXY_LINK}/api/boards`, project_board);
+        await axios.put(
+            `${PROXY_LINK}/api/boards`,
+            project_board,
+            {
+                headers: {
+                    'Content-type': 'application/json; charset=utf-8',
+                    'Accept': 'application/json; charset=utf-8'
+                }
+            }
+        );
+
         history.push("/board");
         dispatch({
             type: GET_ERRORS,

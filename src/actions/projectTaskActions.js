@@ -1,5 +1,12 @@
 import axios from "axios";
-import {GET_ERRORS, GET_PROJECT_TASKS, DELETE_PROJECT_TASK, GET_PROJECT_TASK, GET_PROJECT_TASK_COUNT, PROJECT_TASK_LOADING} from "./types";
+import {
+    GET_ERRORS,
+    GET_PROJECT_TASKS,
+    DELETE_PROJECT_TASK,
+    GET_PROJECT_TASK,
+    GET_PROJECT_TASK_COUNT,
+    PROJECT_TASK_LOADING
+} from "./types";
 import {PROXY_LINK} from "../proxy";
 
 export function loading(isLoading) {
@@ -44,7 +51,17 @@ export const getProjectTasks = pd_id => async dispatch => {
 
 export const addProjectTask = (project_task, pb_id, history) => async dispatch => {
     try {
-        await axios.post(`${PROXY_LINK}/api/boards/tasks`, project_task);
+        await axios.post(
+            `${PROXY_LINK}/api/boards/tasks`,
+            project_task,
+            {
+                headers: {
+                    'Content-type': 'application/json; charset=utf-8',
+                    'Accept': 'application/json; charset=utf-8'
+                }
+            }
+        );
+
         history.push(`/board/${pb_id}/taskboard`);
         dispatch({
             type: GET_ERRORS,
@@ -60,7 +77,17 @@ export const addProjectTask = (project_task, pb_id, history) => async dispatch =
 
 export const updateProjectTask = (project_task, pb_id, history) => async dispatch => {
     try {
-        await axios.put(`${PROXY_LINK}/api/boards/tasks`, project_task);
+        await axios.put(
+            `${PROXY_LINK}/api/boards/tasks`,
+            project_task,
+            {
+                headers: {
+                    'Content-type': 'application/json; charset=utf-8',
+                    'Accept': 'application/json; charset=utf-8'
+                }
+            }
+        );
+
         history.push(`/board/${pb_id}/taskboard`);
         dispatch({
             type: GET_ERRORS,
