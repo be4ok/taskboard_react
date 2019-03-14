@@ -49,6 +49,8 @@ class BoardItem extends Component {
                         <div className="col-lg-6 col-md-4 col-8">
                             <h3>{board.name}</h3>
                             <p>{board.description}</p>
+                            <p className="date-info">created: {board.createDate}</p>
+                            {board.updateDate && <p className="date-info">updated: {board.updateDate}</p>}
                         </div>
                         <div className="col-md-4 d-none d-lg-block">
                             <ul className="list-group">
