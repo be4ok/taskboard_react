@@ -13,7 +13,7 @@ class TaskItem extends Component {
 
     render() {
 
-        const task = this.props.task;
+        const {task} = this.props;
 
         if (task === undefined) {
             return <div className="card-header text-center alert-info">No tasks</div>
@@ -29,6 +29,9 @@ class TaskItem extends Component {
                 <div className="card-body bg-light">
                     <h5 className="card-title">{task.summary}</h5>
                     <p className="card-text text-truncate ">{task.acceptanceCriteria}</p>
+                    <p className="date-info">created: {task.createDate}</p>
+                    {task.updateDate && <p className="date-info">updated: {task.updateDate}</p>}
+                    <br/>
                     <Link to={"/board/" + task.board.id + "/updatetask/" + task.id} className="btn btn-outline-primary btn-sm">
                         View / Update
                     </Link>
