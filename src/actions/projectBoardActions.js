@@ -9,6 +9,13 @@ export function loading(isLoading) {
     };
 }
 
+export const cleanErrors = () => async dispatch => {
+    dispatch({
+        type:GET_ERRORS,
+        payload: {}
+    })
+};
+
 export const getProjectBoard = (pb_id, history) => async dispatch => {
 
     try {
@@ -60,11 +67,15 @@ export const addProjectBoard = (project_board, history) => async dispatch => {
             }
     );
 
-        history.push("/board");
+        dispatch(getProjectBoards());
+
         dispatch({
             type: GET_ERRORS,
             payload: {}
         })
+
+
+
     } catch (error) {
         dispatch({
             type: GET_ERRORS,

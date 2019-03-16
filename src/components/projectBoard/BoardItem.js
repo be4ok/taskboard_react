@@ -2,18 +2,24 @@ import React, {Component} from 'react';
 import {Link} from "react-router-dom";
 import {connect} from "react-redux";
 import PropTypes from "prop-types";
-import {deleteProjectBoard} from "../../actions/projectBoardActions";
+import {deleteProjectBoard, cleanErrors} from "../../actions/projectBoardActions";
 import {getProjectTaskCount} from "../../actions/projectTaskActions";
 import axios from "axios/index";
 import {PROXY_LINK} from "../../proxy";
+import {ButtonToolbar} from "react-bootstrap";
+import AddBoard from "./AddBoard";
 
 class BoardItem extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            taskCount: 0
-        }
+            taskCount: 0,
+            modalShow: false
+        };
+
+        this.modalClose = this.modalClose.bind(this);
+        this.modalOpen = this.modalOpen.bind(this)
     }
 
 
@@ -33,9 +39,26 @@ class BoardItem extends Component {
         this.props.deleteProjectBoard(pb_id);
     }
 
+    modalOpen() {
+
+        this.setState({
+            modalShow: true
+        });
+
+        this.props.cleanErrors();
+    }
+
+    modalClose() {
+        this.setState({
+            modalShow: false
+        });
+    }
+
     render() {
 
         const {board} = this.props;
+
+        // let modalClose = () => this.setState({modalShow: false});
 
         return (
             <div className="container">
@@ -59,11 +82,25 @@ class BoardItem extends Component {
                                         <i className="fa fa-flag-checkered pr-1"> Open Board </i>
                                     </li>
                                 </Link>
-                                <Link to={`/board/edit/${board.id}`}>
+
+                                <ButtonToolbar>
+                                    <div onClick={this.modalOpen}>
+                                        <li className="list-group-item update">
+                                            <i className="fa fa-edit pr-1"> Update Project Info</i>
+                                        </li>
+                                    </div>
+
+                                    <AddBoard
+                                        show={this.state.modalShow}
+                                        onHide={this.modalClose}
+                                    />
+                                </ButtonToolbar>
+
+                                {/*<Link to={`/board/edit/${board.id}`}>
                                     <li className="list-group-item update">
                                         <i className="fa fa-edit pr-1"> Update Project Info</i>
                                     </li>
-                                </Link>
+                                </Link>*/}
 
                                 <li
                                     className="list-group-item delete"
@@ -83,6 +120,7 @@ class BoardItem extends Component {
 
 BoardItem.propTypes = {
     deleteProjectBoard: PropTypes.func.isRequired,
+    cleanErrors: PropTypes.func.isRequired
     //getProjectTaskCount: PropTypes.func.isRequired,
     //project_task_count: PropTypes.object.isRequired
 };
@@ -91,4 +129,4 @@ const mapStateToProps = state => ({
     //project_task_count: state.project_task.project_task_count
 });
 
-export default connect(mapStateToProps, {deleteProjectBoard, getProjectTaskCount})(BoardItem);
+export default connect(mapStateToProps, {deleteProjectBoard, getProjectTaskCount, cleanErrors})(BoardItem);
