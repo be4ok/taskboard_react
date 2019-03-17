@@ -18,8 +18,7 @@ class AddBoard extends Component {
 
         this.state = {
             board: this.emptyBoard,
-            errors: {},
-            isLoading: ''
+            errors: {}
         };
 
         this.onChange = this.onChange.bind(this);
@@ -29,8 +28,7 @@ class AddBoard extends Component {
     componentWillReceiveProps(nextProps) {
 
         this.setState({
-            errors: nextProps.errors,
-            isLoading: nextProps.isLoading
+            errors: nextProps.errors
         });
     }
 
@@ -50,7 +48,7 @@ class AddBoard extends Component {
 
         await this.props.addProjectBoard(board, this.props.history);
 
-        const {isLoading} = this.state;
+        const {isLoading} = this.props;
 
         if (isLoading) {
             this.props.onHide();

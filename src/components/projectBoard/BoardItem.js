@@ -7,9 +7,11 @@ import {getProjectTaskCount} from "../../actions/projectTaskActions";
 import axios from "axios/index";
 import {PROXY_LINK} from "../../proxy";
 import {ButtonToolbar} from "react-bootstrap";
-import AddBoard from "./AddBoard";
+import UpdateBoard from "./UpdateBoard";
 
 class BoardItem extends Component {
+
+    _isMounted = false;
 
     constructor(props) {
         super(props);
@@ -22,17 +24,25 @@ class BoardItem extends Component {
         this.modalOpen = this.modalOpen.bind(this)
     }
 
-
     clickOpenBoardHandle() {
         window.location.assign("/board/" + this.props.board.id + "/taskboard");
     }
 
     componentDidMount() {
+        this._isMounted = true;
 
         const {board} = this.props;
 
         axios.get(`${PROXY_LINK}/api/boards/${board.id}/count`)
-            .then(res => this.setState({taskCount: res.data}));
+            .then(res => {
+                if (this._isMounted) {
+                    this.setState({taskCount: res.data})
+                }
+            });
+    }
+
+    componentWillUnmount() {
+        this._isMounted = false;
     }
 
     remove(pb_id) {
@@ -41,17 +51,20 @@ class BoardItem extends Component {
 
     modalOpen() {
 
-        this.setState({
-            modalShow: true
-        });
+            this.setState({
+                modalShow: true
+            });
 
         this.props.cleanErrors();
     }
 
     modalClose() {
-        this.setState({
-            modalShow: false
-        });
+
+        if (this._isMounted) {
+            this.setState({
+                modalShow: false
+            });
+        }
     }
 
     render() {
@@ -90,17 +103,13 @@ class BoardItem extends Component {
                                         </li>
                                     </div>
 
-                                    <AddBoard
+                                    <UpdateBoard
+                                        pb_id={board.id}
                                         show={this.state.modalShow}
                                         onHide={this.modalClose}
                                     />
-                                </ButtonToolbar>
 
-                                {/*<Link to={`/board/edit/${board.id}`}>
-                                    <li className="list-group-item update">
-                                        <i className="fa fa-edit pr-1"> Update Project Info</i>
-                                    </li>
-                                </Link>*/}
+                                </ButtonToolbar>
 
                                 <li
                                     className="list-group-item delete"

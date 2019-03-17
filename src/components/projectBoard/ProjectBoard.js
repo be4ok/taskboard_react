@@ -21,11 +21,10 @@ class ProjectBoard extends Component {
     }
 
     componentDidMount() {
-        this.props.getProjectBoards();
+            this.props.getProjectBoards();
     }
 
     modalOpen() {
-
         this.setState({
             modalShow: true
         });

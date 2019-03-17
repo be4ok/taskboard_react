@@ -22,11 +22,7 @@ export const cleanErrors = () => async dispatch => {
     })
 };
 
-export const getProjectBoard = (pb_id, history) => async dispatch => {
-
-    try {
-
-        dispatch(loading(true));
+export const getProjectBoard = (pb_id) => async dispatch => {
 
         const res = await axios.get(`${PROXY_LINK}/api/boards/${pb_id}`);
         dispatch({
@@ -34,16 +30,11 @@ export const getProjectBoard = (pb_id, history) => async dispatch => {
             payload: res.data,
         });
 
-        dispatch(loading(false));
-
         dispatch({
             type: GET_ERRORS,
             payload: {}
         })
 
-    } catch (e) {
-        history.push("/board")
-    }
 };
 
 export const getProjectBoards = () => async dispatch => {
@@ -103,7 +94,8 @@ export const updateProjectBoard = (project_board, history) => async dispatch => 
             }
         );
 
-        history.push("/board");
+        dispatch(getProjectBoards());
+
         dispatch({
             type: GET_ERRORS,
             payload: {}
