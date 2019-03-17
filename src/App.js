@@ -51,10 +51,6 @@ class App extends Component {
                         <Switch>
                             <SecuredRoute exact path="/board" component={ProjectBoard}/>
                             <SecuredRoute exact path="/board/:id/taskboard" component={TaskBoard}/>
-                            <SecuredRoute exact path="/board/add" component={AddBoard}/>
-                            <SecuredRoute exact path="/board/edit/:id" component={UpdateBoard}/>
-                            <SecuredRoute exact path="/board/:id/updatetask/:id" component={UpdateTask}/>
-                            <SecuredRoute exact path="/board/:id/addtask" component={AddTask}/>
                             {/*Private routes*/}
 
                             {/*Public routes*/}

@@ -1,15 +1,40 @@
 import React, {Component} from 'react';
 import TaskItem from "./TaskItem";
-import {Link} from "react-router-dom";
 import Loading from "../layout/Loading";
 import {connect} from "react-redux";
 import PropTypes from "prop-types";
-import {getProjectTasks} from "../../actions/projectTaskActions";
+import {getProjectTasks, cleanErrors} from "../../actions/projectTaskActions";
+import {ButtonToolbar} from "react-bootstrap";
+import AddTask from "./AddTask";
 
 class TaskBoard extends Component {
 
+    constructor(props) {
+        super(props);
+        this.state = {
+            modalShow: false
+        };
+
+        this.modalOpen = this.modalOpen.bind(this);
+        this.modalClose = this.modalClose.bind(this);
+    }
+
     componentDidMount() {
         this.props.getProjectTasks(this.props.match.params.id);
+    }
+
+    modalOpen() {
+        this.setState({
+            modalShow: true
+        });
+
+        this.props.cleanErrors();
+    }
+
+    modalClose() {
+        this.setState({
+            modalShow: false
+        });
     }
 
     render() {
@@ -37,18 +62,26 @@ class TaskBoard extends Component {
             }
         });
 
-        const taskItems =
-            <React.Fragment>
-
-            </React.Fragment>;
-
         return (
 
             <div className="container">
 
-                <Link to={"/board/" + this.props.match.params.id + "/addtask"} className="btn btn-primary mb-3">
+               {/* <Link to={"/board/" + this.props.match.params.id + "/addtask"} className="btn btn-primary mb-3">
                     <i className="fas fa-plus-circle"> Create Project Task</i>
-                </Link>
+                </Link>*/}
+
+                <ButtonToolbar>
+                    <div onClick={this.modalOpen} className="btn btn-primary mb-3">
+                        <i className="fas fa-plus-circle"> Create Project Task</i>
+                    </div>
+
+                    <AddTask
+                        pb_id={this.props.match.params.id}
+                        show={this.state.modalShow}
+                        onHide={this.modalClose}
+                    />
+                </ButtonToolbar>
+
                 <br/>
                 <hr/>
 
@@ -103,6 +136,7 @@ class TaskBoard extends Component {
 
 TaskBoard.propTypes = {
     getProjectTasks: PropTypes.func.isRequired,
+    cleanErrors: PropTypes.func.isRequired,
     project_tasks: PropTypes.object.isRequired,
     isLoading: PropTypes.bool.isRequired
 };
@@ -112,4 +146,4 @@ const mapStateToProps = state => ({
     isLoading: state.task.isLoading
 });
 
-export default connect(mapStateToProps, {getProjectTasks})(TaskBoard);
+export default connect(mapStateToProps, {getProjectTasks, cleanErrors})(TaskBoard);

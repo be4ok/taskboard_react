@@ -16,9 +16,14 @@ export function loading(isLoading) {
     };
 }
 
-export const getProjectTask = pt_id => async dispatch => {
+export const cleanErrors = () => async dispatch => {
+    dispatch({
+        type: GET_ERRORS,
+        payload: {}
+    })
+};
 
-    dispatch(loading(true));
+export const getProjectTask = pt_id => async dispatch => {
 
     const res = await axios.get(`${PROXY_LINK}/api/boards/tasks/${pt_id}`);
 
@@ -26,8 +31,6 @@ export const getProjectTask = pt_id => async dispatch => {
         type: GET_PROJECT_TASK,
         payload: res.data
     });
-
-    dispatch(loading(false));
 
     dispatch({
         type: GET_ERRORS,
@@ -49,7 +52,7 @@ export const getProjectTasks = pd_id => async dispatch => {
     dispatch(loading(false));
 };
 
-export const addProjectTask = (project_task, pb_id, history) => async dispatch => {
+export const addProjectTask = (project_task, pb_id) => async dispatch => {
     try {
         await axios.post(
             `${PROXY_LINK}/api/boards/tasks`,
@@ -62,11 +65,13 @@ export const addProjectTask = (project_task, pb_id, history) => async dispatch =
             }
         );
 
-        history.push(`/board/${pb_id}/taskboard`);
         dispatch({
             type: GET_ERRORS,
             payload: {}
-        })
+        });
+
+        dispatch(getProjectTasks(pb_id));
+
     } catch (error) {
         dispatch({
             type: GET_ERRORS,
@@ -75,7 +80,7 @@ export const addProjectTask = (project_task, pb_id, history) => async dispatch =
     }
 };
 
-export const updateProjectTask = (project_task, pb_id, history) => async dispatch => {
+export const updateProjectTask = (project_task, pb_id) => async dispatch => {
     try {
         await axios.put(
             `${PROXY_LINK}/api/boards/tasks`,
@@ -88,7 +93,8 @@ export const updateProjectTask = (project_task, pb_id, history) => async dispatc
             }
         );
 
-        history.push(`/board/${pb_id}/taskboard`);
+        dispatch(getProjectTasks(pb_id));
+
         dispatch({
             type: GET_ERRORS,
             payload: {}

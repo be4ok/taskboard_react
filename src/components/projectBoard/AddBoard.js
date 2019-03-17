@@ -46,13 +46,13 @@ class AddBoard extends Component {
 
         const {board} = this.state;
 
-        await this.props.addProjectBoard(board, this.props.history);
+        await this.props.addProjectBoard(board);
 
-        const {isLoading} = this.props;
+        const {errors} = this.state;
 
-        if (isLoading) {
+        if (!Object.keys(errors).length) {
             this.props.onHide();
-            this.setState({board: this.emptyBoard})
+            this.setState({board: {}})
         }
 
     }

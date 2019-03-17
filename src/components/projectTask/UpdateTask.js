@@ -1,11 +1,10 @@
 import React, {Component} from 'react';
-import {Link} from "react-router-dom";
-import Loading from "../layout/Loading";
 import classnames from "classnames";
 import validationUtils from "../../utils/validationUtils";
 import {connect} from "react-redux";
 import PropTypes from "prop-types";
 import {getProjectTask, updateProjectTask} from "../../actions/projectTaskActions";
+import {Modal} from "react-bootstrap";
 
 class UpdateTask extends Component {
 
@@ -13,18 +12,16 @@ class UpdateTask extends Component {
         super(props);
 
         this.state = {
-            isEditMode: false,
             task: {},
             errors: {}
         };
 
         this.onChange = this.onChange.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
-        this.onEditClickHandler = this.onEditClickHandler.bind(this);
     }
 
     componentDidMount() {
-        const pt_id = this.props.match.params.id;
+        const pt_id = this.props.pt_id;
         this.props.getProjectTask(pt_id);
     }
 
@@ -34,7 +31,7 @@ class UpdateTask extends Component {
             errors: nextProps.errors
         });
 
-        if (!Object.keys(nextProps.errors).length) {
+        if (!Object.keys(nextProps.errors).length && nextProps.project_task.project_task.id === this.props.pt_id) {
             this.setState({
                 task: nextProps.project_task.project_task
             });
@@ -49,165 +46,132 @@ class UpdateTask extends Component {
         this.setState({task});
     }
 
-    onSubmit(e) {
+    async onSubmit(e) {
         e.preventDefault();
         const {task} = this.state;
-        this.props.updateProjectTask(task, task.board.id, this.props.history)
+        await this.props.updateProjectTask(task, task.board.id);
+
+        const {errors} = this.state;
+
+        if (!Object.keys(errors).length) {
+            this.props.onHide();
+        }
     }
-
-
-    onEditClickHandler(e) {
-        e.preventDefault();
-        this.setState({isEditMode: !this.state.isEditMode});
-    }
-
 
     render() {
 
-        const {task, errors, isEditMode} = this.state;
-        const {isLoading} = this.props;
-
-        if (isLoading) {
-            return <Loading/>
-        }
-
-        let boardId;
-
-        if (Object.keys(task).length) {
-            boardId = task.board.id;
-        }
+        const {task, errors} = this.state;
+        const {show, onHide} = this.props;
 
         const summaryValidMessage = validationUtils(errors, 'summary');
         const acceptanceCritValidMessage = validationUtils(errors, 'acceptanceCriteria');
 
         return (
-            <div className="addProjectTask">
-                <div className="container">
-                    <div className="row">
-                        <div className="col-md-8 m-auto">
+            <Modal
+                show={show}
+                onHide={onHide}
+                size="lg"
+                aria-labelledby="contained-modal-title-vcenter"
+                centered
+            >
+                <Modal.Header closeButton>
+                </Modal.Header>
 
-                            <Link to={"/board/" + boardId + "/taskboard"} className="btn btn-outline-dark">
-                                Back to Board
-                            </Link>
+                <Modal.Body>
 
-                            <h4 className="display-4 text-center">Update Project Task #{task.id}</h4>
+                    <div className="container">
+                        <div className="row">
+                            <div className="col-md-8 m-auto">
 
-                            <form onSubmit={this.onSubmit}>
+                                <h4 className="display-4 text-center">Update Project Task #{task.id}</h4>
 
-                                <div className="form-group">
+                                <form onSubmit={this.onSubmit}>
 
-                                    <div className="title-input">Summary:</div>
+                                    <div className="form-group">
 
-                                    {!isEditMode &&
-                                    <div
-                                        className="form-control-lg float-input">
-                                        {task.summary}
+                                        <div className="title-input">Summary:</div>
+
+                                        <div>
+                                            <input
+                                                autoFocus
+                                                className={classnames("form-control form-control-lg", {"is-invalid": summaryValidMessage.length})}
+                                                type="text"
+                                                name="summary"
+                                                placeholder="Project Task summary"
+                                                value={task.summary}
+                                                onChange={this.onChange}
+                                                autoComplete="summary"
+                                                id="summary"
+                                            />
+                                        </div>
+
+                                        {summaryValidMessage}
+
+                                        <hr/>
+
                                     </div>
-                                    }
 
-                                    {isEditMode &&
-                                    <div>
-                                        <input
-                                            autoFocus
-                                            className={classnames("form-control form-control-lg", {"is-invalid": summaryValidMessage.length})}
-                                            type="text"
-                                            name="summary"
-                                            placeholder="Project Task summary"
-                                            value={task.summary}
-                                            onChange={this.onChange}
-                                            autoComplete="summary"
-                                            id="summary"
-                                        />
-                                    </div>
-                                    }
+                                    <div className="form-group">
 
-                                    {summaryValidMessage}
+                                        <div className="title-input">Acceptance criteria:</div>
 
-                                    <hr/>
-
-                                </div>
-
-                                <div className="form-group">
-
-                                    <div className="title-input">Acceptance criteria:</div>
-
-                                    {!isEditMode &&
-                                    <div
-                                        className="form-control-lg float-input-ac">
-                                        {task.acceptanceCriteria}
-                                    </div>
-                                    }
-
-                                    {isEditMode &&
-                                    <div>
+                                        <div>
                                     <textarea
-                                        className={classnames("form-control form-control-lg", {"is-invalid": (acceptanceCritValidMessage.length || task.acceptanceCriteria.length > 200)})}
+                                        className={classnames("form-control form-control-lg", {"is-invalid": acceptanceCritValidMessage.length})}
                                         placeholder="Acceptance Criteria"
                                         name="acceptanceCriteria"
                                         value={task.acceptanceCriteria}
                                         onChange={this.onChange}
                                     />
-                                        <span
-                                            className={classnames("input-length", {"input-length-alert": task.acceptanceCriteria.length > 200})}>
-                                            {200 - task.acceptanceCriteria.length}
-                                            </span>
+                                        </div>
+
+                                        {acceptanceCritValidMessage}
+
+                                        <hr/>
+
                                     </div>
-                                    }
 
+                                    <div className="form-group">
 
-                                    {acceptanceCritValidMessage}
+                                        <div className="title-input">Status:</div>
 
-                                    <hr/>
-
-                                </div>
-
-                                <div className="form-group">
-
-                                    <div className="title-input">Status:</div>
-
-                                    {!isEditMode &&
-                                    <div
-                                        className="form-control-lg float-input">
-                                        {task.status}
-                                    </div>
-                                    }
-
-                                    {isEditMode &&
-                                    <select
-                                        className="form-control form-control-lg"
-                                        name="status"
-                                        value={task.status}
-                                        onChange={this.onChange}
-                                    >
-                                        <option value="">Select Status</option>
-                                        <option value="TO_DO">TO DO</option>
-                                        <option value="IN_PROGRESS">IN PROGRESS</option>
-                                        <option value="DONE">DONE</option>
-                                    </select>
-                                    }
-
-                                </div>
-
-                                <div className="buttons-container">
-                                    <div className="buttons-group">
-
-                                        <button
-                                            onClick={this.onEditClickHandler}
-                                            className={"btn btn-lg button-item btn-outline-" + (!isEditMode ? "primary" : "danger")}
+                                        <select
+                                            className="form-control form-control-lg"
+                                            name="status"
+                                            value={task.status}
+                                            onChange={this.onChange}
                                         >
-                                            {!isEditMode ? "Edit" : "Cancel"}
-                                        </button>
+                                            <option value="">Select Status</option>
+                                            <option value="TO_DO">TO DO</option>
+                                            <option value="IN_PROGRESS">IN PROGRESS</option>
+                                            <option value="DONE">DONE</option>
+                                        </select>
 
-                                        <input type="submit" value="Save"
-                                               className="btn btn-outline-success btn-lg button-item"/>
                                     </div>
-                                </div>
 
-                            </form>
+                                    <div className="buttons-container">
+                                        <div className="buttons-group">
+
+                                            <div
+                                                onClick={this.props.onHide}
+                                                className="btn btn-lg button-item btn-outline-danger"
+                                            >
+                                                Cancel
+                                            </div>
+
+                                            <input type="submit" value="Save"
+                                                   className="btn btn-outline-success btn-lg button-item"/>
+                                        </div>
+                                    </div>
+
+                                </form>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </div>
+
+                </Modal.Body>
+            </Modal>
+
         );
     }
 }
@@ -216,14 +180,12 @@ UpdateTask.propTypes = {
     getProjectTask: PropTypes.func.isRequired,
     updateProjectTask: PropTypes.func.isRequired,
     project_task: PropTypes.object.isRequired,
-    errors: PropTypes.object.isRequired,
-    isLoading: PropTypes.bool.isRequired
+    errors: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
     project_task: state.task,
-    errors: state.errors,
-    isLoading: state.task.isLoading
+    errors: state.errors
 });
 
 export default connect(mapStateToProps, {getProjectTask, updateProjectTask})(UpdateTask)

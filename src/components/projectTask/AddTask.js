@@ -1,10 +1,10 @@
 import React, {Component} from 'react';
-import {Link} from "react-router-dom";
 import classnames from "classnames";
 import validationUtils from "../../utils/validationUtils";
 import {connect} from "react-redux";
 import PropTypes from "prop-types";
-import {addProjectTask, getProjectTask, updateProjectTask} from "../../actions/projectTaskActions";
+import {addProjectTask} from "../../actions/projectTaskActions";
+import {Modal} from "react-bootstrap";
 
 class AddTask extends Component {
 
@@ -23,19 +23,20 @@ class AddTask extends Component {
 
         this.state = {
             task: this.emptyTask,
-            errors: {}
+            errors: {},
+            pb_id: ''
         };
 
         this.onChange = this.onChange.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
-        this.onCancelClickHandler = this.onCancelClickHandler.bind(this);
 
     }
 
     componentWillReceiveProps(nextProps) {
 
         this.setState({
-            errors: nextProps.errors
+            errors: nextProps.errors,
+            pb_id: nextProps.pb_id
         });
     }
 
@@ -47,90 +48,80 @@ class AddTask extends Component {
         this.setState({task});
     }
 
-    onSubmit(e) {
+    async onSubmit(e) {
         e.preventDefault();
         const {task} = this.state;
-        task.board.id = this.props.match.params.id;
+        task.board.id = this.state.pb_id;
 
-        this.props.addProjectTask(task, task.board.id, this.props.history)
+        await this.props.addProjectTask(task, task.board.id);
 
-        /*task.board.id = this.props.match.params.id;
+        const {errors} = this.state;
 
-        await fetch('../../api/boards/tasks', {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(task)
-        })
-            .then(responseObject => {
-                if (!responseObject.ok) {
-                    throw responseObject.json();
-                }
-                this.setState({validation: []});
-                this.props.history.push("/board/" + this.props.match.params.id + "/taskboard");
-
-            }).catch(error => {
-                error.then(res => this.setState({validation: res}));
-            });*/
-    }
-
-    onCancelClickHandler(e) {
-        e.preventDefault();
-        this.props.history.push("/board/" + this.props.match.params.id + "/taskboard");
+        if (!Object.keys(errors).length) {
+            this.props.onHide();
+            this.setState({task: this.emptyTask})
+        }
     }
 
     render() {
 
         const {task, errors} = this.state;
+        const {show, onHide} = this.props;
 
         const summaryValidMessage = validationUtils(errors, 'summary');
         const acceptanceCritValidMessage = validationUtils(errors, 'acceptanceCriteria');
 
         return (
-            <div className="addProjectTask">
-                <div className="container">
-                    <div className="row">
-                        <div className="col-md-8 m-auto">
 
-                            <Link to={"/board/" + this.props.match.params.id + "/taskboard"} className="btn btn-outline-dark">
-                                Back to Board
-                            </Link>
+            <Modal
+                show={show}
+                onHide={onHide}
+                size="lg"
+                aria-labelledby="contained-modal-title-vcenter"
+                centered
+            >
+                <Modal.Header closeButton>
+                </Modal.Header>
 
-                            <h4 className="display-4 text-center">Add new Project Task</h4>
+                <Modal.Body>
 
-                            <form onSubmit={this.onSubmit}>
+                        <div className="container">
+                            <div className="row">
+                                <div className="col-md-8 m-auto">
 
-                                <div className="form-group">
+                                    <h4 className="display-4 text-center">Add new Project Task</h4>
 
-                                    <div className="title-input">Summary:</div>
+                                    <form onSubmit={this.onSubmit}>
 
-                                    <div>
-                                        <input
-                                            autoFocus
-                                            className={classnames("form-control form-control-lg", {"is-invalid": summaryValidMessage.length})}
-                                            type="text"
-                                            name="summary"
-                                            placeholder="Project Task summary"
-                                            value={task.summary}
-                                            onChange={this.onChange}
-                                            autoComplete="summary"
-                                            id="summary"
-                                        />
-                                    </div>
+                                        <div className="form-group">
 
-                                    {summaryValidMessage}
+                                            <div className="title-input">Summary:</div>
 
-                                    <hr/>
+                                            <div>
+                                                <input
+                                                    autoFocus
+                                                    className={classnames("form-control form-control-lg", {"is-invalid": summaryValidMessage.length})}
+                                                    type="text"
+                                                    name="summary"
+                                                    placeholder="Project Task summary"
+                                                    value={task.summary}
+                                                    onChange={this.onChange}
+                                                    autoComplete="summary"
+                                                    id="summary"
+                                                />
+                                            </div>
 
-                                </div>
+                                            {summaryValidMessage}
 
-                                <div className="form-group">
+                                            <hr/>
 
-                                    <div className="title-input">Acceptance criteria:</div>
+                                        </div>
 
-                                    <div>
+                                        <div className="form-group">
+
+                                            <div className="title-input">Acceptance criteria:</div>
+
+                                            <div>
                                     <textarea
                                         className={classnames("form-control form-control-lg", {"is-invalid": (acceptanceCritValidMessage.length || task.acceptanceCriteria.length > 200)})}
                                         placeholder="Acceptance Criteria"
@@ -138,60 +129,60 @@ class AddTask extends Component {
                                         value={task.acceptanceCriteria}
                                         onChange={this.onChange}
                                     />
-                                        <span
-                                            className={classnames("input-length", {"input-length-alert": task.acceptanceCriteria.length > 200})}>
+                                                <span
+                                                    className={classnames("input-length", {"input-length-alert": task.acceptanceCriteria.length > 200})}>
                                             {200 - task.acceptanceCriteria.length}
                                             </span>
-                                    </div>
+                                            </div>
 
+                                            {acceptanceCritValidMessage}
 
-                                    {acceptanceCritValidMessage}
+                                            <hr/>
 
-                                    <hr/>
+                                        </div>
 
+                                        <div className="form-group">
+
+                                            <div className="title-input">Status:</div>
+
+                                            <select
+                                                className="form-control form-control-lg"
+                                                name="status"
+                                                value={task.status}
+                                                onChange={this.onChange}
+                                            >
+                                                <option value="">Select Status</option>
+                                                <option value="TO_DO">TO DO</option>
+                                                <option value="IN_PROGRESS">IN PROGRESS</option>
+                                                <option value="DONE">DONE</option>
+                                            </select>
+
+                                        </div>
+
+                                        <div className="buttons-container">
+                                            <div className="buttons-group">
+
+                                                <div
+                                                    onClick={this.props.onHide}
+                                                    className="btn btn-lg button-item btn-outline-danger"
+                                                >
+                                                    Cancel
+                                                </div>
+
+                                                <input type="submit" value="Save" className="btn btn-outline-success btn-lg button-item"/>
+                                            </div>
+                                        </div>
+
+                                    </form>
                                 </div>
-
-                                <div className="form-group">
-
-                                    <div className="title-input">Status:</div>
-
-                                    <select
-                                        className="form-control form-control-lg"
-                                        name="status"
-                                        value={task.status}
-                                        onChange={this.onChange}
-                                    >
-                                        <option value="">Select Status</option>
-                                        <option value="TO_DO">TO DO</option>
-                                        <option value="IN_PROGRESS">IN PROGRESS</option>
-                                        <option value="DONE">DONE</option>
-                                    </select>
-
-                                </div>
-
-                                <div className="buttons-container">
-                                    <div className="buttons-group">
-
-                                        <button
-                                            onClick={this.onCancelClickHandler}
-                                            className="btn btn-lg button-item btn-outline-danger"
-                                        >
-                                            Cancel
-                                        </button>
-
-                                        <input type="submit" value="Save" className="btn btn-outline-success btn-lg button-item"/>
-                                    </div>
-                                </div>
-
-                            </form>
+                            </div>
                         </div>
-                    </div>
-                </div>
-            </div>
+
+                </Modal.Body>
+            </Modal>
         );
     }
 }
-
 
 AddTask.propTypes = {
     addProjectTask: PropTypes.func.isRequired,

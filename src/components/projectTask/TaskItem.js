@@ -1,14 +1,53 @@
 import React, {Component} from 'react';
-import {Link} from "react-router-dom";
 import {connect} from "react-redux";
 import PropTypes from "prop-types";
-import {deleteProjectTask} from "../../actions/projectTaskActions";
+import {deleteProjectTask, cleanErrors} from "../../actions/projectTaskActions";
+import {Button, ButtonToolbar} from "react-bootstrap";
+import UpdateTask from "./UpdateTask"
 
 
 class TaskItem extends Component {
 
+    _isMounted = false;
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            modalShow: false
+        };
+
+        this.modalClose = this.modalClose.bind(this);
+        this.modalOpen = this.modalOpen.bind(this)
+    }
+
+    componentWillUnmount() {
+        this._isMounted = false;
+    }
+
     remove(pt_id) {
         this.props.deleteProjectTask(pt_id, this.props.history)
+    }
+
+    modalOpen() {
+
+        this._isMounted = true;
+
+        if (this._isMounted) {
+            this.setState({
+                modalShow: true
+            });
+        }
+
+        this.props.cleanErrors();
+    }
+
+    modalClose() {
+
+        if (this._isMounted) {
+            this.setState({
+                modalShow: false
+            });
+        }
     }
 
     render() {
@@ -32,16 +71,31 @@ class TaskItem extends Component {
                     <p className="date-info">created: {task.createDate}</p>
                     {task.updateDate && <p className="date-info">updated: {task.updateDate}</p>}
                     <br/>
-                    <Link to={"/board/" + task.board.id + "/updatetask/" + task.id} className="btn btn-outline-primary btn-sm">
-                        View / Update
-                    </Link>
 
-                    <button
+                    <ButtonToolbar>
+
+                        <div
+                            className="btn btn-outline-primary btn-sm"
+                            onClick={this.modalOpen}
+                        >
+                            Update
+                        </div>
+
+                        <UpdateTask
+                            pt_id={task.id}
+                            show={this.state.modalShow}
+                            onHide={this.modalClose}
+                        />
+
+
+                    <Button
                         className="btn btn-outline-danger ml-4 btn-sm"
                         onClick={this.remove.bind(this, task.id)}
                     >
                         Delete
-                    </button>
+                    </Button>
+
+                    </ButtonToolbar>
                 </div>
             </div>
         );
@@ -49,7 +103,8 @@ class TaskItem extends Component {
 }
 
 TaskItem.propTypes = {
-  deleteProjectTask: PropTypes.func.isRequired
+    deleteProjectTask: PropTypes.func.isRequired,
+    cleanErrors: PropTypes.func.isRequired
 };
 
-export default connect(null, {deleteProjectTask})(TaskItem);
+export default connect(null, {deleteProjectTask, cleanErrors})(TaskItem);

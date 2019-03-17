@@ -51,7 +51,7 @@ export const getProjectBoards = () => async dispatch => {
     dispatch(loading(false));
 };
 
-export const addProjectBoard = (project_board, history) => async dispatch => {
+export const addProjectBoard = (project_board) => async dispatch => {
     try {
 
         await axios.post(
@@ -65,7 +65,6 @@ export const addProjectBoard = (project_board, history) => async dispatch => {
             }
         );
 
-        dispatch(loading(false));
         dispatch(getProjectBoards());
 
         dispatch({
@@ -81,7 +80,7 @@ export const addProjectBoard = (project_board, history) => async dispatch => {
     }
 };
 
-export const updateProjectBoard = (project_board, history) => async dispatch => {
+export const updateProjectBoard = (project_board) => async dispatch => {
     try {
         await axios.put(
             `${PROXY_LINK}/api/boards`,

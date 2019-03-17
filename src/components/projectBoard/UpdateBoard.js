@@ -8,8 +8,8 @@ import {Modal} from "react-bootstrap";
 
 class UpdateBoard extends Component {
 
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
 
         this.state = {
             board: {},
@@ -30,7 +30,7 @@ class UpdateBoard extends Component {
             errors: nextProps.errors
         });
 
-        if (!Object.keys(nextProps.errors).length) {
+        if (!Object.keys(nextProps.errors).length && nextProps.project_board.project_board.id === this.props.pb_id) {
             this.setState({
                 board: nextProps.project_board.project_board
             });
@@ -48,7 +48,7 @@ class UpdateBoard extends Component {
     async onSubmit(e) {
         e.preventDefault();
         const {board} = this.state;
-        await this.props.updateProjectBoard(board, this.props.history);
+        await this.props.updateProjectBoard(board);
 
         const {errors} = this.state;
 
