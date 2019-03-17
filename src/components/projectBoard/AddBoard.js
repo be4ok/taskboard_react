@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import {Link} from "react-router-dom";
 import classnames from "classnames";
 import validationUtils from "../../utils/validationUtils";
 import {connect} from "react-redux";
@@ -20,6 +19,7 @@ class AddBoard extends Component {
         this.state = {
             board: this.emptyBoard,
             errors: {},
+            isLoading: ''
         };
 
         this.onChange = this.onChange.bind(this);
@@ -29,7 +29,8 @@ class AddBoard extends Component {
     componentWillReceiveProps(nextProps) {
 
         this.setState({
-            errors: nextProps.errors
+            errors: nextProps.errors,
+            isLoading: nextProps.isLoading
         });
     }
 
@@ -42,23 +43,26 @@ class AddBoard extends Component {
     }
 
 
-
-    onSubmit(e) {
+    async onSubmit(e) {
         e.preventDefault();
 
-        const {board, errors} = this.state;
-        this.props.addProjectBoard(board, this.props.history);
+        const {board} = this.state;
 
-        if (!Object.keys(errors).length) {
+        await this.props.addProjectBoard(board, this.props.history);
+
+        const {isLoading} = this.state;
+
+        if (isLoading) {
             this.props.onHide();
+            this.setState({board: this.emptyBoard})
         }
+
     }
 
     render() {
 
         const {board, errors} = this.state;
-
-
+        const {show, onHide} = this.props;
 
         const nameValidMessage = validationUtils(errors, 'name');
         const descrValidMessage = validationUtils(errors, 'description');
@@ -66,7 +70,8 @@ class AddBoard extends Component {
         return (
 
             <Modal
-                {...this.props}
+                show={show}
+                onHide={onHide}
                 size="lg"
                 aria-labelledby="contained-modal-title-vcenter"
                 centered
@@ -155,11 +160,13 @@ class AddBoard extends Component {
 
 AddBoard.propTypes = {
     addProjectBoard: PropTypes.func.isRequired,
-    errors: PropTypes.object.isRequired
+    errors: PropTypes.object.isRequired,
+    isLoading: PropTypes.bool.isRequired
 };
 
 const mapStateToProps = state => ({
-    errors: state.errors
+    errors: state.errors,
+    isLoading: state.board.isLoading
 });
 
 export default connect(mapStateToProps, {addProjectBoard})(AddBoard);

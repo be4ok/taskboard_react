@@ -1,5 +1,11 @@
 import axios from "axios";
-import {GET_ERRORS, GET_PROJECT_BOARDS, DELETE_PROJECT_BOARD, GET_PROJECT_BOARD, PROJECT_BOARD_LOADING} from "./types";
+import {
+    GET_ERRORS,
+    GET_PROJECT_BOARDS,
+    DELETE_PROJECT_BOARD,
+    GET_PROJECT_BOARD,
+    PROJECT_BOARD_LOADING,
+} from "./types";
 import {PROXY_LINK} from "../proxy";
 
 export function loading(isLoading) {
@@ -11,7 +17,7 @@ export function loading(isLoading) {
 
 export const cleanErrors = () => async dispatch => {
     dispatch({
-        type:GET_ERRORS,
+        type: GET_ERRORS,
         payload: {}
     })
 };
@@ -56,6 +62,7 @@ export const getProjectBoards = () => async dispatch => {
 
 export const addProjectBoard = (project_board, history) => async dispatch => {
     try {
+
         await axios.post(
             `${PROXY_LINK}/api/boards`,
             project_board,
@@ -65,16 +72,15 @@ export const addProjectBoard = (project_board, history) => async dispatch => {
                     'Accept': 'application/json; charset=utf-8'
                 }
             }
-    );
+        );
 
+        dispatch(loading(false));
         dispatch(getProjectBoards());
 
         dispatch({
             type: GET_ERRORS,
             payload: {}
-        })
-
-
+        });
 
     } catch (error) {
         dispatch({

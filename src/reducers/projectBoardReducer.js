@@ -2,7 +2,7 @@ import {
     DELETE_PROJECT_BOARD,
     GET_PROJECT_BOARDS,
     GET_PROJECT_BOARD,
-    PROJECT_BOARD_LOADING
+    PROJECT_BOARD_LOADING,
 } from "../actions/types";
 
 const initialState = {
@@ -13,7 +13,6 @@ const initialState = {
 
 export default function (state = initialState, action) {
     switch (action.type) {
-
 
         case PROJECT_BOARD_LOADING:
             return {
