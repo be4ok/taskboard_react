@@ -52,7 +52,7 @@ class AddBoard extends Component {
 
         if (!Object.keys(errors).length) {
             this.props.onHide();
-            this.setState({board: {}})
+            this.setState({board: this.emptyBoard})
         }
 
     }
