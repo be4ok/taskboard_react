@@ -51,9 +51,9 @@ class BoardItem extends Component {
 
     modalOpen() {
 
-            this.setState({
-                modalShow: true
-            });
+        this.setState({
+            modalShow: true
+        });
 
         this.props.cleanErrors();
     }
@@ -74,21 +74,28 @@ class BoardItem extends Component {
         // let modalClose = () => this.setState({modalShow: false});
 
         return (
-            <div className="container">
-                <div className="card card-body border-primary bg-light mb-3">
+
+            <div className="card mb-1 border-primary bg-light mb-3">
+
+                <div className="card-header text-primary">
+                    <span>#{board.id}</span>
+                    <span className="task-count">Tasks: {this.state.taskCount}</span>
+                </div>
+
+                <div className="card card-body">
                     <div className="row">
                         <div className="col-2">
-                            <span className="mx-auto">#{board.id}
-                                <p className="task-count">Tasks: {this.state.taskCount}</p>
-                                </span>
                         </div>
                         <div className="col-lg-6 col-md-4 col-8">
                             <h3>{board.name}</h3>
                             <p>{board.description}</p>
-                            <p className="date-info">created: {board.createDate}</p>
-                            {board.updateDate && <p className="date-info">updated: {board.updateDate}</p>}
+                            <div className="date-info">
+                                <span>created: {board.createDate}</span>
+                                <br/>
+                                {board.updateDate && <span>updated: {board.updateDate}</span>}
+                            </div>
                         </div>
-                        <div className="col-md-4 d-none d-lg-block">
+                        <div className="col-md-4">
                             <ul className="list-group">
                                 <Link to={`/board/${board.id}/taskboard`}>
                                     <li className="list-group-item board">
@@ -96,11 +103,10 @@ class BoardItem extends Component {
                                     </li>
                                 </Link>
 
-                                <ButtonToolbar>
+
+                                <ButtonToolbar className="list-group-item update">
                                     <div onClick={this.modalOpen}>
-                                        <li className="list-group-item update">
-                                            <i className="fa fa-edit pr-1"> Update Project Info</i>
-                                        </li>
+                                        <i className="fa fa-edit pr-1"> Update Project Info</i>
                                     </div>
 
                                     <UpdateBoard

@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {connect} from "react-redux";
 import PropTypes from "prop-types";
 import {deleteProjectTask, cleanErrors} from "../../actions/projectTaskActions";
-import {ButtonToolbar} from "react-bootstrap";
+import {Button, ButtonToolbar} from "react-bootstrap";
 import UpdateTask from "./UpdateTask"
 
 
@@ -65,6 +65,7 @@ class TaskItem extends Component {
                 <div className="card-header text-primary">
                     #{task.id}
                 </div>
+
                 <div className="card-body bg-light">
                     <h5 className="card-title">{task.summary}</h5>
                     <p className="card-text text-truncate ">{task.acceptanceCriteria}</p>
@@ -86,14 +87,17 @@ class TaskItem extends Component {
                             show={this.state.modalShow}
                             onHide={this.modalClose}
                         />
+
+                        <div
+                            className="btn btn-outline-danger ml-4 btn-sm"
+                            onClick={this.remove.bind(this, task.id)}
+                        >
+                            Delete
+                        </div>
+
                     </ButtonToolbar>
 
-                    <button
-                        className="btn btn-outline-danger ml-4 btn-sm"
-                        onClick={this.remove.bind(this, task.id)}
-                    >
-                        Delete
-                    </button>
+
                 </div>
             </div>
         );

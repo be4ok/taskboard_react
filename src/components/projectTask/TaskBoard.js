@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import TaskItem from "./TaskItem";
+import {Link} from "react-router-dom";
 import Loading from "../layout/Loading";
 import {connect} from "react-redux";
 import PropTypes from "prop-types";
@@ -71,6 +72,11 @@ class TaskBoard extends Component {
                 </Link>*/}
 
                 <ButtonToolbar>
+
+                    <Link to="/board" className="btn btn-outline-secondary mb-3 mr-5">
+                        <i className="fas fa-angle-left">  Back</i>
+                    </Link>
+
                     <div onClick={this.modalOpen} className="btn btn-primary mb-3">
                         <i className="fas fa-plus-circle"> Create Project Task</i>
                     </div>

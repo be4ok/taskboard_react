@@ -21,7 +21,7 @@ class ProjectBoard extends Component {
     }
 
     componentDidMount() {
-            this.props.getProjectBoards();
+        this.props.getProjectBoards();
     }
 
     modalOpen() {
@@ -56,12 +56,11 @@ class ProjectBoard extends Component {
                 {
                     boardsArray.length === 0 &&
                     <div className="card-header text-center alert-info">
-                        No boards.
-                        <Link to={"/board/add"} className="card-link"> Create new board</Link>
+                        No boards. Please create a new.
                     </div>
                 }
-
                 {boardsArray}
+
             </React.Fragment>;
 
         return (

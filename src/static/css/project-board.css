@@ -3,9 +3,7 @@
 }
 
 .task-count {
-    position: absolute;
-    bottom: 0;
-    margin-bottom: 0;
+    float: right;
 }
 
 .board-id {
