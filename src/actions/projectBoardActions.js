@@ -37,11 +37,31 @@ export const getProjectBoard = (pb_id) => async dispatch => {
 
 };
 
+
 export const getProjectBoards = () => async dispatch => {
 
     dispatch(loading(true));
 
     const res = await axios.get(`${PROXY_LINK}/api/boards`);
+
+    dispatch({
+        type: GET_PROJECT_BOARDS,
+        payload: res.data,
+    });
+
+    dispatch(loading(false));
+};
+
+export const searchProjectBoards = searchQuery => async dispatch => {
+
+    if (searchQuery.trim().length === 0) {
+        dispatch(getProjectBoards());
+        return;
+    }
+    
+    dispatch(loading(true));
+
+    const res = await axios.get(`${PROXY_LINK}/api/boards?boardName=${searchQuery}`);
 
     dispatch({
         type: GET_PROJECT_BOARDS,
