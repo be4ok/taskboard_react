@@ -4,7 +4,7 @@ import {Link} from "react-router-dom";
 import Loading from "../layout/Loading";
 import {connect} from "react-redux";
 import PropTypes from "prop-types";
-import {getProjectTasks, cleanErrors} from "../../actions/projectTaskActions";
+import {getProjectTasks, searchProjectTasks, cleanErrors} from "../../actions/projectTaskActions";
 import {ButtonToolbar} from "react-bootstrap";
 import AddTask from "./AddTask";
 
@@ -13,15 +13,30 @@ class TaskBoard extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            modalShow: false
+            modalShow: false,
+            searchQuery: ''
         };
 
         this.modalOpen = this.modalOpen.bind(this);
         this.modalClose = this.modalClose.bind(this);
+        this.onSearchChange = this.onSearchChange.bind(this);
+        this.onSearchSubmit = this.onSearchSubmit.bind(this);
     }
 
     componentDidMount() {
         this.props.getProjectTasks(this.props.match.params.id);
+    }
+
+    async onSearchChange(e) {
+        await this.setState({searchQuery: e.target.value});
+        const pb_id = this.props.match.params.id;
+        this.props.searchProjectTasks(pb_id, this.state.searchQuery)
+    }
+
+    onSearchSubmit(e) {
+        e.preventDefault();
+        const pb_id = this.props.match.params.id;
+        this.props.searchProjectTasks(pb_id, this.state.searchQuery)
     }
 
     modalOpen() {
@@ -67,10 +82,6 @@ class TaskBoard extends Component {
 
             <div className="container">
 
-               {/* <Link to={"/board/" + this.props.match.params.id + "/addtask"} className="btn btn-primary mb-3">
-                    <i className="fas fa-plus-circle"> Create Project Task</i>
-                </Link>*/}
-
                 <ButtonToolbar>
 
                     <Link to="/board" className="btn btn-outline-secondary mb-3 mr-5">
@@ -86,6 +97,20 @@ class TaskBoard extends Component {
                         show={this.state.modalShow}
                         onHide={this.modalClose}
                     />
+
+                    <form onSubmit={this.onSearchSubmit} className="form-inline mb-0 mt-0 ml-5 mb-3 float-right">
+                        <input
+                            name="search"
+                            value={this.state.searchQuery}
+                            onChange={this.onSearchChange}
+                            className="form-control mr-2"
+                            type="search"
+                            placeholder="Search"
+                            aria-label="Search"
+                        />
+                        <button className="btn btn-outline-success" type="submit">Search</button>
+                    </form>
+
                 </ButtonToolbar>
 
                 <br/>
@@ -142,6 +167,7 @@ class TaskBoard extends Component {
 
 TaskBoard.propTypes = {
     getProjectTasks: PropTypes.func.isRequired,
+    searchProjectTasks: PropTypes.func.isRequired,
     cleanErrors: PropTypes.func.isRequired,
     project_tasks: PropTypes.object.isRequired,
     isLoading: PropTypes.bool.isRequired
@@ -152,4 +178,4 @@ const mapStateToProps = state => ({
     isLoading: state.task.isLoading
 });
 
-export default connect(mapStateToProps, {getProjectTasks, cleanErrors})(TaskBoard);
+export default connect(mapStateToProps, {getProjectTasks, searchProjectTasks, cleanErrors})(TaskBoard);
