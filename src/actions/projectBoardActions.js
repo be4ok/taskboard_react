@@ -52,7 +52,7 @@ export const getProjectBoards = () => async dispatch => {
     dispatch(loading(false));
 };
 
-export const searchProjectBoards = searchQuery => async dispatch => {
+export const searchProjectBoards = (searchQuery, searchCriteria) => async dispatch => {
 
     if (searchQuery.trim().length === 0) {
         dispatch(getProjectBoards());
@@ -61,7 +61,7 @@ export const searchProjectBoards = searchQuery => async dispatch => {
     
     dispatch(loading(true));
 
-    const res = await axios.get(`${PROXY_LINK}/api/boards?boardName=${searchQuery}`);
+    const res = await axios.get(`${PROXY_LINK}/api/boards?${searchCriteria}=${searchQuery}`);
 
     dispatch({
         type: GET_PROJECT_BOARDS,

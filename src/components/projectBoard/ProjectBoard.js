@@ -13,7 +13,8 @@ class ProjectBoard extends Component {
         super(props);
         this.state = {
             modalShow: false,
-            searchQuery: ''
+            searchQuery: '',
+            searchCriteria: 'boardName'
         };
 
         this.modalOpen = this.modalOpen.bind(this);
@@ -41,13 +42,13 @@ class ProjectBoard extends Component {
     }
 
     async onSearchChange(e) {
-        await this.setState({searchQuery: e.target.value});
-        this.props.searchProjectBoards(this.state.searchQuery)
+        await this.setState({[e.target.name]: e.target.value});
+        this.props.searchProjectBoards(this.state.searchQuery, this.state.searchCriteria)
     }
 
     onSearchSubmit(e) {
         e.preventDefault();
-        this.props.searchProjectBoards(this.state.searchQuery);
+        this.props.searchProjectBoards(this.state.searchQuery, this.state.searchCriteria);
     }
 
     render() {
@@ -86,8 +87,19 @@ class ProjectBoard extends Component {
                     </div>
 
                     <form onSubmit={this.onSearchSubmit} className="form-inline mb-0 mt-0 ml-5 float-right">
+
+                        <select
+                            className="form-control mr-2"
+                            name="searchCriteria"
+                            value={this.state.searchCriteria}
+                            onChange={this.onSearchChange}
+                        >
+                            <option value="boardName">Name</option>
+                            <option value="boardDescr">Description</option>
+                        </select>
+
                         <input
-                            name="search"
+                            name="searchQuery"
                             value={this.state.searchQuery}
                             onChange={this.onSearchChange}
                             className="form-control mr-2"
