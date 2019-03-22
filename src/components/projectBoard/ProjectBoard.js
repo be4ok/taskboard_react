@@ -42,7 +42,7 @@ class ProjectBoard extends Component {
 
     async onSearchChange(e) {
         await this.setState({searchQuery: e.target.value});
-        this.onSearchSubmit(e);
+        this.props.searchProjectBoards(this.state.searchQuery)
     }
 
     onSearchSubmit(e) {
