@@ -52,7 +52,7 @@ export const getProjectTasks = pd_id => async dispatch => {
     dispatch(loading(false));
 };
 
-export const searchProjectTasks = (pb_id, searchQuery) => async dispatch => {
+export const searchProjectTasks = (pb_id, searchQuery, searchCriteria) => async dispatch => {
 
     if (searchQuery.trim().length === 0) {
         dispatch(getProjectTasks(pb_id));
@@ -61,7 +61,7 @@ export const searchProjectTasks = (pb_id, searchQuery) => async dispatch => {
 
     dispatch(loading(true));
 
-    const res = await axios.get(`${PROXY_LINK}/api/boards/${pb_id}/tasks?taskSummary=${searchQuery}`);
+    const res = await axios.get(`${PROXY_LINK}/api/boards/${pb_id}/tasks?${searchCriteria}=${searchQuery}`);
 
     dispatch({
         type: GET_PROJECT_TASKS,

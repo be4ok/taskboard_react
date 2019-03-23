@@ -14,7 +14,8 @@ class TaskBoard extends Component {
         super(props);
         this.state = {
             modalShow: false,
-            searchQuery: ''
+            searchQuery: '',
+            searchCriteria: 'taskSummary'
         };
 
         this.modalOpen = this.modalOpen.bind(this);
@@ -28,15 +29,15 @@ class TaskBoard extends Component {
     }
 
     async onSearchChange(e) {
-        await this.setState({searchQuery: e.target.value});
+        await this.setState({[e.target.name]: e.target.value});
         const pb_id = this.props.match.params.id;
-        this.props.searchProjectTasks(pb_id, this.state.searchQuery)
+        this.props.searchProjectTasks(pb_id, this.state.searchQuery, this.state.searchCriteria)
     }
 
     onSearchSubmit(e) {
         e.preventDefault();
         const pb_id = this.props.match.params.id;
-        this.props.searchProjectTasks(pb_id, this.state.searchQuery)
+        this.props.searchProjectTasks(pb_id, this.state.searchQuery, this.state.searchCriteria)
     }
 
     modalOpen() {
@@ -99,8 +100,19 @@ class TaskBoard extends Component {
                     />
 
                     <form onSubmit={this.onSearchSubmit} className="form-inline mb-0 mt-0 ml-5 mb-3 float-right">
+
+                        <select
+                            className="form-control mr-2"
+                            name="searchCriteria"
+                            value={this.state.searchCriteria}
+                            onChange={this.onSearchChange}
+                        >
+                            <option value="taskSummary">Summary</option>
+                            <option value="taskAcceptanceCr">Acceptance criteria</option>
+                        </select>
+
                         <input
-                            name="search"
+                            name="searchQuery"
                             value={this.state.searchQuery}
                             onChange={this.onSearchChange}
                             className="form-control mr-2"
