@@ -13,6 +13,7 @@ class Register extends Component {
         this.state = {
             username: "",
             password: "",
+            email: "",
             confirmPassword: "",
             errors: {}
         };
@@ -42,6 +43,7 @@ class Register extends Component {
         const newUser = {
             username: this.state.username,
             password: this.state.password,
+            email: this.state.email,
             confirmPassword: this.state.confirmPassword
         };
 
@@ -55,6 +57,7 @@ class Register extends Component {
 
         const usernameValidMessage = validationUtils(errors, 'username');
         const passwordValidMessage = validationUtils(errors, 'password');
+        const emailValidMessage = validationUtils(errors, 'email');
         const confirmPasswordValidMessage = validationUtils(errors, 'confirmPassword');
 
         return (
@@ -82,6 +85,23 @@ class Register extends Component {
                                     </div>
 
                                     {usernameValidMessage}
+
+                                </div>
+
+                                <div className="form-group">
+
+                                    <div>
+                                        <input
+                                            type="text"
+                                            className={classnames("form-control form-control-lg", {"is-invalid": emailValidMessage.length})}
+                                            placeholder="E-mail"
+                                            name="email"
+                                            value={this.state.email}
+                                            onChange={this.onChange}
+                                        />
+                                    </div>
+
+                                    {emailValidMessage}
 
                                 </div>
 
