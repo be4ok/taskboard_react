@@ -1,8 +1,9 @@
-import React, { Component } from "react";
+import React, {Component} from "react";
 import PropTypes from "prop-types";
 import {connect} from "react-redux";
+import Loading from "../layout/Loading"
 import classnames from "classnames";
-import  {login} from "../../actions/securityActions";
+import {login} from "../../actions/securityActions";
 import validationUtils from "../../utils/validationUtils";
 import authenticationErrorHandle from "../../securityUtils/authenticationErrorHandle"
 
@@ -24,7 +25,7 @@ class Login extends Component {
             this.props.history.push("/board")
         }
     }
-    
+
     componentWillReceiveProps(nextProps) {
 
         if (nextProps.errors) {
@@ -70,19 +71,19 @@ class Login extends Component {
                                 <div className="form-group">
 
                                     <div>
-                                    <input
-                                        autoFocus
-                                        type="text"
-                                        className={classnames("form-control form-control-lg", {"is-invalid": usernameValidMessage.length || authenticationError})}
-                                        placeholder="Username"
-                                        name="username"
-                                        value={this.state.username}
-                                        onChange={this.onChange}
-                                    />
+                                        <input
+                                            autoFocus
+                                            type="text"
+                                            className={classnames("form-control form-control-lg", {"is-invalid": usernameValidMessage.length || authenticationError})}
+                                            placeholder="Username"
+                                            name="username"
+                                            value={this.state.username}
+                                            onChange={this.onChange}
+                                        />
                                     </div>
 
                                     {usernameValidMessage}
-                                    {authenticationError}
+                                    <p className="error-text">{authenticationError}</p>
 
                                 </div>
 
@@ -90,18 +91,18 @@ class Login extends Component {
                                 <div className="form-group">
 
                                     <div>
-                                    <input
-                                        type="password"
-                                        className={classnames("form-control form-control-lg", {"is-invalid": passwordValidMessage.length || authenticationError})}
-                                        placeholder="Password"
-                                        name="password"
-                                        value={this.state.password}
-                                        onChange={this.onChange}
-                                    />
+                                        <input
+                                            type="password"
+                                            className={classnames("form-control form-control-lg", {"is-invalid": passwordValidMessage.length || authenticationError})}
+                                            placeholder="Password"
+                                            name="password"
+                                            value={this.state.password}
+                                            onChange={this.onChange}
+                                        />
                                     </div>
 
                                     {passwordValidMessage}
-                                    {authenticationError}
+                                    <p className="error-text">{authenticationError}</p>
 
                                 </div>
 
@@ -127,4 +128,4 @@ const mapStateToProps = state => ({
     errors: state.errors
 });
 
-export default connect(mapStateToProps, {login}) (Login);
+export default connect(mapStateToProps, {login})(Login);

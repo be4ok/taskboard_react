@@ -18,6 +18,7 @@ import setJWTToken from "./securityUtils/setJWTToken";
 import {SET_CURRENT_USER} from "./actions/types";
 import {logout} from "./actions/securityActions";
 import SecuredRoute from "./securityUtils/secureRoute";
+import Activation from "./components/userManagment/Activation";
 
 const jwtToken = localStorage.jwtToken;
 
@@ -54,6 +55,7 @@ class App extends Component {
                             <Route exact path="/" component={Landing}/>
                             <Route exact path="/login" component={Login}/>
                             <Route exact path="/register" component={Register}/>
+                            <Route exact path="/activation/:activationCode" component={Activation}/>
                             {/*Public routes*/}
                         </Switch>
 

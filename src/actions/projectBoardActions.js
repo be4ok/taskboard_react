@@ -4,7 +4,7 @@ import {
     GET_PROJECT_BOARDS,
     DELETE_PROJECT_BOARD,
     GET_PROJECT_BOARD,
-    PROJECT_BOARD_LOADING,
+    PROJECT_BOARD_LOADING
 } from "./types";
 import {PROXY_LINK} from "../proxy";
 

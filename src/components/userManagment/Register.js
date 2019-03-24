@@ -1,6 +1,7 @@
 import React, {Component} from "react";
 import {createNewUser} from "../../actions/securityActions";
 import PropTypes from "prop-types";
+import Loading from "../layout/Loading";
 import {connect} from "react-redux";
 import classnames from "classnames";
 import validationUtils from "../../utils/validationUtils";
@@ -15,7 +16,8 @@ class Register extends Component {
             password: "",
             email: "",
             confirmPassword: "",
-            errors: {}
+            errors: {},
+            isAccountCreated: false
         };
 
         this.onChange = this.onChange.bind(this);
@@ -38,7 +40,7 @@ class Register extends Component {
         this.setState({[e.target.name]: e.target.value})
     }
 
-    onSubmit(e) {
+    async onSubmit(e) {
         e.preventDefault();
         const newUser = {
             username: this.state.username,
@@ -47,13 +49,28 @@ class Register extends Component {
             confirmPassword: this.state.confirmPassword
         };
 
-        this.props.createNewUser(newUser, this.props.history);
+        await this.props.createNewUser(newUser, this.props.history);
+
+        const {errors} = this.state;
+
+        if (!errors.apierror) {
+            this.setState({
+                isAccountCreated: true,
+                username: '',
+                password: '',
+                email: '',
+                confirmPassword: ''
+            })
+        }
+
+
     }
 
 
     render() {
 
         const {errors} = this.state;
+        const {isLoading} = this.props;
 
         const usernameValidMessage = validationUtils(errors, 'username');
         const passwordValidMessage = validationUtils(errors, 'password');
@@ -67,6 +84,12 @@ class Register extends Component {
                         <div className="col-md-8 m-auto">
                             <h1 className="display-4 text-center">Sign Up</h1>
                             <p className="lead text-center">Create your Account</p>
+
+                            {this.state.isAccountCreated &&
+                                <div className="card-header text-center alert-success mb-4">
+                                    Account has been created. Please, check your e-mail for activate account.
+                                </div>
+                            }
 
                             <form onSubmit={this.onSubmit}>
 
@@ -138,7 +161,9 @@ class Register extends Component {
                                     {confirmPasswordValidMessage}
 
                                 </div>
-                                <input type="submit" value="Sign-up" className="btn btn-info btn-block mt-4"/>
+
+                                {isLoading ? <Loading/> : <input type="submit" value="Sign-up" className="btn btn-info btn-block mt-4"/>}
+
                             </form>
                         </div>
                     </div>
@@ -151,11 +176,13 @@ class Register extends Component {
 Register.propTypes = {
     createNewUser: PropTypes.func.isRequired,
     errors: PropTypes.object.isRequired,
-    security: PropTypes.object.isRequired
+    security: PropTypes.object.isRequired,
+    isLoading: PropTypes.bool.isRequired
 };
 
 const mapStateToProps = state => ({
     errors: state.errors,
-    security: state.security
+    security: state.security,
+    isLoading: state.security.isLoading
 });
 export default connect(mapStateToProps, {createNewUser})(Register);

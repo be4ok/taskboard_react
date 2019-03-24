@@ -1,8 +1,9 @@
-import {SET_CURRENT_USER} from "../actions/types";
+import {SET_CURRENT_USER, SECURITY_LOADING} from "../actions/types";
 
 const initialState = {
     user: {},
-    validToken: false
+    validToken: false,
+    isLoading: false
 };
 
 const booleanActionPayload = payload => {
@@ -15,6 +16,13 @@ const booleanActionPayload = payload => {
 
 export default function (state = initialState, action) {
     switch (action.type) {
+
+        case SECURITY_LOADING:
+            return {
+                ...state,
+                isLoading: action.payload
+            };
+
         case SET_CURRENT_USER:
             return{
                 ...state,
