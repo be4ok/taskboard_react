@@ -19,6 +19,7 @@ import {SET_CURRENT_USER} from "./actions/types";
 import {logout} from "./actions/securityActions";
 import SecuredRoute from "./securityUtils/secureRoute";
 import Activation from "./components/userManagment/Activation";
+import Profile from "./components/userManagment/Profile";
 
 const jwtToken = localStorage.jwtToken;
 
@@ -49,6 +50,7 @@ class App extends Component {
                         <Switch>
                             <SecuredRoute exact path="/board" component={ProjectBoard}/>
                             <SecuredRoute exact path="/board/:id/taskboard" component={TaskBoard}/>
+                            <SecuredRoute exact path="/profile/:username" component={Profile}/>
                             {/*Private routes*/}
 
                             {/*Public routes*/}

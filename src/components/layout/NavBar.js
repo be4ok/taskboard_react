@@ -27,7 +27,7 @@ class NavBar extends Component {
 
                 <ul className="navbar-nav ml-auto">
                     <li className="nav-item">
-                        <Link className="nav-link" to="">
+                        <Link className="nav-link" to={"/profile/" + user.username}>
                             <i className="fas fa-user-circle mr-1"/>
                             {user.username}
                         </Link>
