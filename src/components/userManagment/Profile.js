@@ -1,6 +1,7 @@
 import React, {Component} from "react";
 import PropTypes from "prop-types";
 import {connect} from "react-redux";
+import classnames from "classnames";
 
 class Profile extends Component {
 
@@ -15,11 +16,11 @@ class Profile extends Component {
     }
 
     componentDidMount() {
-       if (this.props.security.user.username !== this.props.match.params.username) {
-           this.props.history.push("/")
-       }
+        if (this.props.security.user.username !== this.props.match.params.username) {
+            this.props.history.push("/")
+        }
 
-       this.setState({user: this.props.security.user})
+        this.setState({user: this.props.security.user})
     }
 
     componentWillReceiveProps(nextProps) {
@@ -41,14 +42,20 @@ class Profile extends Component {
 
         const {errors, user} = this.state;
 
-        console.log(user);
-
         return (
             <div className="login">
                 <div className="container">
                     <div className="row">
                         <div className="col-md-8 m-auto">
-                            <h1 className="display-4 text-center">Profile</h1>
+
+                            <h4 className="display-4 text-center">Profile</h4>
+
+                            <div className="form-group">
+
+                                <div className="title-input">Login: {user.username}</div>
+                                <div className="title-input">E-mail: {user.email}</div>
+
+                            </div>
 
                         </div>
                     </div>
