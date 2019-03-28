@@ -2,6 +2,8 @@ import React, {Component} from "react";
 import PropTypes from "prop-types";
 import {connect} from "react-redux";
 import classnames from "classnames";
+import validationUtils from "../../utils/validationUtils";
+import {updateUserEmail} from "../../actions/securityActions";
 
 class Profile extends Component {
 
@@ -9,10 +11,11 @@ class Profile extends Component {
         super();
         this.state = {
             user: {},
+            newEmail: '',
             errors: {}
         };
-        this.onChange = this.onChange.bind(this);
-        this.onSubmit = this.onSubmit.bind(this);
+        this.onEmailChange = this.onEmailChange.bind(this);
+        this.onEmailSubmit = this.onEmailSubmit.bind(this);
     }
 
     componentDidMount() {
@@ -30,17 +33,21 @@ class Profile extends Component {
         }
     }
 
-    onChange(e) {
-        this.setState({[e.target.name]: e.target.value})
+    onEmailChange(e) {
+        this.setState({newEmail: e.target.value})
     }
 
-    onSubmit(e) {
+    onEmailSubmit(e) {
         e.preventDefault();
+        const newEmail = this.state.newEmail;
+        this.props.updateUserEmail(newEmail);
     }
 
     render() {
 
         const {errors, user} = this.state;
+
+        const emailValidMessage = validationUtils(errors, 'newEmail');
 
         return (
             <div className="login">
@@ -55,6 +62,31 @@ class Profile extends Component {
                                 <div className="title-input">Login: {user.username}</div>
                                 <div className="title-input">E-mail: {user.email}</div>
 
+                                <form onSubmit={this.onEmailSubmit}>
+
+                                    <div className="form-group">
+
+                                        <div className="title-input">Set new E-mail:</div>
+
+                                        <div>
+                                            <input
+                                                type="newEmail"
+                                                className={classnames("form-control form-control-lg", {"is-invalid": emailValidMessage.length})}
+                                                placeholder="E-mail"
+                                                name="newEmail"
+                                                value={this.state.email}
+                                                onChange={this.onEmailChange}
+                                            />
+                                        </div>
+
+                                        {emailValidMessage}
+
+                                    </div>
+
+                                    <input type="submit" value="Send" className="btn btn-info btn-block mt-4"/>
+
+                                </form>
+
                             </div>
 
                         </div>
@@ -66,6 +98,7 @@ class Profile extends Component {
 }
 
 Profile.propTypes = {
+    updateUserEmail: PropTypes.func.isRequired,
     errors: PropTypes.object.isRequired,
     security: PropTypes.object.isRequired
 };
@@ -75,4 +108,4 @@ const mapStateToProps = state => ({
     errors: state.errors
 });
 
-export default connect(mapStateToProps)(Profile);
+export default connect(mapStateToProps, {updateUserEmail})(Profile);
