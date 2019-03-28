@@ -70,6 +70,28 @@ export const updateUserEmail = newEmail => async dispatch => {
     }
 };
 
+export const updateUserPassword = changeUserPassword => async dispatch => {
+    try {
+        dispatch(loading(true));
+
+        await axios.put(`${PROXY_LINK}/api/users/profile/update/password`, changeUserPassword);
+        dispatch({
+            type: GET_ERRORS,
+            payload: {}
+        });
+
+        dispatch(loading(false));
+
+    } catch (err) {
+        dispatch({
+            type: GET_ERRORS,
+            payload: err.response.data
+        });
+
+        dispatch(loading(false));
+    }
+};
+
 export const login = LoginRequest => async dispatch => {
     try {
         const res = await axios.post(`${PROXY_LINK}/api/users/login`, LoginRequest);

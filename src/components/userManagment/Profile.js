@@ -3,19 +3,29 @@ import PropTypes from "prop-types";
 import {connect} from "react-redux";
 import classnames from "classnames";
 import validationUtils from "../../utils/validationUtils";
-import {updateUserEmail} from "../../actions/securityActions";
+import {updateUserEmail, updateUserPassword} from "../../actions/securityActions";
+import authenticationErrorHandle from "../../securityUtils/authenticationErrorHandle";
 
 class Profile extends Component {
+
+    emptyUserPassword = {
+        currentPassword: '',
+        newPassword: '',
+        confirmNewPassword: ''
+    };
 
     constructor() {
         super();
         this.state = {
             user: {},
+            changeUserPassword: this.emptyUserPassword,
             newEmail: '',
             errors: {}
         };
         this.onEmailChange = this.onEmailChange.bind(this);
         this.onEmailSubmit = this.onEmailSubmit.bind(this);
+        this.onPasswordChange = this.onPasswordChange.bind(this);
+        this.onPasswordSubmit = this.onPasswordSubmit.bind(this);
     }
 
     componentDidMount() {
@@ -43,11 +53,35 @@ class Profile extends Component {
         this.props.updateUserEmail(newEmail);
     }
 
+    onPasswordChange(e) {
+        const value = e.target.value;
+        const name = e.target.name;
+        let changeUserPassword = {...this.state.changeUserPassword};
+        changeUserPassword[name] = value;
+        this.setState({changeUserPassword});
+    }
+
+
+    async onPasswordSubmit(e) {
+        e.preventDefault();
+        const {changeUserPassword} = this.state;
+        await this.props.updateUserPassword(changeUserPassword);
+
+        const {errors} = this.state;
+        if (authenticationErrorHandle(errors).length) {
+            this.setState({changeUserPassword: this.emptyUserPassword})
+        }
+    }
+
     render() {
 
-        const {errors, user} = this.state;
+        const {errors, user, changeUserPassword} = this.state;
 
         const emailValidMessage = validationUtils(errors, 'newEmail');
+        const currentPasswordValidMessage = validationUtils(errors, 'currentPassword');
+        const newPasswordValidMessage = validationUtils(errors, 'newPassword');
+        const confirmNewPasswordValidMessage = validationUtils(errors, 'confirmNewPassword');
+        const authenticationError = authenticationErrorHandle(errors);
 
         return (
             <div className="login">
@@ -87,6 +121,70 @@ class Profile extends Component {
 
                                 </form>
 
+                                <div className="mb-5"></div>
+
+
+                                <form onSubmit={this.onPasswordSubmit}>
+
+                                    <div className="form-group">
+
+                                        <div>
+                                            <input
+                                                type="password"
+                                                className={classnames("form-control form-control-lg", {"is-invalid": currentPasswordValidMessage.length || authenticationError})}
+                                                placeholder="Current password"
+                                                name="currentPassword"
+                                                value={changeUserPassword.currentPassword}
+                                                onChange={this.onPasswordChange}
+                                            />
+                                        </div>
+
+                                        {currentPasswordValidMessage}
+                                        <p className="error-text">{authenticationError}</p>
+
+                                    </div>
+
+
+                                    <div className="form-group">
+
+                                        <div>
+                                            <input
+                                                type="password"
+                                                className={classnames("form-control form-control-lg", {"is-invalid": newPasswordValidMessage.length})}
+                                                placeholder="New password"
+                                                name="newPassword"
+                                                value={changeUserPassword.newPassword}
+                                                onChange={this.onPasswordChange}
+                                            />
+                                        </div>
+
+                                        {newPasswordValidMessage}
+
+                                    </div>
+
+
+                                    <div className="form-group">
+
+                                        <div>
+                                            <input
+                                                type="password"
+                                                className={classnames("form-control form-control-lg", {"is-invalid": confirmNewPasswordValidMessage.length})}
+                                                placeholder="Confirm new password"
+                                                name="confirmNewPassword"
+                                                value={changeUserPassword.confirmNewPassword}
+                                                onChange={this.onPasswordChange}
+                                            />
+                                        </div>
+
+                                        {confirmNewPasswordValidMessage}
+
+                                    </div>
+
+                                    <input type="submit" value="Confirm" className="btn btn-info btn-block mt-4"/>
+
+                                </form>
+
+
                             </div>
 
                         </div>
@@ -99,6 +197,7 @@ class Profile extends Component {
 
 Profile.propTypes = {
     updateUserEmail: PropTypes.func.isRequired,
+    updateUserPassword: PropTypes.func.isRequired,
     errors: PropTypes.object.isRequired,
     security: PropTypes.object.isRequired
 };
@@ -108,4 +207,4 @@ const mapStateToProps = state => ({
     errors: state.errors
 });
 
-export default connect(mapStateToProps, {updateUserEmail})(Profile);
+export default connect(mapStateToProps, {updateUserEmail, updateUserPassword})(Profile);
