@@ -20,6 +20,7 @@ import {logout} from "./actions/securityActions";
 import SecuredRoute from "./securityUtils/secureRoute";
 import Activation from "./components/userManagment/Activation";
 import Profile from "./components/userManagment/Profile";
+import Footer from "./components/layout/Footer";
 
 const jwtToken = localStorage.jwtToken;
 
@@ -60,6 +61,7 @@ class App extends Component {
                             <Route exact path="/activation/:activationCode" component={Activation}/>
                             {/*Public routes*/}
                         </Switch>
+
 
                     </div>
                 </Router>
