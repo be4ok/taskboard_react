@@ -41,7 +41,7 @@ class Login extends Component {
         this.setState({[e.target.name]: e.target.value})
     }
 
-    onSubmit(e) {
+    async onSubmit(e) {
         e.preventDefault();
 
         const loginRequest = {
@@ -49,12 +49,17 @@ class Login extends Component {
             password: this.state.password
         };
 
-        this.props.login(loginRequest);
+        await this.props.login(loginRequest);
+
+        if (authenticationErrorHandle(this.state.errors)) {
+            this.setState({password: ""})
+        }
     }
 
     render() {
 
         const {errors} = this.state;
+        const {isLoading} = this.props;
 
         const usernameValidMessage = validationUtils(errors, 'username');
         const passwordValidMessage = validationUtils(errors, 'password');
@@ -106,7 +111,7 @@ class Login extends Component {
 
                                 </div>
 
-                                <input type="submit" value="Log-in" className="btn btn-info btn-block mt-4"/>
+                                {isLoading ? <Loading/> : <input type="submit" value="Log-in" className="btn btn-info btn-block mt-4"/>}
 
                             </form>
                         </div>
@@ -120,12 +125,14 @@ class Login extends Component {
 Login.propTypes = {
     login: PropTypes.func.isRequired,
     errors: PropTypes.object.isRequired,
-    security: PropTypes.object.isRequired
+    security: PropTypes.object.isRequired,
+    isLoading: PropTypes.bool.isRequired
 };
 
 const mapStateToProps = state => ({
     security: state.security,
-    errors: state.errors
+    errors: state.errors,
+    isLoading: state.security.isLoading
 });
 
 export default connect(mapStateToProps, {login})(Login);

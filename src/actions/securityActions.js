@@ -102,6 +102,9 @@ export const updateUserPassword = changeUserPassword => async dispatch => {
 
 export const login = LoginRequest => async dispatch => {
     try {
+
+        dispatch(loading(true));
+
         const res = await axios.post(`${PROXY_LINK}/api/users/login`, LoginRequest);
         const {token} = res.data;
         localStorage.setItem("jwtToken", token);
@@ -113,11 +116,15 @@ export const login = LoginRequest => async dispatch => {
             payload: decoded
         });
 
+        dispatch(loading(false));
+
     } catch (err) {
         dispatch ({
             type: GET_ERRORS,
             payload: err.response.data
-        })
+        });
+
+        dispatch(loading(false));
     }
 };
 
