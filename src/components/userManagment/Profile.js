@@ -19,7 +19,9 @@ class Profile extends Component {
         this.state = {
             user: {},
             changeUserPassword: this.emptyUserPassword,
-            newEmail: '',
+            email: {
+                newEmail: ''
+            },
             errors: {}
         };
         this.onEmailChange = this.onEmailChange.bind(this);
@@ -44,13 +46,17 @@ class Profile extends Component {
     }
 
     onEmailChange(e) {
-        this.setState({newEmail: e.target.value})
+        const value = e.target.value;
+        const name = e.target.name;
+        let email = {...this.state.email};
+        email[name] = value;
+        this.setState({email});
     }
 
     onEmailSubmit(e) {
         e.preventDefault();
-        const newEmail = this.state.newEmail;
-        this.props.updateUserEmail(newEmail);
+        const {email} = this.state;
+        this.props.updateUserEmail(email);
     }
 
     onPasswordChange(e) {
@@ -68,14 +74,14 @@ class Profile extends Component {
         await this.props.updateUserPassword(changeUserPassword);
 
         const {errors} = this.state;
-        if (authenticationErrorHandle(errors).length) {
+        if (authenticationErrorHandle(errors)) {
             this.setState({changeUserPassword: this.emptyUserPassword})
         }
     }
 
     render() {
 
-        const {errors, user, changeUserPassword} = this.state;
+        const {errors, user, changeUserPassword, email} = this.state;
 
         const emailValidMessage = validationUtils(errors, 'newEmail');
         const currentPasswordValidMessage = validationUtils(errors, 'currentPassword');
@@ -104,11 +110,11 @@ class Profile extends Component {
 
                                         <div>
                                             <input
-                                                type="newEmail"
+                                                type="text"
                                                 className={classnames("form-control form-control-lg", {"is-invalid": emailValidMessage.length})}
                                                 placeholder="E-mail"
                                                 name="newEmail"
-                                                value={this.state.email}
+                                                value={email.newEmail}
                                                 onChange={this.onEmailChange}
                                             />
                                         </div>

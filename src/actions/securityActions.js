@@ -60,7 +60,7 @@ export const updateUserEmail = newEmail => async dispatch => {
     try {
         dispatch(loading(true));
 
-        await axios.put(`${PROXY_LINK}/api/users/profile/update/email?newEmail=${newEmail}`);
+        await axios.put(`${PROXY_LINK}/api/users/profile/update/email`, newEmail);
         dispatch({
             type: GET_ERRORS,
             payload: {}
