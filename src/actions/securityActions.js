@@ -35,16 +35,24 @@ export const createNewUser = (newUser, history) => async dispatch => {
 
 export const activateUser = activateCode => async dispatch => {
     try {
+
+        dispatch(loading(true));
+
         await axios.get(`${PROXY_LINK}/api/users/activation/${activateCode}`);
         dispatch({
             type: GET_ERRORS,
             payload: {}
         });
+
+        dispatch(loading(false));
+
     } catch (err) {
         dispatch({
             type: GET_ERRORS,
             payload: err.response.data
         });
+
+        dispatch(loading(false));
     }
 };
 
