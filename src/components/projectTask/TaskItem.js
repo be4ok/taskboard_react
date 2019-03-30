@@ -73,27 +73,27 @@ class TaskItem extends Component {
                     {task.updateDate && <p className="date-info">updated: {task.updateDate}</p>}
                     <br/>
 
-                    <ButtonToolbar>
+                    <ButtonToolbar className="d-flex justify-content-between">
 
-                        <div
-                            className="btn btn-outline-primary btn-sm"
-                            onClick={this.modalOpen}
-                        >
-                            Update
-                        </div>
+                            <div
+                                className="btn btn-outline-primary btn-sm"
+                                onClick={this.modalOpen}
+                            >
+                                Update
+                            </div>
 
-                        <UpdateTask
-                            pt_id={task.id}
-                            show={this.state.modalShow}
-                            onHide={this.modalClose}
-                        />
+                            <UpdateTask
+                                pt_id={task.id}
+                                show={this.state.modalShow}
+                                onHide={this.modalClose}
+                            />
 
-                        <div
-                            className="btn btn-outline-danger ml-4 btn-sm"
-                            onClick={this.remove.bind(this, task.id)}
-                        >
-                            Delete
-                        </div>
+                            <div
+                                className="btn btn-outline-danger btn-sm"
+                                onClick={this.remove.bind(this, task.id)}
+                            >
+                                Delete
+                            </div>
 
                     </ButtonToolbar>
 
