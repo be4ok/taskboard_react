@@ -88,7 +88,8 @@ class Register extends Component {
 
                         {this.state.isAccountCreated &&
                         <div className="card-header text-center alert-success mb-4">
-                            Account has been created. Please, check your e-mail to activate your account.
+                            Account has been created. <br/>
+                            Please, check your e-mail to activate your account.
                         </div>
                         }
 
