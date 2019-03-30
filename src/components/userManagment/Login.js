@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import {connect} from "react-redux";
 import Loading from "../layout/Loading"
 import classnames from "classnames";
-import {login} from "../../actions/securityActions";
+import {login, cleanErrors} from "../../actions/securityActions";
 import validationUtils from "../../utils/validationUtils";
 import authenticationErrorHandle from "../../securityUtils/authenticationErrorHandle"
 import {Link} from "react-router-dom";
@@ -25,6 +25,8 @@ class Login extends Component {
         if (this.props.security.validToken) {
             this.props.history.push("/board")
         }
+
+        this.props.cleanErrors();
     }
 
     componentWillReceiveProps(nextProps) {
@@ -44,6 +46,8 @@ class Login extends Component {
 
     async onSubmit(e) {
         e.preventDefault();
+
+        this.setState({errors: {}});
 
         const loginRequest = {
             username: this.state.username,
@@ -155,6 +159,7 @@ class Login extends Component {
 
 Login.propTypes = {
     login: PropTypes.func.isRequired,
+    cleanErrors: PropTypes.func.isRequired,
     errors: PropTypes.object.isRequired,
     security: PropTypes.object.isRequired,
     isLoading: PropTypes.bool.isRequired
@@ -166,4 +171,4 @@ const mapStateToProps = state => ({
     isLoading: state.security.isLoading
 });
 
-export default connect(mapStateToProps, {login})(Login);
+export default connect(mapStateToProps, {login, cleanErrors})(Login);

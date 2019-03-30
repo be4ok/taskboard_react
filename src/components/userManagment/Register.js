@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {createNewUser} from "../../actions/securityActions";
+import {createNewUser, cleanErrors} from "../../actions/securityActions";
 import PropTypes from "prop-types";
 import Loading from "../layout/Loading";
 import {connect} from "react-redux";
@@ -29,6 +29,8 @@ class Register extends Component {
         if (this.props.security.validToken) {
             this.props.history.push("/board")
         }
+
+        this.props.cleanErrors();
     }
 
     componentWillReceiveProps(nextProps) {
@@ -43,6 +45,7 @@ class Register extends Component {
 
     async onSubmit(e) {
         e.preventDefault();
+
         const newUser = {
             username: this.state.username,
             password: this.state.password,
@@ -195,4 +198,4 @@ const mapStateToProps = state => ({
     security: state.security,
     isLoading: state.security.isLoading
 });
-export default connect(mapStateToProps, {createNewUser})(Register);
+export default connect(mapStateToProps, {createNewUser, cleanErrors})(Register);

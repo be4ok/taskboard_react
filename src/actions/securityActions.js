@@ -11,6 +11,13 @@ export function loading(isLoading) {
     };
 }
 
+export const cleanErrors = () => async dispatch => {
+    dispatch({
+        type: GET_ERRORS,
+        payload: {}
+    })
+};
+
 export const createNewUser = (newUser, history) => async dispatch => {
     try {
         dispatch(loading(true));
