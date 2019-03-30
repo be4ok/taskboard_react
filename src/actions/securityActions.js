@@ -107,14 +107,20 @@ export const updateUserPassword = changeUserPassword => async dispatch => {
     }
 };
 
-export const login = LoginRequest => async dispatch => {
+export const login = (LoginRequest, isRememberMe) => async dispatch => {
     try {
 
         dispatch(loading(true));
 
         const res = await axios.post(`${PROXY_LINK}/api/users/login`, LoginRequest);
         const {token} = res.data;
-        localStorage.setItem("jwtToken", token);
+
+
+        if (isRememberMe) {
+            localStorage.setItem("taskBoardJwt", token);
+        } else sessionStorage.setItem("taskBoardJwt", token);
+
+
         setJWTToken(token);
         const decoded = jwt_decode(token);
 
@@ -136,7 +142,8 @@ export const login = LoginRequest => async dispatch => {
 };
 
 export const logout = () => dispatch => {
-    localStorage.removeItem("jwtToken");
+    localStorage.removeItem("taskBoardJwt");
+    sessionStorage.removeItem("taskBoardJwt");
     setJWTToken(false);
 
     dispatch({

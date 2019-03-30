@@ -20,9 +20,16 @@ import {logout} from "./actions/securityActions";
 import SecuredRoute from "./securityUtils/secureRoute";
 import Activation from "./components/userManagment/Activation";
 import Profile from "./components/userManagment/Profile";
-import Footer from "./components/layout/Footer";
 
-const jwtToken = localStorage.jwtToken;
+let jwtToken;
+
+if (localStorage.taskBoardJwt) {
+    jwtToken = localStorage.taskBoardJwt;
+}
+
+if (sessionStorage.taskBoardJwt) {
+    jwtToken = sessionStorage.taskBoardJwt;
+}
 
 if (jwtToken) {
     setJWTToken(jwtToken);

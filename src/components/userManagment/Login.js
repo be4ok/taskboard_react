@@ -15,6 +15,7 @@ class Login extends Component {
         this.state = {
             username: "",
             password: "",
+            isRememberMe: false,
             errors: {}
         };
         this.onChange = this.onChange.bind(this);
@@ -41,7 +42,10 @@ class Login extends Component {
     }
 
     onChange(e) {
-        this.setState({[e.target.name]: e.target.value})
+        this.setState({
+            [e.target.name]: e.target.value,
+            isRememberMe: e.target.checked
+        });
     }
 
     async onSubmit(e) {
@@ -54,7 +58,7 @@ class Login extends Component {
             password: this.state.password
         };
 
-        await this.props.login(loginRequest);
+        await this.props.login(loginRequest, this.state.isRememberMe);
 
         if (authenticationErrorHandle(this.state.errors)) {
             this.setState({password: ""})
@@ -133,7 +137,10 @@ class Login extends Component {
                                     <input
                                         type="checkbox"
                                         className="custom-control-input"
+                                        value={this.state.isRememberMe}
+                                        name="isRememberMe"
                                         id="customControlInline"
+                                        onChange={this.onChange}
                                     />
                                         <label className="custom-control-label text-primary text-center" htmlFor="customControlInline">Remember me</label>
                                 </div>
