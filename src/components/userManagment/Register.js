@@ -5,6 +5,7 @@ import Loading from "../layout/Loading";
 import {connect} from "react-redux";
 import classnames from "classnames";
 import validationUtils from "../../utils/validationUtils";
+import {Link} from "react-router-dom";
 
 class Register extends Component {
 
@@ -78,94 +79,102 @@ class Register extends Component {
         const confirmPasswordValidMessage = validationUtils(errors, 'confirmPassword');
 
         return (
-            <div className="register">
-                <div className="container">
-                    <div className="row">
-                        <div className="col-md-8 m-auto">
-                            <h1 className="display-4 text-center">Sign Up</h1>
-                            <p className="lead text-center">Create your Account</p>
+            <div className="container login-container">
+                <div className="row pl-2 pr-2">
+                    <div className="col-md-6 login-form m-auto">
 
-                            {this.state.isAccountCreated &&
-                                <div className="card-header text-center alert-success mb-4">
-                                    Account has been created. Please, check your e-mail to activate your account.
-                                </div>
-                            }
+                        <h2 className="text-center">Sign Up</h2>
+                        <p className="lead text-center">Create your account</p>
 
-                            <form onSubmit={this.onSubmit}>
-
-                                <div className="form-group">
-
-                                    <div>
-                                        <input
-                                            autoFocus
-                                            type="text"
-                                            className={classnames("form-control form-control-lg", {"is-invalid": usernameValidMessage.length})}
-                                            placeholder="Username"
-                                            name="username"
-                                            value={this.state.username}
-                                            onChange={this.onChange}
-                                        />
-                                    </div>
-
-                                    {usernameValidMessage}
-
-                                </div>
-
-                                <div className="form-group">
-
-                                    <div>
-                                        <input
-                                            type="text"
-                                            className={classnames("form-control form-control-lg", {"is-invalid": emailValidMessage.length})}
-                                            placeholder="E-mail"
-                                            name="email"
-                                            value={this.state.email}
-                                            onChange={this.onChange}
-                                        />
-                                    </div>
-
-                                    {emailValidMessage}
-
-                                </div>
-
-                                <div className="form-group">
-
-                                    <div>
-                                        <input
-                                            type="password"
-                                            className={classnames("form-control form-control-lg", {"is-invalid": passwordValidMessage.length})}
-                                            placeholder="Password"
-                                            name="password"
-                                            value={this.state.password}
-                                            onChange={this.onChange}
-                                        />
-                                    </div>
-
-                                    {passwordValidMessage}
-
-                                </div>
-
-                                <div className="form-group">
-
-                                    <div>
-                                    <input
-                                        type="password"
-                                        className={classnames("form-control form-control-lg", {"is-invalid": confirmPasswordValidMessage.length})}
-                                        placeholder="Confirm Password"
-                                        name="confirmPassword"
-                                        value={this.state.confirmPassword}
-                                        onChange={this.onChange}
-                                    />
-                                    </div>
-
-                                    {confirmPasswordValidMessage}
-
-                                </div>
-
-                                {isLoading ? <Loading/> : <input type="submit" value="Sign-up" className="btn btn-info btn-block mt-4"/>}
-
-                            </form>
+                        {this.state.isAccountCreated &&
+                        <div className="card-header text-center alert-success mb-4">
+                            Account has been created. Please, check your e-mail to activate your account.
                         </div>
+                        }
+
+                        <form onSubmit={this.onSubmit}>
+
+                            <div className="form-group">
+
+                                <input
+                                    autoFocus
+                                    type="text"
+                                    className={classnames("form-control form-control-lg", {"is-invalid": usernameValidMessage.length})}
+                                    placeholder="Username*"
+                                    name="username"
+                                    value={this.state.username}
+                                    onChange={this.onChange}
+                                />
+
+                                {usernameValidMessage}
+
+                            </div>
+
+
+                            <div className="form-group">
+
+                                <input
+                                    type="text"
+                                    className={classnames("form-control form-control-lg", {"is-invalid": emailValidMessage.length})}
+                                    placeholder="E-mail*"
+                                    name="email"
+                                    value={this.state.email}
+                                    onChange={this.onChange}
+                                />
+
+                                {emailValidMessage}
+
+                            </div>
+
+
+                            <div className="form-group">
+
+                                <input
+                                    type="password"
+                                    className={classnames("form-control form-control-lg", {"is-invalid": passwordValidMessage.length})}
+                                    placeholder="Password*"
+                                    name="password"
+                                    value={this.state.password}
+                                    onChange={this.onChange}
+                                />
+
+                                {passwordValidMessage}
+
+                            </div>
+
+
+                            <div className="form-group">
+
+                                <input
+                                    type="password"
+                                    className={classnames("form-control form-control-lg", {"is-invalid": confirmPasswordValidMessage.length})}
+                                    placeholder="Confirm Password*"
+                                    name="confirmPassword"
+                                    value={this.state.confirmPassword}
+                                    onChange={this.onChange}
+                                />
+
+                                {confirmPasswordValidMessage}
+
+                            </div>
+
+
+                            <div className="form-group mt-4 mb-4">
+
+                                {isLoading ? <Loading/> :
+                                    <input type="submit"
+                                           value="Sign-up"
+                                           className="btn btn-lg btn-outline-success btnSubmit"
+                                    />}
+
+                            </div>
+
+
+                            <div className="form-group d-flex mt-5">
+                                <Link to="/login" className="forgetPwd m-auto">Log-in</Link>
+                            </div>
+
+                        </form>
                     </div>
                 </div>
             </div>

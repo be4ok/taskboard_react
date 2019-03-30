@@ -6,6 +6,7 @@ import classnames from "classnames";
 import {login} from "../../actions/securityActions";
 import validationUtils from "../../utils/validationUtils";
 import authenticationErrorHandle from "../../securityUtils/authenticationErrorHandle"
+import {Link} from "react-router-dom";
 
 class Login extends Component {
 
@@ -66,55 +67,85 @@ class Login extends Component {
         const authenticationError = authenticationErrorHandle(errors);
 
         return (
-            <div className="login">
-                <div className="container">
-                    <div className="row">
-                        <div className="col-md-8 m-auto">
-                            <h1 className="display-4 text-center">Log In</h1>
-                            <form onSubmit={this.onSubmit}>
+            <div className="container login-container">
+                <div className="row pl-2 pr-2">
+                    <div className="col-md-6 login-form m-auto">
 
-                                <div className="form-group">
+                        <h2 className="text-center">Log In</h2>
+                        <p className="lead text-center">Please enter your email and password</p>
 
-                                    <div>
-                                        <input
-                                            autoFocus
-                                            type="text"
-                                            className={classnames("form-control form-control-lg", {"is-invalid": usernameValidMessage.length || authenticationError})}
-                                            placeholder="Username"
-                                            name="username"
-                                            value={this.state.username}
-                                            onChange={this.onChange}
-                                        />
-                                    </div>
+                        <form onSubmit={this.onSubmit}>
 
-                                    {usernameValidMessage}
-                                    <p className="error-text">{authenticationError}</p>
 
+                            <div className="form-group">
+
+                                <input
+                                    autoFocus
+                                    type="text"
+                                    className={classnames("form-control form-control-lg", {"is-invalid": usernameValidMessage.length || authenticationError})}
+                                    placeholder="Username"
+                                    name="username"
+                                    value={this.state.username}
+                                    onChange={this.onChange}
+                                />
+
+                                {usernameValidMessage}
+                                <p className="error-text">{authenticationError}</p>
+
+                            </div>
+
+
+                            <div className="form-group">
+
+                                <input
+                                    type="password"
+                                    className={classnames("form-control form-control-lg", {"is-invalid": passwordValidMessage.length || authenticationError})}
+                                    placeholder="Password"
+                                    name="password"
+                                    value={this.state.password}
+                                    onChange={this.onChange}
+                                />
+
+                                {passwordValidMessage}
+                                <p className="error-text">{authenticationError}</p>
+
+                            </div>
+
+
+                            <div className="form-group mt-4 mb-4">
+
+                                {isLoading ? <Loading/> :
+                                    <input type="submit"
+                                           value="Log-in"
+                                           className="btn btn-lg btn-outline-success btnSubmit"
+                                    />}
+
+                            </div>
+
+
+                            <div className="form-group d-flex justify-content-between">
+
+                                <div className="custom-control custom-checkbox">
+                                    <input
+                                        type="checkbox"
+                                        className="custom-control-input"
+                                        id="customControlInline"
+                                    />
+                                        <label className="custom-control-label text-primary text-center" htmlFor="customControlInline">Remember me</label>
                                 </div>
 
+                                <Link to="#" className="forgetPwd text-center">Forget password?</Link>
 
-                                <div className="form-group">
+                            </div>
 
-                                    <div>
-                                        <input
-                                            type="password"
-                                            className={classnames("form-control form-control-lg", {"is-invalid": passwordValidMessage.length || authenticationError})}
-                                            placeholder="Password"
-                                            name="password"
-                                            value={this.state.password}
-                                            onChange={this.onChange}
-                                        />
-                                    </div>
 
-                                    {passwordValidMessage}
-                                    <p className="error-text">{authenticationError}</p>
+                            <div className="form-group d-flex mt-5">
+                                <Link to="/register" className="forgetPwd m-auto">Sign-up</Link>
+                            </div>
 
-                                </div>
+                        </form>
 
-                                {isLoading ? <Loading/> : <input type="submit" value="Log-in" className="btn btn-info btn-block mt-4"/>}
 
-                            </form>
-                        </div>
                     </div>
                 </div>
             </div>

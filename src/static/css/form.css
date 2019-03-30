@@ -72,3 +72,29 @@
 .button-item {
     margin: 0 1em;
 }
+
+
+.login-container {
+    margin-top: 5%;
+    margin-bottom: 5%;
+}
+
+.login-form {
+    padding: 3% 5% 1% 5%;
+    box-shadow: 0 5px 8px 0 rgba(0, 0, 0, 0.2), 0 9px 26px 0 rgba(0, 0, 0, 0.19);
+}
+
+.login-container form {
+    padding: 5% 10% 3% 10%;
+}
+
+.btnSubmit {
+    margin: auto;
+    display: grid !important;
+    text-align: center;
+    width: 50%;
+}
+
+.login-form .forgetPwd {
+    text-decoration: none;
+}
