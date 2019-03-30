@@ -5,6 +5,7 @@ import classnames from "classnames";
 import validationUtils from "../../utils/validationUtils";
 import {updateUserEmail, updateUserPassword} from "../../actions/securityActions";
 import authenticationErrorHandle from "../../securityUtils/authenticationErrorHandle";
+import {Link} from "react-router-dom";
 
 class Profile extends Component {
 
@@ -90,110 +91,139 @@ class Profile extends Component {
         const authenticationError = authenticationErrorHandle(errors);
 
         return (
-            <div className="login">
-                <div className="container">
-                    <div className="row">
-                        <div className="col-md-8 m-auto">
+            <div className="container">
 
-                            <h4 className="display-4 text-center">Profile</h4>
+                <div className="row">
 
-                            <div className="form-group">
+                    <div className="col-md-10 m-auto">
 
-                                <div className="title-input">Login: {user.username}</div>
-                                <div className="title-input">E-mail: {user.email}</div>
+                        <div className="row">
 
-                                <form onSubmit={this.onEmailSubmit}>
+                            <div className="col-sm-2 avatar">
 
-                                    <div className="form-group">
-
-                                        <div className="title-input">Set new E-mail:</div>
-
-                                        <div>
-                                            <input
-                                                type="text"
-                                                className={classnames("form-control form-control-lg", {"is-invalid": emailValidMessage.length})}
-                                                placeholder="E-mail"
-                                                name="newEmail"
-                                                value={email.newEmail}
-                                                onChange={this.onEmailChange}
-                                            />
-                                        </div>
-
-                                        {emailValidMessage}
-
-                                    </div>
-
-                                    <input type="submit" value="Send" className="btn btn-info btn-block mt-4"/>
-
-                                </form>
-
-                                <div className="mb-5"></div>
-
-
-                                <form onSubmit={this.onPasswordSubmit}>
-
-                                    <div className="form-group">
-
-                                        <div>
-                                            <input
-                                                type="password"
-                                                className={classnames("form-control form-control-lg", {"is-invalid": currentPasswordValidMessage.length || authenticationError})}
-                                                placeholder="Current password"
-                                                name="currentPassword"
-                                                value={changeUserPassword.currentPassword}
-                                                onChange={this.onPasswordChange}
-                                            />
-                                        </div>
-
-                                        {currentPasswordValidMessage}
-                                        <p className="error-text">{authenticationError}</p>
-
-                                    </div>
-
-
-                                    <div className="form-group">
-
-                                        <div>
-                                            <input
-                                                type="password"
-                                                className={classnames("form-control form-control-lg", {"is-invalid": newPasswordValidMessage.length})}
-                                                placeholder="New password"
-                                                name="newPassword"
-                                                value={changeUserPassword.newPassword}
-                                                onChange={this.onPasswordChange}
-                                            />
-                                        </div>
-
-                                        {newPasswordValidMessage}
-
-                                    </div>
-
-
-                                    <div className="form-group">
-
-                                        <div>
-                                            <input
-                                                type="password"
-                                                className={classnames("form-control form-control-lg", {"is-invalid": confirmNewPasswordValidMessage.length})}
-                                                placeholder="Confirm new password"
-                                                name="confirmNewPassword"
-                                                value={changeUserPassword.confirmNewPassword}
-                                                onChange={this.onPasswordChange}
-                                            />
-                                        </div>
-
-                                        {confirmNewPasswordValidMessage}
-
-                                    </div>
-
-                                    <input type="submit" value="Confirm" className="btn btn-info btn-block mt-4"/>
-
-                                </form>
-
+                                <div className="text-center">
+                                    <img src="http://ssl.gstatic.com/accounts/ui/avatar_2x.png"
+                                         className="img-avatar border-primary rounded-circle"
+                                         alt="avatar"
+                                    />
+                                    <Link to="#" className="card-link">Upload new</Link>
+                                </div>
 
                             </div>
 
+                            <div className="col-sm-8">
+                                <h1 className="display-3">{user.username}</h1>
+
+                                <div className="card">
+                                    <div className="card-body">
+
+                                        <div className="card-text">
+                                            <i className="far fa-user mr-4 text-primary"></i>
+                                            <span>Carlos Doe</span>
+                                        </div>
+                                        <div className="card-text">
+                                            <i className="far fa-envelope mr-4 text-primary"></i>
+                                            <span>{user.email}</span>
+                                        </div>
+
+                                        <hr/>
+
+
+                                        <form onSubmit={this.onEmailSubmit}>
+
+                                            <div className="form-group mb-3">
+
+                                                <span>Change your e-mail:</span>
+
+                                                <input
+                                                    type="text"
+                                                    className={classnames("form-control form-control-sm w-50", {"is-invalid": emailValidMessage.length})}
+                                                    placeholder="E-mail"
+                                                    name="newEmail"
+                                                    value={email.newEmail}
+                                                    onChange={this.onEmailChange}
+                                                />
+
+                                                {emailValidMessage}
+
+                                            </div>
+
+                                            <input type="submit" value="Save"
+                                                   className="btn btn-sm w-50 btn-outline-success"/>
+
+                                            <hr/>
+
+                                        </form>
+
+
+                                        <form onSubmit={this.onPasswordSubmit}>
+
+                                            <span>Change your password:</span>
+
+                                            <div className="form-group mb-1">
+
+                                                <input
+                                                    type="password"
+                                                    className={classnames("form-control form-control-sm w-50 mr-3", {"is-invalid": currentPasswordValidMessage.length || authenticationError})}
+                                                    placeholder="Current password"
+                                                    name="currentPassword"
+                                                    value={changeUserPassword.currentPassword}
+                                                    onChange={this.onPasswordChange}
+                                                />
+
+                                                {currentPasswordValidMessage}
+                                                <span className="error-text">{authenticationError}</span>
+
+                                            </div>
+
+
+                                            <div className="form-group mb-1">
+
+                                                <input
+                                                    type="password"
+                                                    className={classnames("form-control form-control-sm w-50 mr-3", {"is-invalid": newPasswordValidMessage.length})}
+                                                    placeholder="New password"
+                                                    name="newPassword"
+                                                    value={changeUserPassword.newPassword}
+                                                    onChange={this.onPasswordChange}
+                                                />
+
+                                                {newPasswordValidMessage}
+
+                                            </div>
+
+
+                                            <div className="form-group">
+
+                                                <input
+                                                    type="password"
+                                                    className={classnames("form-control form-control-sm w-50 mr-3", {"is-invalid": confirmNewPasswordValidMessage.length})}
+                                                    placeholder="Confirm new password"
+                                                    name="confirmNewPassword"
+                                                    value={changeUserPassword.confirmNewPassword}
+                                                    onChange={this.onPasswordChange}
+                                                />
+
+                                                {confirmNewPasswordValidMessage}
+
+                                            </div>
+
+                                            <input type="submit" value="Save"
+                                                   className="btn btn-sm btn-outline-success w-50"/>
+
+                                            <hr/>
+
+                                        </form>
+
+
+                                    </div>
+                                </div>
+
+                            </div>
+
+
                         </div>
+
                     </div>
                 </div>
             </div>

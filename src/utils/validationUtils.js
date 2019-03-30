@@ -9,7 +9,7 @@ const validationUtils = (errors, targetField) => {
         const errorArr = errors.apierror.subErrors;
 
         errorArr.filter(item => item.field === targetField).map((error, i) => {
-            messageArray.push(<p key={i} className="error-text">{error.message}</p>);
+            messageArray.push(<span key={i} className="error-text">{error.message}</span>);
         });
     }
 

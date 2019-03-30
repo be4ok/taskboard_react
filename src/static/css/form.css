@@ -98,3 +98,11 @@
 .login-form .forgetPwd {
     text-decoration: none;
 }
+
+.avatar {
+    max-width: 40%!important;
+}
+
+.img-avatar {
+    border: 1px solid;
+}
