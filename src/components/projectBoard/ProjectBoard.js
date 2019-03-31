@@ -6,6 +6,7 @@ import {getProjectBoards, searchProjectBoards, cleanErrors} from "../../actions/
 import Loading from "../layout/Loading"
 import {ButtonToolbar} from "react-bootstrap";
 import AddBoard from "./AddBoard";
+import Footer from "../../components/layout/Footer";
 
 class ProjectBoard extends Component {
 
@@ -77,50 +78,49 @@ class ProjectBoard extends Component {
             </React.Fragment>;
 
         return (
-
             <div className="container">
-                <h4 className="display-4 text-center mb-5">Your project boards</h4>
+                    <h4 className="display-4 text-center mb-5">Your project boards</h4>
 
-                <ButtonToolbar>
-                    <div onClick={this.modalOpen} className="btn btn-primary">
-                        <i className="fas fa-plus-circle"> Create New Board</i>
-                    </div>
+                    <ButtonToolbar>
+                        <div onClick={this.modalOpen} className="btn btn-primary">
+                            <i className="fas fa-plus-circle"> Create New Board</i>
+                        </div>
 
-                    <form onSubmit={this.onSearchSubmit} className="form-inline mb-0 mt-0 ml-5 float-right">
+                        <form onSubmit={this.onSearchSubmit} className="form-inline mb-0 mt-0 ml-5 float-right">
 
-                        <select
-                            className="form-control mr-2"
-                            name="searchCriteria"
-                            value={this.state.searchCriteria}
-                            onChange={this.onSearchChange}
-                        >
-                            <option value="boardName">Name</option>
-                            <option value="boardDescr">Description</option>
-                        </select>
+                            <select
+                                className="form-control mr-2"
+                                name="searchCriteria"
+                                value={this.state.searchCriteria}
+                                onChange={this.onSearchChange}
+                            >
+                                <option value="boardName">Name</option>
+                                <option value="boardDescr">Description</option>
+                            </select>
 
-                        <input
-                            name="searchQuery"
-                            value={this.state.searchQuery}
-                            onChange={this.onSearchChange}
-                            className="form-control mr-2"
-                            type="search"
-                            placeholder="Search"
-                            aria-label="Search"
+                            <input
+                                name="searchQuery"
+                                value={this.state.searchQuery}
+                                onChange={this.onSearchChange}
+                                className="form-control mr-2"
+                                type="search"
+                                placeholder="Search"
+                                aria-label="Search"
+                            />
+                            <button className="btn btn-outline-success" type="submit">Search</button>
+                        </form>
+
+                        <AddBoard
+                            show={this.state.modalShow}
+                            onHide={this.modalClose}
                         />
-                        <button className="btn btn-outline-success" type="submit">Search</button>
-                    </form>
+                    </ButtonToolbar>
 
-                    <AddBoard
-                        show={this.state.modalShow}
-                        onHide={this.modalClose}
-                    />
-                </ButtonToolbar>
+                    <hr/>
 
-                <hr/>
+                    {isLoading ? <Loading/> : boardItems}
 
-                {isLoading ? <Loading/> : boardItems}
-
-            </div>
+                </div>
         );
     }
 }

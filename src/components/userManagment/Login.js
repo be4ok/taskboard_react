@@ -145,7 +145,7 @@ class Login extends Component {
                                         <label className="custom-control-label text-primary text-center" htmlFor="customControlInline">Remember me</label>
                                 </div>
 
-                                <Link to="#" className="forgetPwd text-center">Forget password?</Link>
+                                <Link to="/resetpwd" className="forgetPwd text-center">Forget password?</Link>
 
                             </div>
 

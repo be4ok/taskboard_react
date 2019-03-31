@@ -90,6 +90,53 @@ export const updateUserPassword = changeUserPassword => async dispatch => {
         dispatch(loading(true));
 
         await axios.put(`${PROXY_LINK}/api/users/profile/update/password`, changeUserPassword);
+
+        dispatch({
+            type: GET_ERRORS,
+            payload: {}
+        });
+
+        dispatch(loading(false));
+
+    } catch (err) {
+        dispatch({
+            type: GET_ERRORS,
+            payload: err.response.data
+        });
+
+        dispatch(loading(false));
+    }
+};
+
+export const resetForgottenPassword = email => async dispatch => {
+    try {
+        dispatch(loading(true));
+
+        await axios.put(`${PROXY_LINK}/api/users/password/reset?email=${email}`);
+
+        dispatch({
+            type: GET_ERRORS,
+            payload: {}
+        });
+
+        dispatch(loading(false));
+
+    } catch (err) {
+        dispatch({
+            type: GET_ERRORS,
+            payload: err.response.data
+        });
+
+        dispatch(loading(false));
+    }
+};
+
+export const setForgottenPassword = (code, newUserPassword) => async dispatch => {
+    try {
+        dispatch(loading(true));
+
+        await axios.post(`${PROXY_LINK}/api/users/password/set-new/${code}`, newUserPassword);
+
         dispatch({
             type: GET_ERRORS,
             payload: {}

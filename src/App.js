@@ -5,6 +5,7 @@ import './static/css/project-board.css';
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../node_modules/bootstrap/dist/js/bootstrap.min.js";
 import NavBar from "./components/layout/NavBar";
+import Footer from "./components/layout/Footer";
 import TaskBoard from "./components/projectTask/TaskBoard";
 import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
 import {Provider} from "react-redux";
@@ -20,6 +21,8 @@ import {logout} from "./actions/securityActions";
 import SecuredRoute from "./securityUtils/secureRoute";
 import Activation from "./components/userManagment/Activation";
 import Profile from "./components/userManagment/Profile";
+import ResetPassword from "./components/userManagment/ResetPassword";
+import SetForgottenPassword from "./components/userManagment/SetForgottenPassword";
 
 let jwtToken;
 
@@ -66,11 +69,15 @@ class App extends Component {
                             <Route exact path="/login" component={Login}/>
                             <Route exact path="/register" component={Register}/>
                             <Route exact path="/activation/:activationCode" component={Activation}/>
+                            <Route exact path="/resetpwd" component={ResetPassword}/>
+                            <Route exact path="/setpwd/:resetCode" component={SetForgottenPassword}/>
                             {/*Public routes*/}
                         </Switch>
 
-
                     </div>
+
+
+
                 </Router>
             </Provider>
         );
