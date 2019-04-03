@@ -5,6 +5,7 @@ import Loading from "../layout/Loading"
 import classnames from "classnames";
 import {login, cleanErrors, resetForgottenPassword} from "../../actions/securityActions";
 import validationUtils from "../../utils/validationUtils";
+import notFoundErrorHandle from "../../utils/notFoundErrorHandle";
 
 class Login extends Component {
 
@@ -65,6 +66,7 @@ class Login extends Component {
         const {isLoading} = this.props;
 
         const emailValidMessage = validationUtils(errors, 'email');
+        const userNotFoundMessage = notFoundErrorHandle(errors);
 
         return (
             <div className="container login-container">
@@ -87,7 +89,7 @@ class Login extends Component {
                                 <input
                                     autoFocus
                                     type="text"
-                                    className={classnames("form-control form-control-lg", {"is-invalid": emailValidMessage.length})}
+                                    className={classnames("form-control form-control-lg", {"is-invalid": emailValidMessage.length || userNotFoundMessage})}
                                     placeholder="E-mail"
                                     name="email"
                                     value={this.state.email}
@@ -95,6 +97,7 @@ class Login extends Component {
                                 />
 
                                 {emailValidMessage}
+                                <span className="error-text">{userNotFoundMessage}</span>
 
                             </div>
 
