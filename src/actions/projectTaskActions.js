@@ -40,16 +40,32 @@ export const getProjectTask = pt_id => async dispatch => {
 
 export const getProjectTasks = pd_id => async dispatch => {
 
-    dispatch(loading(true));
+    try {
 
-    const res = await axios.get(`${PROXY_LINK}/api/boards/${pd_id}/tasks`);
+        dispatch(loading(true));
 
-    dispatch({
-        type: GET_PROJECT_TASKS,
-        payload: res.data
-    });
+        const res = await axios.get(`${PROXY_LINK}/api/boards/${pd_id}/tasks`);
 
-    dispatch(loading(false));
+        dispatch({
+            type: GET_PROJECT_TASKS,
+            payload: res.data
+        });
+
+        dispatch({
+            type: GET_ERRORS,
+            payload: {}
+        });
+
+        dispatch(loading(false));
+
+    } catch (error) {
+        dispatch({
+            type: GET_ERRORS,
+            payload: error.response.data
+        });
+
+        dispatch(loading(false));
+    }
 };
 
 export const searchProjectTasks = (pb_id, searchQuery, searchCriteria) => async dispatch => {

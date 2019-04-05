@@ -7,6 +7,7 @@ import PropTypes from "prop-types";
 import {getProjectTasks, searchProjectTasks, cleanErrors} from "../../actions/projectTaskActions";
 import {ButtonToolbar} from "react-bootstrap";
 import AddTask from "./AddTask";
+import notFoundErrorHandle from "../../utils/notFoundErrorHandle";
 
 class TaskBoard extends Component {
 
@@ -15,7 +16,8 @@ class TaskBoard extends Component {
         this.state = {
             modalShow: false,
             searchQuery: '',
-            searchCriteria: 'taskSummary'
+            searchCriteria: 'taskSummary',
+            errors: {}
         };
 
         this.modalOpen = this.modalOpen.bind(this);
@@ -26,6 +28,13 @@ class TaskBoard extends Component {
 
     componentDidMount() {
         this.props.getProjectTasks(this.props.match.params.id);
+    }
+
+    componentWillReceiveProps(nextProps) {
+
+        if (nextProps.errors) {
+            this.setState({errors: nextProps.errors})
+        }
     }
 
     async onSearchChange(e) {
@@ -56,6 +65,7 @@ class TaskBoard extends Component {
 
     render() {
 
+        const {errors} = this.state;
         const {project_tasks} = this.props.project_tasks;
         const {isLoading} = this.props;
 
@@ -79,6 +89,54 @@ class TaskBoard extends Component {
             }
         });
 
+        const boardNotFound = notFoundErrorHandle(errors);
+
+        const taskBoard = <React.Fragment>
+            <div className="row">
+            <div className="col-md-4">
+                <div className="card text-center mb-2">
+                    <div className="card-header bg-secondary text-white">
+                        <h3>TO DO</h3>
+                    </div>
+                </div>
+
+                {!isLoading &&
+                (todoItems.length > 0 ? todoItems :
+                    <div className="card-header text-center alert-info">No tasks</div>)
+                }
+
+            </div>
+            <div className="col-md-4">
+                <div className="card text-center mb-2">
+                    <div className="card-header bg-primary text-white">
+                        <h3>In Progress</h3>
+                    </div>
+                </div>
+
+                {!isLoading &&
+                (inProgressItems.length > 0 ? inProgressItems :
+                    <div className="card-header text-center alert-info">No tasks</div>)
+                }
+
+            </div>
+            <div className="col-md-4">
+                <div className="card text-center mb-2">
+                    <div className="card-header bg-success text-white">
+                        <h3>Done</h3>
+                    </div>
+                </div>
+
+                {!isLoading &&
+                (doneItems.length > 0 ? doneItems :
+                    <div className="card-header text-center alert-info">No tasks</div>)
+                }
+
+            </div>
+            </div>
+        </React.Fragment>;
+
+
+
         return (
 
             <div className="container">
@@ -86,7 +144,7 @@ class TaskBoard extends Component {
                 <ButtonToolbar>
 
                     <Link to="/board" className="btn btn-outline-secondary mb-3 mr-5">
-                        <i className="fas fa-angle-left">  Back</i>
+                        <i className="fas fa-angle-left"> Back</i>
                     </Link>
 
                     <div onClick={this.modalOpen} className="btn btn-primary mb-3">
@@ -128,47 +186,9 @@ class TaskBoard extends Component {
                 <br/>
                 <hr/>
 
-                <div className="row">
-                    <div className="col-md-4">
-                        <div className="card text-center mb-2">
-                            <div className="card-header bg-secondary text-white">
-                                <h3>TO DO</h3>
-                            </div>
-                        </div>
-
-                        {!isLoading &&
-                        (todoItems.length > 0 ? todoItems :
-                            <div className="card-header text-center alert-info">No tasks</div>)
-                        }
-
-                    </div>
-                    <div className="col-md-4">
-                        <div className="card text-center mb-2">
-                            <div className="card-header bg-primary text-white">
-                                <h3>In Progress</h3>
-                            </div>
-                        </div>
-
-                        {!isLoading &&
-                        (inProgressItems.length > 0 ? inProgressItems :
-                            <div className="card-header text-center alert-info">No tasks</div>)
-                        }
-
-                    </div>
-                    <div className="col-md-4">
-                        <div className="card text-center mb-2">
-                            <div className="card-header bg-success text-white">
-                                <h3>Done</h3>
-                            </div>
-                        </div>
-
-                        {!isLoading &&
-                        (doneItems.length > 0 ? doneItems :
-                            <div className="card-header text-center alert-info">No tasks</div>)
-                        }
-
-                    </div>
-                </div>
+                    {!boardNotFound ? taskBoard : <div className="card-header text-center alert-danger">
+                        Board not found.
+                    </div>}
 
                 {isLoading && <Loading/>}
 
@@ -182,11 +202,13 @@ TaskBoard.propTypes = {
     searchProjectTasks: PropTypes.func.isRequired,
     cleanErrors: PropTypes.func.isRequired,
     project_tasks: PropTypes.object.isRequired,
+    errors: PropTypes.object.isRequired,
     isLoading: PropTypes.bool.isRequired
 };
 
 const mapStateToProps = state => ({
     project_tasks: state.task,
+    errors: state.errors,
     isLoading: state.task.isLoading
 });
 
