@@ -2,6 +2,9 @@
   "name": "taskboard_front",
   "version": "0.1.0",
   "private": true,
+  "engines": {
+    "node": "10.15.0"
+  },
   "dependencies": {
     "@babel/core": "7.1.6",
     "@svgr/webpack": "2.4.1",
