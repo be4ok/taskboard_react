@@ -20,7 +20,7 @@ import {SET_CURRENT_USER} from "./actions/types";
 import {logout} from "./actions/securityActions";
 import SecuredRoute from "./securityUtils/secureRoute";
 import Activation from "./components/userManagment/Activation";
-import Profile from "./components/userManagment/Profile";
+import Profile from "./components/userManagment/profile/Profile";
 import ResetPassword from "./components/userManagment/ResetPassword";
 import SetForgottenPassword from "./components/userManagment/SetForgottenPassword";
 
