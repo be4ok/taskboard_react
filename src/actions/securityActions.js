@@ -63,51 +63,6 @@ export const activateUser = activateCode => async dispatch => {
     }
 };
 
-export const updateUserEmail = newEmail => async dispatch => {
-    try {
-        dispatch(loading(true));
-
-        await axios.put(`${PROXY_LINK}/api/users/profile/update/email`, newEmail);
-        dispatch({
-            type: GET_ERRORS,
-            payload: {}
-        });
-
-        dispatch(loading(false));
-
-    } catch (err) {
-        dispatch({
-            type: GET_ERRORS,
-            payload: err.response.data
-        });
-
-        dispatch(loading(false));
-    }
-};
-
-export const updateUserPassword = changeUserPassword => async dispatch => {
-    try {
-        dispatch(loading(true));
-
-        await axios.put(`${PROXY_LINK}/api/users/profile/update/password`, changeUserPassword);
-
-        dispatch({
-            type: GET_ERRORS,
-            payload: {}
-        });
-
-        dispatch(loading(false));
-
-    } catch (err) {
-        dispatch({
-            type: GET_ERRORS,
-            payload: err.response.data
-        });
-
-        dispatch(loading(false));
-    }
-};
-
 export const resetForgottenPassword = email => async dispatch => {
     try {
         dispatch(loading(true));

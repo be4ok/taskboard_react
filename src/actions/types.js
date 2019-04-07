@@ -21,6 +21,7 @@ export const PROJECT_TASK_LOADING = "PROJECT_TASK_LOADING";
 
 
 /*User*/
+export const GET_CURRENT_USER = "GET_CURRENT_USER";
 export const SET_CURRENT_USER = "SET_CURRENT_USER";
 export const SECURITY_LOADING = "SECURITY_LOADING";
 /*User*/

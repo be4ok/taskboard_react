@@ -68,9 +68,9 @@ class TaskItem extends Component {
 
                 <div className="card-body bg-light">
                     <h5 className="card-title">{task.summary}</h5>
-                    <p className="card-text text-truncate ">{task.acceptanceCriteria}</p>
-                    <p className="date-info">created: {task.createDate}</p>
-                    {task.updateDate && <p className="date-info">updated: {task.updateDate}</p>}
+                    <p className="card-text">{task.acceptanceCriteria}</p>
+                    <p className="date-info mb-0">created: {task.createDate}</p>
+                    {task.updateDate && <p className="date-info mb-0">updated: {task.updateDate}</p>}
                     <br/>
 
                     <ButtonToolbar className="d-flex justify-content-between">
