@@ -40,7 +40,11 @@ class Profile extends Component {
         this.setState({
             firstName: this.props.profile.currentUser.firstName,
             secondName: this.props.profile.currentUser.secondName,
-        })
+        });
+
+        if (!this.state.firstName || !this.state.secondName) {
+            this.setState({isEditMode: true})
+        }
     }
 
     async onSubmit(e) {
@@ -59,7 +63,11 @@ class Profile extends Component {
         this.setState({
             isEditMode: !this.state.isEditMode,
             isSaving: false
-        })
+        });
+
+        if (!this.state.firstName || !this.state.secondName) {
+            this.setState({isEditMode: true})
+        }
     }
 
     onChange(e) {
@@ -110,7 +118,8 @@ class Profile extends Component {
                                         <form onSubmit={this.onSubmit}>
                                             <div className="card-text d-flex">
                                                 <i className="far fa-user mr-4 text-primary"></i>
-                                                {(this.state.firstName && !this.state.isEditMode) ?
+
+                                                {!this.state.isEditMode ?
 
                                                     <span className="mr-2">{this.state.firstName}</span>
 
@@ -126,7 +135,7 @@ class Profile extends Component {
                                                     />
                                                 }
 
-                                                {(this.state.secondName && !this.state.isEditMode) ?
+                                                {!this.state.isEditMode ?
 
                                                     <span className="mr-2">{this.state.secondName}</span>
 
