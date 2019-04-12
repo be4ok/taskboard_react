@@ -23,6 +23,7 @@ class AddTask extends Component {
 
         this.state = {
             task: this.emptyTask,
+            isSaving: false,
             errors: {},
             pb_id: ''
         };
@@ -50,10 +51,15 @@ class AddTask extends Component {
 
     async onSubmit(e) {
         e.preventDefault();
+
+        this.setState({isSaving: true});
+
         const {task} = this.state;
         task.board.id = this.state.pb_id;
 
         await this.props.addProjectTask(task, task.board.id);
+
+        this.setState({isSaving: false});
 
         const {errors} = this.state;
 
@@ -85,98 +91,107 @@ class AddTask extends Component {
 
                 <Modal.Body>
 
-                        <div className="container">
-                            <div className="row">
-                                <div className="col-md-8 m-auto">
+                    <div className="container">
+                        <div className="row">
+                            <div className="col-md-8 m-auto">
 
-                                    <h4 className="display-4 text-center">Add new Project Task</h4>
+                                <h4 className="display-4 text-center">Add new Project Task</h4>
 
-                                    <form onSubmit={this.onSubmit}>
+                                <form onSubmit={this.onSubmit}>
 
-                                        <div className="form-group">
+                                    <div className="form-group">
 
-                                            <div className="title-input">Summary:</div>
+                                        <div className="title-input">Summary:</div>
 
-                                            <div>
-                                                <input
-                                                    autoFocus
-                                                    className={classnames("form-control form-control-lg", {"is-invalid": summaryValidMessage.length})}
-                                                    type="text"
-                                                    name="summary"
-                                                    placeholder="Project Task summary"
-                                                    value={task.summary}
-                                                    onChange={this.onChange}
-                                                    autoComplete="summary"
-                                                    id="summary"
-                                                />
-                                            </div>
-
-                                            {summaryValidMessage}
-
-                                            <hr/>
-
+                                        <div>
+                                            <input
+                                                autoFocus
+                                                className={classnames("form-control form-control-lg", {"is-invalid": summaryValidMessage.length})}
+                                                type="text"
+                                                name="summary"
+                                                placeholder="Project Task summary"
+                                                value={task.summary}
+                                                onChange={this.onChange}
+                                                autoComplete="summary"
+                                                id="summary"
+                                                disabled={this.state.isSaving}
+                                            />
                                         </div>
 
-                                        <div className="form-group">
+                                        {summaryValidMessage}
 
-                                            <div className="title-input">Acceptance criteria:</div>
+                                        <hr/>
 
-                                            <div>
+                                    </div>
+
+                                    <div className="form-group">
+
+                                        <div className="title-input">Acceptance criteria:</div>
+
+                                        <div>
                                     <textarea
                                         className={classnames("form-control form-control-lg", {"is-invalid": (acceptanceCritValidMessage.length || task.acceptanceCriteria.length > 200)})}
                                         placeholder="Acceptance Criteria"
                                         name="acceptanceCriteria"
                                         value={task.acceptanceCriteria}
                                         onChange={this.onChange}
+                                        disabled={this.state.isSaving}
                                     />
-                                                <span
-                                                    className={classnames("input-length", {"input-length-alert": task.acceptanceCriteria.length > 200})}>
+                                            <span
+                                                className={classnames("input-length", {"input-length-alert": task.acceptanceCriteria.length > 200})}>
                                             {200 - task.acceptanceCriteria.length}
                                             </span>
-                                            </div>
-
-                                            {acceptanceCritValidMessage}
-
-                                            <hr/>
-
                                         </div>
 
-                                        <div className="form-group">
+                                        {acceptanceCritValidMessage}
 
-                                            <div className="title-input">Status:</div>
+                                        <hr/>
 
-                                            <select
-                                                className="form-control form-control-lg"
-                                                name="status"
-                                                value={task.status}
-                                                onChange={this.onChange}
+                                    </div>
+
+                                    <div className="form-group">
+
+                                        <div className="title-input">Status:</div>
+
+                                        <select
+                                            className="form-control form-control-lg"
+                                            name="status"
+                                            value={task.status}
+                                            onChange={this.onChange}
+                                            disabled={this.state.isSaving}
+                                        >
+                                            <option value="">Select Status</option>
+                                            <option value="TO_DO">TO DO</option>
+                                            <option value="IN_PROGRESS">IN PROGRESS</option>
+                                            <option value="DONE">DONE</option>
+                                        </select>
+
+                                    </div>
+
+                                    <div className="buttons-container">
+                                        <div className="buttons-group">
+
+                                            <div
+                                                onClick={this.props.onHide}
+                                                className="btn btn-lg button-item btn-outline-danger"
                                             >
-                                                <option value="">Select Status</option>
-                                                <option value="TO_DO">TO DO</option>
-                                                <option value="IN_PROGRESS">IN PROGRESS</option>
-                                                <option value="DONE">DONE</option>
-                                            </select>
-
-                                        </div>
-
-                                        <div className="buttons-container">
-                                            <div className="buttons-group">
-
-                                                <div
-                                                    onClick={this.props.onHide}
-                                                    className="btn btn-lg button-item btn-outline-danger"
-                                                >
-                                                    Cancel
-                                                </div>
-
-                                                <input type="submit" value="Save" className="btn btn-outline-success btn-lg button-item"/>
+                                                Cancel
                                             </div>
-                                        </div>
 
-                                    </form>
-                                </div>
+                                            <input
+                                                type="submit"
+                                                value={!this.state.isSaving ? "Save" : "Saving..."}
+                                                className="btn btn-outline-success btn-lg button-item"
+                                                disabled={this.state.isSaving}
+                                            />
+
+                                        </div>
+                                    </div>
+
+                                </form>
                             </div>
                         </div>
+                    </div>
 
                 </Modal.Body>
             </Modal>

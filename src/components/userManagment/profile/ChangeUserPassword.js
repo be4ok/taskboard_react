@@ -94,6 +94,7 @@ class ChangeUserPassword extends Component {
                         name="currentPassword"
                         value={changeUserPassword.currentPassword}
                         onChange={this.onPasswordChange}
+                        disabled={this.state.isSaving}
                     />
 
                     {currentPasswordValidMessage}
@@ -111,6 +112,7 @@ class ChangeUserPassword extends Component {
                         name="newPassword"
                         value={changeUserPassword.newPassword}
                         onChange={this.onPasswordChange}
+                        disabled={this.state.isSaving}
                     />
 
                     {newPasswordValidMessage}
@@ -127,6 +129,7 @@ class ChangeUserPassword extends Component {
                         name="confirmNewPassword"
                         value={changeUserPassword.confirmNewPassword}
                         onChange={this.onPasswordChange}
+                        disabled={this.state.isSaving}
                     />
 
                     {confirmNewPasswordValidMessage}

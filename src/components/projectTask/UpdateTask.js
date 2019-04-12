@@ -13,6 +13,7 @@ class UpdateTask extends Component {
 
         this.state = {
             task: {},
+            isSaving: false,
             errors: {}
         };
 
@@ -48,8 +49,13 @@ class UpdateTask extends Component {
 
     async onSubmit(e) {
         e.preventDefault();
+
+        this.setState({isSaving: true});
+
         const {task} = this.state;
         await this.props.updateProjectTask(task, task.board.id);
+
+        this.setState({isSaving: false});
 
         const {errors} = this.state;
 
@@ -102,6 +108,7 @@ class UpdateTask extends Component {
                                                 onChange={this.onChange}
                                                 autoComplete="summary"
                                                 id="summary"
+                                                disabled={this.state.isSaving}
                                             />
                                         </div>
 
@@ -122,6 +129,7 @@ class UpdateTask extends Component {
                                         name="acceptanceCriteria"
                                         value={task.acceptanceCriteria}
                                         onChange={this.onChange}
+                                        disabled={this.state.isSaving}
                                     />
                                         </div>
 
@@ -140,6 +148,7 @@ class UpdateTask extends Component {
                                             name="status"
                                             value={task.status}
                                             onChange={this.onChange}
+                                            disabled={this.state.isSaving}
                                         >
                                             <option value="">Select Status</option>
                                             <option value="TO_DO">TO DO</option>
@@ -159,8 +168,12 @@ class UpdateTask extends Component {
                                                 Cancel
                                             </div>
 
-                                            <input type="submit" value="Save"
-                                                   className="btn btn-outline-success btn-lg button-item"/>
+                                            <input
+                                                type="submit"
+                                                value={!this.state.isSaving ? "Save" : "Saving..."}
+                                                className="btn btn-outline-success btn-lg button-item"
+                                                disabled={this.state.isSaving}
+                                            />
                                         </div>
                                     </div>
 

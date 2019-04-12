@@ -13,6 +13,7 @@ class UpdateBoard extends Component {
 
         this.state = {
             board: {},
+            isSaving: false,
             errors: {}
         };
 
@@ -47,8 +48,14 @@ class UpdateBoard extends Component {
 
     async onSubmit(e) {
         e.preventDefault();
+
+        this.setState({isSaving: true});
+
         const {board} = this.state;
+
         await this.props.updateProjectBoard(board);
+
+        this.setState({isSaving: true});
 
         const {errors} = this.state;
 
@@ -103,6 +110,7 @@ class UpdateBoard extends Component {
                                                 onChange={this.onChange}
                                                 autoComplete="name"
                                                 id="name"
+                                                disabled={this.state.isSaving}
                                             />
                                         </div>
 
@@ -124,6 +132,7 @@ class UpdateBoard extends Component {
                                         name="description"
                                         value={board.description}
                                         onChange={this.onChange}
+                                        disabled={this.state.isSaving}
                                     />
                                         </div>
 
@@ -143,8 +152,13 @@ class UpdateBoard extends Component {
                                                 Cancel
                                             </div>
 
-                                            <input type="submit" value="Save"
-                                                   className="btn btn-outline-success btn-lg button-item"/>
+                                            <input
+                                                type="submit"
+                                                value={!this.state.isSaving ? "Save" : "Saving..."}
+                                                className="btn btn-outline-success btn-lg button-item"
+                                                disabled={this.state.isSaving}
+                                            />
+
                                         </div>
                                     </div>
 

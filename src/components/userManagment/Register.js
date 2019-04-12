@@ -18,7 +18,8 @@ class Register extends Component {
             email: "",
             confirmPassword: "",
             errors: {},
-            isAccountCreated: false
+            isAccountCreated: false,
+            isSending: false
         };
 
         this.onChange = this.onChange.bind(this);
@@ -46,6 +47,8 @@ class Register extends Component {
     async onSubmit(e) {
         e.preventDefault();
 
+        this.setState({isSending: true});
+
         const newUser = {
             username: this.state.username,
             password: this.state.password,
@@ -54,6 +57,8 @@ class Register extends Component {
         };
 
         await this.props.createNewUser(newUser, this.props.history);
+
+        this.setState({isSending: false});
 
         const {errors} = this.state;
 
@@ -74,7 +79,6 @@ class Register extends Component {
     render() {
 
         const {errors} = this.state;
-        const {isLoading} = this.props;
 
         const usernameValidMessage = validationUtils(errors, 'username');
         const passwordValidMessage = validationUtils(errors, 'password');
@@ -108,6 +112,7 @@ class Register extends Component {
                                     name="username"
                                     value={this.state.username}
                                     onChange={this.onChange}
+                                    disabled={this.state.isSending}
                                 />
 
                                 {usernameValidMessage}
@@ -124,6 +129,7 @@ class Register extends Component {
                                     name="email"
                                     value={this.state.email}
                                     onChange={this.onChange}
+                                    disabled={this.state.isSending}
                                 />
 
                                 {emailValidMessage}
@@ -140,6 +146,7 @@ class Register extends Component {
                                     name="password"
                                     value={this.state.password}
                                     onChange={this.onChange}
+                                    disabled={this.state.isSending}
                                 />
 
                                 {passwordValidMessage}
@@ -156,6 +163,7 @@ class Register extends Component {
                                     name="confirmPassword"
                                     value={this.state.confirmPassword}
                                     onChange={this.onChange}
+                                    disabled={this.state.isSending}
                                 />
 
                                 {confirmPasswordValidMessage}
@@ -165,11 +173,11 @@ class Register extends Component {
 
                             <div className="form-group mt-4 mb-4">
 
-                                {isLoading ? <Loading/> :
                                     <input type="submit"
-                                           value="Sign-up"
+                                           value={!this.state.isSending ? "Sign-up" : "Signing in..."}
                                            className="btn btn-lg btn-outline-success btnSubmit"
-                                    />}
+                                           disabled={this.state.isSending}
+                                    />
 
                             </div>
 
@@ -190,12 +198,10 @@ Register.propTypes = {
     createNewUser: PropTypes.func.isRequired,
     errors: PropTypes.object.isRequired,
     security: PropTypes.object.isRequired,
-    isLoading: PropTypes.bool.isRequired
 };
 
 const mapStateToProps = state => ({
     errors: state.errors,
     security: state.security,
-    isLoading: state.security.isLoading
 });
 export default connect(mapStateToProps, {createNewUser, cleanErrors})(Register);

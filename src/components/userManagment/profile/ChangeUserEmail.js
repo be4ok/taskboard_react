@@ -82,6 +82,7 @@ class ChangeUserEmail extends Component {
                         name="newEmail"
                         value={email.newEmail}
                         onChange={this.onEmailChange}
+                        disabled={this.state.isSaving}
                     />
 
                     {emailValidMessage}

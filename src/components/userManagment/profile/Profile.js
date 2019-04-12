@@ -132,6 +132,7 @@ class Profile extends Component {
                                                         placeholder="First name"
                                                         onChange={this.onChange}
                                                         value={this.state.firstName}
+                                                        disabled={this.state.isSaving}
                                                     />
                                                 }
 
@@ -148,6 +149,7 @@ class Profile extends Component {
                                                         placeholder="Second name"
                                                         onChange={this.onChange}
                                                         value={this.state.secondName}
+                                                        disabled={this.state.isSaving}
                                                     />
                                                 }
 

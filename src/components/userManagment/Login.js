@@ -16,6 +16,7 @@ class Login extends Component {
             username: "",
             password: "",
             isRememberMe: false,
+            isSending: false,
             errors: {}
         };
         this.onChange = this.onChange.bind(this);
@@ -51,7 +52,10 @@ class Login extends Component {
     async onSubmit(e) {
         e.preventDefault();
 
-        this.setState({errors: {}});
+        this.setState({
+            errors: {},
+            isSending: true
+        });
 
         const loginRequest = {
             username: this.state.username,
@@ -59,6 +63,8 @@ class Login extends Component {
         };
 
         await this.props.login(loginRequest, this.state.isRememberMe);
+
+        this.setState({isSending: false});
 
         if (authenticationErrorHandle(this.state.errors)) {
             this.setState({password: ""})
@@ -68,7 +74,6 @@ class Login extends Component {
     render() {
 
         const {errors} = this.state;
-        const {isLoading} = this.props;
 
         const usernameValidMessage = validationUtils(errors, 'username');
         const passwordValidMessage = validationUtils(errors, 'password');
@@ -95,6 +100,7 @@ class Login extends Component {
                                     name="username"
                                     value={this.state.username}
                                     onChange={this.onChange}
+                                    disabled={this.state.isSending}
                                 />
 
                                 {usernameValidMessage}
@@ -112,6 +118,7 @@ class Login extends Component {
                                     name="password"
                                     value={this.state.password}
                                     onChange={this.onChange}
+                                    disabled={this.state.isSending}
                                 />
 
                                 {passwordValidMessage}
@@ -122,11 +129,12 @@ class Login extends Component {
 
                             <div className="form-group mt-4 mb-4">
 
-                                {isLoading ? <Loading/> :
+
                                     <input type="submit"
-                                           value="Log-in"
+                                           value={!this.state.isSending ? "Log-in" : "Logging..."}
                                            className="btn btn-lg btn-outline-success btnSubmit"
-                                    />}
+                                           disabled={this.state.isSending}
+                                    />
 
                             </div>
 
@@ -169,13 +177,11 @@ Login.propTypes = {
     cleanErrors: PropTypes.func.isRequired,
     errors: PropTypes.object.isRequired,
     security: PropTypes.object.isRequired,
-    isLoading: PropTypes.bool.isRequired
 };
 
 const mapStateToProps = state => ({
     security: state.security,
     errors: state.errors,
-    isLoading: state.security.isLoading
 });
 
 export default connect(mapStateToProps, {login, cleanErrors})(Login);
