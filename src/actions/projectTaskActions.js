@@ -161,3 +161,57 @@ export const getProjectTaskCount = (pb_id) => async dispatch => {
         payload: res.data
     });
 };
+
+export const start = (pt_id, pb_id) => async dispatch => {
+    try {
+        await axios.put(`${PROXY_LINK}/api/boards/tasks/${pt_id}/start`);
+
+        dispatch(getProjectTasks(pb_id));
+
+        dispatch({
+            type: GET_ERRORS,
+            payload: {}
+        })
+    } catch (error) {
+        dispatch({
+            type: GET_ERRORS,
+            payload: error.response.data
+        });
+    }
+};
+
+export const stop = (pt_id, pb_id) => async dispatch => {
+    try {
+        await axios.put(`${PROXY_LINK}/api/boards/tasks/${pt_id}/stop`);
+
+        dispatch(getProjectTasks(pb_id));
+
+        dispatch({
+            type: GET_ERRORS,
+            payload: {}
+        })
+    } catch (error) {
+        dispatch({
+            type: GET_ERRORS,
+            payload: error.response.data
+        });
+    }
+};
+
+export const finish = (pt_id, pb_id) => async dispatch => {
+    try {
+        await axios.put(`${PROXY_LINK}/api/boards/tasks/${pt_id}/finish`);
+
+        dispatch(getProjectTasks(pb_id));
+
+        dispatch({
+            type: GET_ERRORS,
+            payload: {}
+        })
+    } catch (error) {
+        dispatch({
+            type: GET_ERRORS,
+            payload: error.response.data
+        });
+    }
+};

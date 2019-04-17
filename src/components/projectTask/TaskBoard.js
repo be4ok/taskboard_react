@@ -76,13 +76,13 @@ class TaskBoard extends Component {
         project_tasks.map(task => {
             switch (task.status) {
                 case 'TO_DO':
-                    todoItems.push(<TaskItem key={task.id} task={task}/>);
+                    todoItems.push(<TaskItem key={task.id} task={task} pb_id={this.props.match.params.id}/>);
                     break;
                 case 'IN_PROGRESS':
-                    inProgressItems.push(<TaskItem key={task.id} task={task}/>);
+                    inProgressItems.push(<TaskItem key={task.id} task={task} pb_id={this.props.match.params.id}/>);
                     break;
                 case 'DONE':
-                    doneItems.push(<TaskItem key={task.id} task={task}/>);
+                    doneItems.push(<TaskItem key={task.id} task={task} pb_id={this.props.match.params.id}/>);
                     break;
                 default:
                     break;

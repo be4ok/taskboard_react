@@ -1,9 +1,10 @@
 import React, {Component} from 'react';
 import {connect} from "react-redux";
 import PropTypes from "prop-types";
-import {deleteProjectTask, cleanErrors} from "../../actions/projectTaskActions";
+import {deleteProjectTask, cleanErrors, start, stop, finish} from "../../actions/projectTaskActions";
 import {Button, ButtonToolbar} from "react-bootstrap";
 import UpdateTask from "./UpdateTask"
+import {Link} from "react-router-dom";
 
 
 class TaskItem extends Component {
@@ -13,11 +14,12 @@ class TaskItem extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            task: {},
             modalShow: false
         };
 
         this.modalClose = this.modalClose.bind(this);
-        this.modalOpen = this.modalOpen.bind(this)
+        this.modalOpen = this.modalOpen.bind(this);
     }
 
     componentWillUnmount() {
@@ -50,6 +52,21 @@ class TaskItem extends Component {
         }
     }
 
+    onStartClick(pt_id) {
+
+        this.props.start(pt_id, this.props.pb_id)
+    }
+
+    onStopClick(pt_id) {
+
+        this.props.stop(pt_id, this.props.pb_id)
+    }
+
+    onFinishClick(pt_id) {
+
+        this.props.finish(pt_id, this.props.pb_id)
+    }
+
     render() {
 
         const {task} = this.props;
@@ -60,10 +77,35 @@ class TaskItem extends Component {
 
         return (
 
-            <div className="card mb-1 bg-light mb-3">
+            <div className="card mb-1 bg-light mb-3 f">
 
-                <div className="card-header text-primary">
-                    #{task.id}
+                <div className="f card-header text-primary">
+
+                    <div className="float-left">#{task.id}</div>
+
+                    <ButtonToolbar className="float-right">
+
+                        <i
+                            className="fas fa-pencil-alt text-success mr-2 task-action"
+                            onClick={this.modalOpen}
+                        >
+                        </i>
+
+                        <i
+                            className="fas fa-trash-alt text-danger task-action"
+                            onClick={this.remove.bind(this, task.id)}
+                        >
+                        </i>
+
+                        <UpdateTask
+                            pt_id={task.id}
+                            show={this.state.modalShow}
+                            onHide={this.modalClose}
+                        />
+
+                    </ButtonToolbar>
+
+
                 </div>
 
                 <div className="card-body bg-light">
@@ -73,29 +115,41 @@ class TaskItem extends Component {
                     {task.updateDate && <p className="date-info mb-0">updated: {task.updateDate}</p>}
                     <br/>
 
-                    <ButtonToolbar className="d-flex justify-content-between">
+
+                    <div className="d-flex justify-content-center">
+
+                        {task.status !== "IN_PROGRESS" &&
+
+                        <div
+                            className={"btn btn-sm mr-4 ml-4 btn-outline-" + (task.status !== "DONE" ? "primary" : "secondary")}
+                            onClick={this.onStartClick.bind(this, task.id)}
+                        >
+                            {task.status !== "DONE" ? "Start" : "Resume"}
+                        </div>
+                        }
+
+
+                        {(task.status !== "TO_DO" && task.status !== "DONE") &&
 
                             <div
-                                className="btn btn-outline-primary btn-sm"
-                                onClick={this.modalOpen}
+                                className="btn btn-outline-danger btn-sm mr-4 ml-4"
+                                onClick={this.onStopClick.bind(this, task.id)}
                             >
-                                Update
+                                Stop
                             </div>
+                        }
 
-                            <UpdateTask
-                                pt_id={task.id}
-                                show={this.state.modalShow}
-                                onHide={this.modalClose}
-                            />
 
+                        {(task.status !== "TO_DO" && task.status !== "DONE") &&
                             <div
-                                className="btn btn-outline-danger btn-sm"
-                                onClick={this.remove.bind(this, task.id)}
+                                className="btn btn-outline-success btn-sm mr-4 ml-4"
+                                onClick={this.onFinishClick.bind(this, task.id)}
                             >
-                                Delete
+                                Finish
                             </div>
+                        }
 
-                    </ButtonToolbar>
+                    </div>
 
 
                 </div>
@@ -106,7 +160,10 @@ class TaskItem extends Component {
 
 TaskItem.propTypes = {
     deleteProjectTask: PropTypes.func.isRequired,
+    start: PropTypes.func.isRequired,
+    stop: PropTypes.func.isRequired,
+    finish: PropTypes.func.isRequired,
     cleanErrors: PropTypes.func.isRequired
 };
 
-export default connect(null, {deleteProjectTask, cleanErrors})(TaskItem);
+export default connect(null, {deleteProjectTask, cleanErrors, start, stop, finish})(TaskItem);
