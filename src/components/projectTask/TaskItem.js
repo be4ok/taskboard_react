@@ -2,9 +2,8 @@ import React, {Component} from 'react';
 import {connect} from "react-redux";
 import PropTypes from "prop-types";
 import {deleteProjectTask, cleanErrors, start, stop, finish} from "../../actions/projectTaskActions";
-import {Button, ButtonToolbar} from "react-bootstrap";
+import {ButtonToolbar} from "react-bootstrap";
 import UpdateTask from "./UpdateTask"
-import {Link} from "react-router-dom";
 
 
 class TaskItem extends Component {
@@ -108,6 +107,9 @@ class TaskItem extends Component {
 
                 </div>
 
+                <div className={"priority-" + task.priority.toLowerCase()}>
+                </div>
+
                 <div className="card-body bg-light">
                     <h5 className="card-title">{task.summary}</h5>
                     <p className="card-text">{task.acceptanceCriteria}</p>
@@ -131,22 +133,22 @@ class TaskItem extends Component {
 
                         {(task.status !== "TO_DO" && task.status !== "DONE") &&
 
-                            <div
-                                className="btn btn-outline-danger btn-sm mr-4 ml-4"
-                                onClick={this.onStopClick.bind(this, task.id)}
-                            >
-                                Stop
-                            </div>
+                        <div
+                            className="btn btn-outline-danger btn-sm mr-4 ml-4"
+                            onClick={this.onStopClick.bind(this, task.id)}
+                        >
+                            Stop
+                        </div>
                         }
 
 
                         {(task.status !== "TO_DO" && task.status !== "DONE") &&
-                            <div
-                                className="btn btn-outline-success btn-sm mr-4 ml-4"
-                                onClick={this.onFinishClick.bind(this, task.id)}
-                            >
-                                Finish
-                            </div>
+                        <div
+                            className="btn btn-outline-success btn-sm mr-4 ml-4"
+                            onClick={this.onFinishClick.bind(this, task.id)}
+                        >
+                            Finish
+                        </div>
                         }
 
                     </div>

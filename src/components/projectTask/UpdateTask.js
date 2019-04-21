@@ -150,10 +150,28 @@ class UpdateTask extends Component {
                                             onChange={this.onChange}
                                             disabled={this.state.isSaving}
                                         >
-                                            <option value="">Select Status</option>
                                             <option value="TO_DO">TO DO</option>
                                             <option value="IN_PROGRESS">IN PROGRESS</option>
                                             <option value="DONE">DONE</option>
+                                        </select>
+
+                                    </div>
+
+
+                                    <div className="form-group">
+
+                                        <div className="title-input">Priority:</div>
+
+                                        <select
+                                            className="form-control form-control-lg"
+                                            name="priority"
+                                            value={task.priority}
+                                            onChange={this.onChange}
+                                            disabled={this.state.isSaving}
+                                        >
+                                            <option value="LOW">Low</option>
+                                            <option value="MIDDLE">Middle</option>
+                                            <option value="HIGH">High</option>
                                         </select>
 
                                     </div>
