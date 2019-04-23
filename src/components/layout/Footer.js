@@ -5,7 +5,7 @@ export default function NavBar() {
      return (
          <footer className="footer">
              <div className="container">
-                 <span className="text-muted">2019. TaskBoard</span>
+                 <span className="text-muted">TaskBoard. 2019</span>
              </div>
          </footer>
         );
