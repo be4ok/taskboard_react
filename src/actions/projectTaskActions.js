@@ -38,13 +38,13 @@ export const getProjectTask = pt_id => async dispatch => {
     })
 };
 
-export const getProjectTasks = pd_id => async dispatch => {
+export const getProjectTasks = (pd_id, sorting) => async dispatch => {
 
     try {
 
         dispatch(loading(true));
 
-        const res = await axios.get(`${PROXY_LINK}/api/boards/${pd_id}/tasks`);
+        const res = await axios.get(`${PROXY_LINK}/api/boards/${pd_id}/tasks?sorting=${sorting}`);
 
         dispatch({
             type: GET_PROJECT_TASKS,
@@ -68,16 +68,16 @@ export const getProjectTasks = pd_id => async dispatch => {
     }
 };
 
-export const searchProjectTasks = (pb_id, searchQuery, searchCriteria) => async dispatch => {
+export const searchProjectTasks = (pb_id, searchQuery, sorting) => async dispatch => {
 
     if (searchQuery.trim().length === 0) {
-        dispatch(getProjectTasks(pb_id));
+        dispatch(getProjectTasks(pb_id, sorting));
         return;
     }
 
     dispatch(loading(true));
 
-    const res = await axios.get(`${PROXY_LINK}/api/boards/${pb_id}/tasks?${searchCriteria}=${searchQuery}`);
+    const res = await axios.get(`${PROXY_LINK}/api/boards/${pb_id}/tasks?search=${searchQuery}`);
 
     dispatch({
         type: GET_PROJECT_TASKS,
@@ -87,7 +87,7 @@ export const searchProjectTasks = (pb_id, searchQuery, searchCriteria) => async 
     dispatch(loading(false));
 };
 
-export const addProjectTask = (project_task, pb_id) => async dispatch => {
+export const addProjectTask = (project_task, pb_id, sorting) => async dispatch => {
     try {
         await axios.post(
             `${PROXY_LINK}/api/boards/tasks`,
@@ -105,7 +105,7 @@ export const addProjectTask = (project_task, pb_id) => async dispatch => {
             payload: {}
         });
 
-        dispatch(getProjectTasks(pb_id));
+        dispatch(getProjectTasks(pb_id, sorting));
 
     } catch (error) {
         dispatch({
@@ -115,7 +115,7 @@ export const addProjectTask = (project_task, pb_id) => async dispatch => {
     }
 };
 
-export const updateProjectTask = (project_task, pb_id) => async dispatch => {
+export const updateProjectTask = (project_task, pb_id, sorting) => async dispatch => {
     try {
         await axios.put(
             `${PROXY_LINK}/api/boards/tasks`,
@@ -128,7 +128,7 @@ export const updateProjectTask = (project_task, pb_id) => async dispatch => {
             }
         );
 
-        dispatch(getProjectTasks(pb_id));
+        dispatch(getProjectTasks(pb_id, sorting));
 
         dispatch({
             type: GET_ERRORS,
@@ -162,11 +162,11 @@ export const getProjectTaskCount = (pb_id) => async dispatch => {
     });
 };
 
-export const start = (pt_id, pb_id) => async dispatch => {
+export const start = (pt_id, pb_id, sorting) => async dispatch => {
     try {
         await axios.put(`${PROXY_LINK}/api/boards/tasks/${pt_id}/start`);
 
-        dispatch(getProjectTasks(pb_id));
+        dispatch(getProjectTasks(pb_id, sorting));
 
         dispatch({
             type: GET_ERRORS,
@@ -180,11 +180,11 @@ export const start = (pt_id, pb_id) => async dispatch => {
     }
 };
 
-export const stop = (pt_id, pb_id) => async dispatch => {
+export const stop = (pt_id, pb_id, sorting) => async dispatch => {
     try {
         await axios.put(`${PROXY_LINK}/api/boards/tasks/${pt_id}/stop`);
 
-        dispatch(getProjectTasks(pb_id));
+        dispatch(getProjectTasks(pb_id, sorting));
 
         dispatch({
             type: GET_ERRORS,
@@ -198,11 +198,11 @@ export const stop = (pt_id, pb_id) => async dispatch => {
     }
 };
 
-export const finish = (pt_id, pb_id) => async dispatch => {
+export const finish = (pt_id, pb_id, sorting) => async dispatch => {
     try {
         await axios.put(`${PROXY_LINK}/api/boards/tasks/${pt_id}/finish`);
 
-        dispatch(getProjectTasks(pb_id));
+        dispatch(getProjectTasks(pb_id, sorting));
 
         dispatch({
             type: GET_ERRORS,

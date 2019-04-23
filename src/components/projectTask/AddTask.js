@@ -58,7 +58,7 @@ class AddTask extends Component {
         const {task} = this.state;
         task.board.id = this.state.pb_id;
 
-        await this.props.addProjectTask(task, task.board.id);
+        await this.props.addProjectTask(task, task.board.id, this.props.sorting);
 
         this.setState({isSaving: false});
 

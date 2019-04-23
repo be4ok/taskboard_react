@@ -15,7 +15,7 @@ class TaskBoard extends Component {
         super(props);
         this.state = {
             modalShow: false,
-            searchQuery: '',
+            sorting: 'createDate',
             searchCriteria: 'taskSummary',
             errors: {}
         };
@@ -24,10 +24,11 @@ class TaskBoard extends Component {
         this.modalClose = this.modalClose.bind(this);
         this.onSearchChange = this.onSearchChange.bind(this);
         this.onSearchSubmit = this.onSearchSubmit.bind(this);
+        this.onSortingChange = this.onSortingChange.bind(this)
     }
 
     componentDidMount() {
-        this.props.getProjectTasks(this.props.match.params.id);
+        this.props.getProjectTasks(this.props.match.params.id, this.state.sorting);
     }
 
     componentWillReceiveProps(nextProps) {
@@ -40,13 +41,19 @@ class TaskBoard extends Component {
     async onSearchChange(e) {
         await this.setState({[e.target.name]: e.target.value});
         const pb_id = this.props.match.params.id;
-        this.props.searchProjectTasks(pb_id, this.state.searchQuery, this.state.searchCriteria)
+        this.props.searchProjectTasks(pb_id, this.state.searchQuery, this.state.sorting)
     }
 
     onSearchSubmit(e) {
         e.preventDefault();
         const pb_id = this.props.match.params.id;
-        this.props.searchProjectTasks(pb_id, this.state.searchQuery, this.state.searchCriteria)
+        this.props.searchProjectTasks(pb_id, this.state.searchQuery, this.state.sorting)
+    }
+
+    async onSortingChange(e) {
+        await this.setState({[e.target.name]: e.target.value});
+        const pb_id = this.props.match.params.id;
+        this.props.getProjectTasks(pb_id, this.state.sorting)
     }
 
     modalOpen() {
@@ -76,13 +83,13 @@ class TaskBoard extends Component {
         project_tasks.map(task => {
             switch (task.status) {
                 case 'TO_DO':
-                    todoItems.push(<TaskItem key={task.id} task={task} pb_id={this.props.match.params.id}/>);
+                    todoItems.push(<TaskItem key={task.id} task={task} pb_id={this.props.match.params.id} sorting={this.state.sorting}/>);
                     break;
                 case 'IN_PROGRESS':
-                    inProgressItems.push(<TaskItem key={task.id} task={task} pb_id={this.props.match.params.id}/>);
+                    inProgressItems.push(<TaskItem key={task.id} task={task} pb_id={this.props.match.params.id} sorting={this.state.sorting}/>);
                     break;
                 case 'DONE':
-                    doneItems.push(<TaskItem key={task.id} task={task} pb_id={this.props.match.params.id}/>);
+                    doneItems.push(<TaskItem key={task.id} task={task} pb_id={this.props.match.params.id} sorting={this.state.sorting}/>);
                     break;
                 default:
                     break;
@@ -155,19 +162,29 @@ class TaskBoard extends Component {
                         pb_id={this.props.match.params.id}
                         show={this.state.modalShow}
                         onHide={this.modalClose}
+                        sorting={this.state.sorting}
                     />
 
-                    <form onSubmit={this.onSearchSubmit} className="form-inline mb-0 mt-0 ml-5 mb-3 float-right">
+
+                    <form className="form-inline mb-0 mt-0 ml-5 mb-3 float-right">
+
+                        <div className="mr-2">Sort by:</div>
 
                         <select
                             className="form-control mr-2"
-                            name="searchCriteria"
-                            value={this.state.searchCriteria}
-                            onChange={this.onSearchChange}
+                            name="sorting"
+                            value={this.state.sorting}
+                            onChange={this.onSortingChange}
                         >
-                            <option value="taskSummary">Summary</option>
-                            <option value="taskAcceptanceCr">Acceptance criteria</option>
+                            <option value="createDate">Create date</option>
+                            <option value="priority">Priority</option>
+                            <option value="updateDate">Update date</option>
                         </select>
+
+                    </form>
+
+
+                    <form onSubmit={this.onSearchSubmit} className="form-inline mb-0 mt-0 ml-5 mb-3 float-right">
 
                         <input
                             name="searchQuery"

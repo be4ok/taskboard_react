@@ -53,7 +53,7 @@ class UpdateTask extends Component {
         this.setState({isSaving: true});
 
         const {task} = this.state;
-        await this.props.updateProjectTask(task, task.board.id);
+        await this.props.updateProjectTask(task, task.board.id, this.props.sorting);
 
         this.setState({isSaving: false});
 

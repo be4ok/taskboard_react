@@ -53,17 +53,17 @@ class TaskItem extends Component {
 
     onStartClick(pt_id) {
 
-        this.props.start(pt_id, this.props.pb_id)
+        this.props.start(pt_id, this.props.pb_id, this.props.sorting)
     }
 
     onStopClick(pt_id) {
 
-        this.props.stop(pt_id, this.props.pb_id)
+        this.props.stop(pt_id, this.props.pb_id, this.props.sorting)
     }
 
     onFinishClick(pt_id) {
 
-        this.props.finish(pt_id, this.props.pb_id)
+        this.props.finish(pt_id, this.props.pb_id, this.props.sorting)
     }
 
     render() {
@@ -100,6 +100,7 @@ class TaskItem extends Component {
                             pt_id={task.id}
                             show={this.state.modalShow}
                             onHide={this.modalClose}
+                            sorting={this.props.sorting}
                         />
 
                     </ButtonToolbar>
