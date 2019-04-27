@@ -4,7 +4,7 @@ import {Link} from "react-router-dom";
 import Loading from "../layout/Loading";
 import {connect} from "react-redux";
 import PropTypes from "prop-types";
-import {getProjectTasks, searchProjectTasks, cleanErrors} from "../../actions/projectTaskActions";
+import {getProjectTasks, cleanErrors} from "../../actions/projectTaskActions";
 import {ButtonToolbar} from "react-bootstrap";
 import AddTask from "./AddTask";
 import notFoundErrorHandle from "../../utils/notFoundErrorHandle";
@@ -216,7 +216,6 @@ class TaskBoard extends Component {
 
 TaskBoard.propTypes = {
     getProjectTasks: PropTypes.func.isRequired,
-    searchProjectTasks: PropTypes.func.isRequired,
     cleanErrors: PropTypes.func.isRequired,
     project_tasks: PropTypes.object.isRequired,
     errors: PropTypes.object.isRequired,
@@ -229,4 +228,4 @@ const mapStateToProps = state => ({
     isLoading: state.task.isLoading
 });
 
-export default connect(mapStateToProps, {getProjectTasks, searchProjectTasks, cleanErrors})(TaskBoard);
+export default connect(mapStateToProps, {getProjectTasks, cleanErrors})(TaskBoard);
