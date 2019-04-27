@@ -38,13 +38,13 @@ export const getProjectTask = pt_id => async dispatch => {
     })
 };
 
-export const getProjectTasks = (pd_id, sorting) => async dispatch => {
+export const getProjectTasks = (pd_id, sorting, searchQuery) => async dispatch => {
 
     try {
 
         dispatch(loading(true));
 
-        const res = await axios.get(`${PROXY_LINK}/api/boards/${pd_id}/tasks?sorting=${sorting}`);
+        const res = await axios.get(`${PROXY_LINK}/api/boards/${pd_id}/tasks?sorting=${sorting}&search=${searchQuery}`);
 
         dispatch({
             type: GET_PROJECT_TASKS,
@@ -68,24 +68,6 @@ export const getProjectTasks = (pd_id, sorting) => async dispatch => {
     }
 };
 
-export const searchProjectTasks = (pb_id, searchQuery, sorting) => async dispatch => {
-
-    if (searchQuery.trim().length === 0) {
-        dispatch(getProjectTasks(pb_id, sorting));
-        return;
-    }
-
-    dispatch(loading(true));
-
-    const res = await axios.get(`${PROXY_LINK}/api/boards/${pb_id}/tasks?search=${searchQuery}`);
-
-    dispatch({
-        type: GET_PROJECT_TASKS,
-        payload: res.data
-    });
-
-    dispatch(loading(false));
-};
 
 export const addProjectTask = (project_task, pb_id, sorting) => async dispatch => {
     try {

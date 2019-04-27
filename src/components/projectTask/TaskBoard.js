@@ -16,7 +16,7 @@ class TaskBoard extends Component {
         this.state = {
             modalShow: false,
             sorting: 'createDate',
-            searchCriteria: 'taskSummary',
+            searchQuery: '',
             errors: {}
         };
 
@@ -28,7 +28,7 @@ class TaskBoard extends Component {
     }
 
     componentDidMount() {
-        this.props.getProjectTasks(this.props.match.params.id, this.state.sorting);
+        this.props.getProjectTasks(this.props.match.params.id, this.state.sorting, this.state.searchQuery);
     }
 
     componentWillReceiveProps(nextProps) {
@@ -41,19 +41,19 @@ class TaskBoard extends Component {
     async onSearchChange(e) {
         await this.setState({[e.target.name]: e.target.value});
         const pb_id = this.props.match.params.id;
-        this.props.searchProjectTasks(pb_id, this.state.searchQuery, this.state.sorting)
+        this.props.getProjectTasks(pb_id, this.state.sorting, this.state.searchQuery)
     }
 
     onSearchSubmit(e) {
         e.preventDefault();
         const pb_id = this.props.match.params.id;
-        this.props.searchProjectTasks(pb_id, this.state.searchQuery, this.state.sorting)
+        this.props.getProjectTasks(pb_id, this.state.sorting, this.state.searchQuery)
     }
 
     async onSortingChange(e) {
         await this.setState({[e.target.name]: e.target.value});
         const pb_id = this.props.match.params.id;
-        this.props.getProjectTasks(pb_id, this.state.sorting)
+        this.props.getProjectTasks(pb_id, this.state.sorting, this.state.searchQuery)
     }
 
     modalOpen() {
