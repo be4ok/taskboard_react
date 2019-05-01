@@ -76,9 +76,9 @@ class TaskItem extends Component {
 
         return (
 
-            <div className="card mb-1 bg-light mb-3 f">
+            <div className={"f card mb-1 bg-light mb-3 f without-brd priority-" + task.priority.toLowerCase()}>
 
-                <div className="f card-header text-primary">
+                {/*<div className="f card-header text-primary bg-white">
 
                     <div className="float-left">#{task.id}</div>
 
@@ -106,12 +106,14 @@ class TaskItem extends Component {
                     </ButtonToolbar>
 
 
+
                 </div>
 
                 <div className={"priority-" + task.priority.toLowerCase()}>
                 </div>
+                */}
 
-                <div className="card-body bg-light">
+                <div className="card-body bg-white">
                     <h5 className="card-title">{task.summary}</h5>
                     <p className="card-text">{task.acceptanceCriteria}</p>
                     <p className="date-info mb-0">created: {task.createDate}</p>
