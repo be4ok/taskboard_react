@@ -2,8 +2,6 @@ import React, {Component} from 'react';
 import {connect} from "react-redux";
 import PropTypes from "prop-types";
 import {deleteProjectTask, cleanErrors, start, stop, finish} from "../../actions/projectTaskActions";
-import {ButtonToolbar} from "react-bootstrap";
-import UpdateTask from "./UpdateTask"
 
 
 class TaskItem extends Component {
@@ -14,11 +12,8 @@ class TaskItem extends Component {
         super(props);
         this.state = {
             task: {},
-            modalShow: false
+            modal: false
         };
-
-        this.modalClose = this.modalClose.bind(this);
-        this.modalOpen = this.modalOpen.bind(this);
     }
 
     componentWillUnmount() {
@@ -27,28 +22,6 @@ class TaskItem extends Component {
 
     remove(pt_id) {
         this.props.deleteProjectTask(pt_id, this.props.history)
-    }
-
-    modalOpen() {
-
-        this._isMounted = true;
-
-        if (this._isMounted) {
-            this.setState({
-                modalShow: true
-            });
-        }
-
-        this.props.cleanErrors();
-    }
-
-    modalClose() {
-
-        if (this._isMounted) {
-            this.setState({
-                modalShow: false
-            });
-        }
     }
 
     onStartClick(pt_id) {
@@ -66,6 +39,12 @@ class TaskItem extends Component {
         this.props.finish(pt_id, this.props.pb_id, this.props.sorting)
     }
 
+    onClickHandle(pt_id) {
+        this.props.cleanErrors();
+        this.props.getPt_id(pt_id);
+        this.props.toggle();
+    };
+
     render() {
 
         const {task} = this.props;
@@ -76,7 +55,9 @@ class TaskItem extends Component {
 
         return (
 
-            <div className={"f card mb-1 bg-light mb-3 f without-brd priority-" + task.priority.toLowerCase()}>
+            <div onClick={this.onClickHandle.bind(this, task.id)} className={"f card mb-1 bg-light mb-3 without-brd priority-" + task.priority.toLowerCase()}>
+
+
 
                 {/*<div className="f card-header text-primary bg-white">
 

@@ -4,7 +4,6 @@ import validationUtils from "../../utils/validationUtils";
 import {connect} from "react-redux";
 import PropTypes from "prop-types";
 import {getProjectTask, updateProjectTask} from "../../actions/projectTaskActions";
-import {Modal} from "react-bootstrap";
 
 class UpdateTask extends Component {
 
@@ -60,30 +59,18 @@ class UpdateTask extends Component {
         const {errors} = this.state;
 
         if (!Object.keys(errors).length) {
-            this.props.onHide();
+            this.props.toggle();
         }
     }
 
     render() {
 
         const {task, errors} = this.state;
-        const {show, onHide} = this.props;
 
         const summaryValidMessage = validationUtils(errors, 'summary');
         const acceptanceCritValidMessage = validationUtils(errors, 'acceptanceCriteria');
 
         return (
-            <Modal
-                show={show}
-                onHide={onHide}
-                size="lg"
-                aria-labelledby="contained-modal-title-vcenter"
-                centered
-            >
-                <Modal.Header closeButton>
-                </Modal.Header>
-
-                <Modal.Body>
 
                     <div className="container">
                         <div className="row">
@@ -180,7 +167,7 @@ class UpdateTask extends Component {
                                         <div className="buttons-group">
 
                                             <div
-                                                onClick={this.props.onHide}
+                                                onClick={this.props.toggle}
                                                 className="btn btn-lg button-item btn-outline-danger"
                                             >
                                                 Cancel
@@ -199,9 +186,6 @@ class UpdateTask extends Component {
                             </div>
                         </div>
                     </div>
-
-                </Modal.Body>
-            </Modal>
 
         );
     }

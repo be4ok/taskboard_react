@@ -4,7 +4,6 @@ import validationUtils from "../../utils/validationUtils";
 import {connect} from "react-redux";
 import PropTypes from "prop-types";
 import {addProjectTask} from "../../actions/projectTaskActions";
-import {Modal} from "react-bootstrap";
 
 class AddTask extends Component {
 
@@ -26,7 +25,6 @@ class AddTask extends Component {
             task: this.emptyTask,
             isSaving: false,
             errors: {},
-            pb_id: ''
         };
 
         this.onChange = this.onChange.bind(this);
@@ -38,7 +36,6 @@ class AddTask extends Component {
 
         this.setState({
             errors: nextProps.errors,
-            pb_id: nextProps.pb_id
         });
     }
 
@@ -56,7 +53,7 @@ class AddTask extends Component {
         this.setState({isSaving: true});
 
         const {task} = this.state;
-        task.board.id = this.state.pb_id;
+        task.board.id = this.props.pb_id;
 
         await this.props.addProjectTask(task, task.board.id, this.props.sorting);
 
@@ -65,7 +62,7 @@ class AddTask extends Component {
         const {errors} = this.state;
 
         if (!Object.keys(errors).length) {
-            this.props.onHide();
+            this.props.toggle();
             this.setState({task: this.emptyTask})
         }
     }
@@ -73,24 +70,12 @@ class AddTask extends Component {
     render() {
 
         const {task, errors} = this.state;
-        const {show, onHide} = this.props;
 
         const summaryValidMessage = validationUtils(errors, 'summary');
         const acceptanceCritValidMessage = validationUtils(errors, 'acceptanceCriteria');
 
         return (
 
-            <Modal
-                show={show}
-                onHide={onHide}
-                size="lg"
-                aria-labelledby="contained-modal-title-vcenter"
-                centered
-            >
-                <Modal.Header closeButton>
-                </Modal.Header>
-
-                <Modal.Body>
 
                     <div className="container">
                         <div className="row">
@@ -188,11 +173,13 @@ class AddTask extends Component {
 
                                     </div>
 
+                                    <hr />
+
                                     <div className="buttons-container">
                                         <div className="buttons-group">
 
                                             <div
-                                                onClick={this.props.onHide}
+                                                onClick={this.props.toggle}
                                                 className="btn btn-lg button-item btn-outline-danger"
                                             >
                                                 Cancel
@@ -213,8 +200,6 @@ class AddTask extends Component {
                         </div>
                     </div>
 
-                </Modal.Body>
-            </Modal>
         );
     }
 }

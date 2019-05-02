@@ -4,6 +4,9 @@ import './static/css/form.css';
 import './static/css/project-board.css';
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../node_modules/bootstrap/dist/js/bootstrap.min.js";
+import '@fortawesome/fontawesome-free/css/all.min.css';
+import 'bootstrap-css-only/css/bootstrap.min.css';
+import 'mdbreact/dist/css/mdb.css';
 import NavBar from "./components/layout/NavBar";
 import Footer from "./components/layout/Footer";
 import TaskBoard from "./components/projectTask/TaskBoard";
@@ -74,6 +77,7 @@ class App extends Component {
                             {/*Public routes*/}
                         </Switch>
 
+                        <Footer/>
                     </div>
 
 

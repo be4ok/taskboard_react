@@ -13,6 +13,7 @@ class Landing extends Component {
 
     render() {
         return (
+            <div className='landing'>
                 <div className="light-overlay landing-inner text-dark">
                     <div className="container">
                         <div className="row">
@@ -34,6 +35,7 @@ class Landing extends Component {
                         </div>
                     </div>
                 </div>
+            </div>
         );
     }
 }
