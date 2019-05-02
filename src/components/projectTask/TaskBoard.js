@@ -5,9 +5,10 @@ import Loading from "../layout/Loading";
 import {connect} from "react-redux";
 import PropTypes from "prop-types";
 import {getProjectTasks, cleanErrors} from "../../actions/projectTaskActions";
+import {getProjectBoard} from "../../actions/projectBoardActions";
 import AddTask from "./AddTask";
 import notFoundErrorHandle from "../../utils/notFoundErrorHandle";
-import {MDBModal, MDBModalBody, MDBModalHeader} from 'mdbreact';
+import {MDBIcon, MDBModal, MDBModalBody, MDBModalHeader} from 'mdbreact';
 import UpdateTask from "./UpdateTask";
 
 class TaskBoard extends Component {
@@ -32,6 +33,7 @@ class TaskBoard extends Component {
 
     componentDidMount() {
         this.props.getProjectTasks(this.props.match.params.id, this.state.sorting, this.state.searchQuery);
+        this.props.getProjectBoard(this.props.match.params.id)
     }
 
     componentWillReceiveProps(nextProps) {
@@ -64,7 +66,7 @@ class TaskBoard extends Component {
 
         let modalNumber = 'modal' + nr;
         this.setState({
-        [modalNumber]: !this.state[modalNumber]
+            [modalNumber]: !this.state[modalNumber]
         });
     };
 
@@ -83,7 +85,9 @@ class TaskBoard extends Component {
 
         const {errors} = this.state;
         const {project_tasks} = this.props.project_tasks;
+        const {project_board} = this.props.project_board;
         const {isLoading} = this.props;
+
 
         const todoItems = [];
         const inProgressItems = [];
@@ -93,15 +97,18 @@ class TaskBoard extends Component {
             switch (task.status) {
                 case 'TO_DO':
                     todoItems.push(<TaskItem key={task.id} task={task} pb_id={this.props.match.params.id}
-                                             sorting={this.state.sorting} getPt_id={this.getPt_id} toggle={this.toggleUpdateTask}/>);
+                                             sorting={this.state.sorting} getPt_id={this.getPt_id}
+                                             toggle={this.toggleUpdateTask}/>);
                     break;
                 case 'IN_PROGRESS':
                     inProgressItems.push(<TaskItem key={task.id} task={task} pb_id={this.props.match.params.id}
-                                                   sorting={this.state.sorting} getPt_id={this.getPt_id} toggle={this.toggleUpdateTask}/>);
+                                                   sorting={this.state.sorting} getPt_id={this.getPt_id}
+                                                   toggle={this.toggleUpdateTask}/>);
                     break;
                 case 'DONE':
                     doneItems.push(<TaskItem key={task.id} task={task} pb_id={this.props.match.params.id}
-                                             sorting={this.state.sorting} getPt_id={this.getPt_id} toggle={this.toggleUpdateTask}/>);
+                                             sorting={this.state.sorting} getPt_id={this.getPt_id}
+                                             toggle={this.toggleUpdateTask}/>);
                     break;
                 default:
                     break;
@@ -159,17 +166,16 @@ class TaskBoard extends Component {
 
             <div className="container">
 
-                <Link to="/board" className="btn btn-outline-secondary mb-3 mr-5">
+                <Link to="/board" className="btn btn-sm btn-outline-mdb-color mb-3 mr-5">
                     <i className="fas fa-angle-left"> Back</i>
                 </Link>
+                <h4 className="display-4 text-center">{project_board.name}</h4>
 
-                <div onClick={this.toggle(1)} className="btn btn-primary mb-3">
-                    <i className="fas fa-plus-circle"> Create Project Task</i>
-                </div>
+                <hr/>
 
 
                 <MDBModal isOpen={this.state.modal1} toggle={this.toggle(1)} fullHeight position="right" size="lg">
-                    <MDBModalHeader  className="text-center text-white light-blue darken-3" toggle={this.toggle(1)}>MDBModal title</MDBModalHeader>
+                    <MDBModalHeader className="text-center text-white light-blue darken-3" toggle={this.toggle(1)}>Add new task</MDBModalHeader>
                     <MDBModalBody>
 
                         <AddTask
@@ -181,8 +187,11 @@ class TaskBoard extends Component {
                     </MDBModalBody>
                 </MDBModal>
 
-                <MDBModal isOpen={this.state.modalUpdateTask} toggle={this.toggleUpdateTask} fullHeight position="right" size="lg">
-                    <MDBModalHeader  className="text-center text-white light-blue darken-3" toggle={this.toggleUpdateTask}>MDBModal title</MDBModalHeader>
+
+                <MDBModal isOpen={this.state.modalUpdateTask} toggle={this.toggleUpdateTask} fullHeight position="right"
+                          size="lg">
+                    <MDBModalHeader className="text-center text-white light-blue darken-3"
+                                    toggle={this.toggleUpdateTask}>Task info</MDBModalHeader>
                     <MDBModalBody>
 
                         <UpdateTask
@@ -195,40 +204,49 @@ class TaskBoard extends Component {
                 </MDBModal>
 
 
-                <form className="form-inline mb-0 mt-0 ml-5 mb-3 float-right">
+                <div className="row">
 
-                    <div className="mr-2">Sort by:</div>
+                    <div className="col-md-4">
+                        <div onClick={this.toggle(1)} className="btn btn-primary w-50 m-0">
+                            <i className="fas fa-plus-circle"> Add task</i>
+                        </div>
+                    </div>
 
-                    <select
-                        className="form-control mr-2"
-                        name="sorting"
-                        value={this.state.sorting}
-                        onChange={this.onSortingChange}
-                    >
-                        <option value="createDate">Create date</option>
-                        <option value="priority">Priority</option>
-                        <option value="updateDate">Update date</option>
-                    </select>
-
-                </form>
-
-
-                <form onSubmit={this.onSearchSubmit} className="form-inline mb-0 mt-0 ml-5 mb-3 float-right">
-
-                    <input
-                        name="searchQuery"
-                        value={this.state.searchQuery}
-                        onChange={this.onSearchChange}
-                        className="form-control mr-2"
-                        type="search"
-                        placeholder="Search"
-                        aria-label="Search"
-                    />
-                    <button className="btn btn-outline-success" type="submit">Search</button>
-                </form>
+                    <div className="col-md-4">
+                        <form onSubmit={this.onSearchSubmit} className="form-inline">
+                                {/*<span className="green lighten-1">
+                                     <MDBIcon className="text-white" icon="search"/>
+                                </span>*/}
+                            <input
+                                name="searchQuery"
+                                value={this.state.searchQuery}
+                                onChange={this.onSearchChange}
+                                className="col form-control w-100 mt-2"
+                                type="search"
+                                placeholder="Search"
+                                aria-label="Search"
+                            />
+                        </form>
+                    </div>
 
 
-                <br/>
+                    <div className="col-md-4">
+                        <form className="form-inline">
+                            <select
+                                className="form-control w-100 mt-2"
+                                name="sorting"
+                                value={this.state.sorting}
+                                onChange={this.onSortingChange}
+                            >
+                                <option value="createDate">Create date</option>
+                                <option value="priority">Priority</option>
+                                <option value="updateDate">Update date</option>
+                            </select>
+                        </form>
+                    </div>
+
+                </div>
+
                 <hr/>
 
                 {!boardNotFound ? taskBoard : <div className="card-header text-center alert-danger">
@@ -244,16 +262,19 @@ class TaskBoard extends Component {
 
 TaskBoard.propTypes = {
     getProjectTasks: PropTypes.func.isRequired,
+    getProjectBoard: PropTypes.func.isRequired,
     cleanErrors: PropTypes.func.isRequired,
     project_tasks: PropTypes.object.isRequired,
+    project_board: PropTypes.object.isRequired,
     errors: PropTypes.object.isRequired,
     isLoading: PropTypes.bool.isRequired
 };
 
 const mapStateToProps = state => ({
     project_tasks: state.task,
+    project_board: state.board,
     errors: state.errors,
     isLoading: state.task.isLoading
 });
 
-export default connect(mapStateToProps, {getProjectTasks, cleanErrors})(TaskBoard);
+export default connect(mapStateToProps, {getProjectTasks, getProjectBoard, cleanErrors})(TaskBoard);

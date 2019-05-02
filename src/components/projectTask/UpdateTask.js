@@ -76,7 +76,7 @@ class UpdateTask extends Component {
                         <div className="row">
                             <div className="col-md-8 m-auto">
 
-                                <h4 className="display-4 text-center">Update Project Task #{task.id}</h4>
+                                <h2 className="text-center">{task.summary}</h2>
 
                                 <form onSubmit={this.onSubmit}>
 

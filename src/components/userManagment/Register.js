@@ -88,7 +88,7 @@ class Register extends Component {
         return (
             <div className="container login-container">
                 <div className="row pl-2 pr-2">
-                    <div className="col-md-6 login-form m-auto">
+                    <div className="col-md-6 login-form m-auto bg-white">
 
                         <h2 className="text-center">Sign Up</h2>
                         <p className="lead text-center">Create your account</p>
@@ -175,7 +175,7 @@ class Register extends Component {
 
                                     <input type="submit"
                                            value={!this.state.isSending ? "Sign-up" : "Signing in..."}
-                                           className="btn btn-lg btn-outline-success btnSubmit"
+                                           className="btn btn-lg btn-outline-success btnSubmit m-auto"
                                            disabled={this.state.isSending}
                                     />
 
