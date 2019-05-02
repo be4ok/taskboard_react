@@ -128,7 +128,7 @@ class TaskBoard extends Component {
 
                     {!isLoading &&
                     (todoItems.length > 0 ? todoItems :
-                        <div className="card-header text-center alert-info">No tasks</div>)
+                        <div className="card-header text-center alert-info mb-4">No tasks</div>)
                     }
 
                 </div>
@@ -141,7 +141,7 @@ class TaskBoard extends Component {
 
                     {!isLoading &&
                     (inProgressItems.length > 0 ? inProgressItems :
-                        <div className="card-header text-center alert-info">No tasks</div>)
+                        <div className="card-header text-center alert-info mb-4">No tasks</div>)
                     }
 
                 </div>
@@ -154,7 +154,7 @@ class TaskBoard extends Component {
 
                     {!isLoading &&
                     (doneItems.length > 0 ? doneItems :
-                        <div className="card-header text-center alert-info">No tasks</div>)
+                        <div className="card-header text-center alert-info mb-4">No tasks</div>)
                     }
 
                 </div>
