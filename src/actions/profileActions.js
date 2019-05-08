@@ -95,4 +95,5 @@ export const updateUserPassword = changeUserPassword => async dispatch => {
 
         dispatch(loading(false));
     }
+
 };

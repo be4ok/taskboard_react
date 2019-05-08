@@ -108,4 +108,10 @@ img {
     border-radius: 0!important;
 }
 
+.user-avatar {
+    border-radius: 50%;
+    object-fit: cover;
+    width: 8em;
+    height: 8em;
+}
 

@@ -8,8 +8,8 @@ import ChangeUserPassword from "./ChangeUserPassword";
 
 class Profile extends Component {
 
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         this.state = {
             firstName: '',
             secondName: '',
@@ -100,8 +100,8 @@ class Profile extends Component {
                             <div className="col-sm-2 avatar">
 
                                 <div className="text-center">
-                                    <img src="http://ssl.gstatic.com/accounts/ui/avatar_2x.png"
-                                         className="img-avatar border-primary rounded-circle"
+                                    <img src={currentUser.avatar ? currentUser.avatar : "http://ssl.gstatic.com/accounts/ui/avatar_2x.png"}
+                                         className="img-avatar border-primary user-avatar"
                                          alt="avatar"
                                     />
                                     <Link to="#" className="card-link">Upload new</Link>
