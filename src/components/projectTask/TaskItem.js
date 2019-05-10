@@ -24,18 +24,21 @@ class TaskItem extends Component {
         this.props.deleteProjectTask(pt_id, this.props.history)
     }
 
-    onStartClick(pt_id) {
+    onStartClick(event, pt_id) {
 
+        event.stopPropagation();
         this.props.start(pt_id, this.props.pb_id, this.props.sorting)
     }
 
-    onStopClick(pt_id) {
+    onStopClick(event, pt_id) {
 
+        event.stopPropagation();
         this.props.stop(pt_id, this.props.pb_id, this.props.sorting)
     }
 
-    onFinishClick(pt_id) {
+    onFinishClick(event, pt_id) {
 
+        event.stopPropagation();
         this.props.finish(pt_id, this.props.pb_id, this.props.sorting)
     }
 
@@ -108,7 +111,7 @@ class TaskItem extends Component {
 
                         <div
                             className={"btn btn-sm mr-4 ml-4 btn-outline-" + (task.status !== "DONE" ? "primary" : "secondary")}
-                            onClick={this.onStartClick.bind(this, task.id)}
+                            onClick={event => this.onStartClick(event, task.id)}
                         >
                             {task.status !== "DONE" ? "Start" : "Resume"}
                         </div>
@@ -119,7 +122,7 @@ class TaskItem extends Component {
 
                         <div
                             className="btn btn-outline-danger btn-sm mr-4 ml-4"
-                            onClick={this.onStopClick.bind(this, task.id)}
+                            onClick={event => this.onStopClick(event, task.id)}
                         >
                             Stop
                         </div>
@@ -129,7 +132,7 @@ class TaskItem extends Component {
                         {(task.status !== "TO_DO" && task.status !== "DONE") &&
                         <div
                             className="btn btn-outline-success btn-sm mr-4 ml-4"
-                            onClick={this.onFinishClick.bind(this, task.id)}
+                            onClick={event => this.onFinishClick(event, task.id)}
                         >
                             Finish
                         </div>
