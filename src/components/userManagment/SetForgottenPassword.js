@@ -4,14 +4,14 @@ import PropTypes from "prop-types";
 import Loading from "../layout/Loading";
 import {connect} from "react-redux";
 import classnames from "classnames";
-import validationUtils from "../../utils/validationUtils";
+import {validationUtils} from "../../utils/validationUtils";
 import {Link} from "react-router-dom";
-import authenticationErrorHandle from "../../securityUtils/authenticationErrorHandle";
+import {authorizationErrorHandle} from "../../securityUtils/authorizationErrorHandle";
 
 class Register extends Component {
 
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
 
         this.state = {
             newPassword: "",
@@ -75,7 +75,7 @@ class Register extends Component {
 
         const passwordValidMessage = validationUtils(errors, 'newPassword');
         const confirmPasswordValidMessage = validationUtils(errors, 'confirmNewPassword');
-        const authenticationError = authenticationErrorHandle(errors);
+        const authenticationError = authorizationErrorHandle(errors);
 
         return (
             <div className="container login-container">

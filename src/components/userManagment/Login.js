@@ -1,17 +1,17 @@
 import React, {Component} from "react";
 import PropTypes from "prop-types";
 import {connect} from "react-redux";
-import Loading from "../layout/Loading"
 import classnames from "classnames";
 import {login, cleanErrors} from "../../actions/securityActions";
-import validationUtils from "../../utils/validationUtils";
-import authenticationErrorHandle from "../../securityUtils/authenticationErrorHandle"
+import {validationUtils} from "../../utils/validationUtils";
+import {authorizationErrorHandle} from "../../securityUtils/authorizationErrorHandle"
 import {Link} from "react-router-dom";
 
 class Login extends Component {
 
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
+
         this.state = {
             username: "",
             password: "",
@@ -66,7 +66,7 @@ class Login extends Component {
 
         this.setState({isSending: false});
 
-        if (authenticationErrorHandle(this.state.errors)) {
+        if (authorizationErrorHandle(this.state.errors)) {
             this.setState({password: ""})
         }
     }
@@ -77,7 +77,7 @@ class Login extends Component {
 
         const usernameValidMessage = validationUtils(errors, 'username');
         const passwordValidMessage = validationUtils(errors, 'password');
-        const authenticationError = authenticationErrorHandle(errors);
+        const authenticationError = authorizationErrorHandle(errors);
 
         return (
             <div className="container login-container">

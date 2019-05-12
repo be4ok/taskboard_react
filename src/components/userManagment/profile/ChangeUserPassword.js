@@ -2,9 +2,9 @@ import React, {Component} from "react";
 import PropTypes from "prop-types";
 import {connect} from "react-redux";
 import classnames from "classnames";
-import validationUtils from "../../../utils/validationUtils";
-import {updateUserPassword} from "../../../actions/profileActions";
-import authenticationErrorHandle from "../../../securityUtils/authenticationErrorHandle";
+import {validationUtils} from "../../../utils/validationUtils";
+import {updateUserPassword, cleanErrors} from "../../../actions/profileActions";
+import {authorizationErrorHandle} from "../../../securityUtils/authorizationErrorHandle";
 
 class ChangeUserPassword extends Component {
 
@@ -14,8 +14,9 @@ class ChangeUserPassword extends Component {
         confirmNewPassword: ''
     };
 
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
+
         this.state = {
             user: {},
             changeUserPassword: this.emptyUserPassword,
@@ -47,6 +48,8 @@ class ChangeUserPassword extends Component {
     async onPasswordSubmit(e) {
         e.preventDefault();
 
+        this.props.cleanErrors();
+
         this.setState({
             isPasswordSuccessfullyChanged: false,
             isSaving: true
@@ -59,7 +62,7 @@ class ChangeUserPassword extends Component {
 
         const {errors} = this.state;
 
-        if (authenticationErrorHandle(errors)) {
+        if (authorizationErrorHandle(errors)) {
             this.setState({changeUserPassword: this.emptyUserPassword})
         }
 
@@ -78,7 +81,7 @@ class ChangeUserPassword extends Component {
         const currentPasswordValidMessage = validationUtils(errors, 'currentPassword');
         const newPasswordValidMessage = validationUtils(errors, 'newPassword');
         const confirmNewPasswordValidMessage = validationUtils(errors, 'confirmNewPassword');
-        const authenticationError = authenticationErrorHandle(errors);
+        const authenticationError = authorizationErrorHandle(errors);
 
         return (
             <form onSubmit={this.onPasswordSubmit}>
@@ -154,6 +157,7 @@ class ChangeUserPassword extends Component {
 
 ChangeUserPassword.propTypes = {
     updateUserPassword: PropTypes.func.isRequired,
+    cleanErrors: PropTypes.func.isRequired,
     errors: PropTypes.object.isRequired,
     security: PropTypes.object.isRequired,
     isLoading: PropTypes.bool.isRequired
@@ -165,4 +169,4 @@ const mapStateToProps = state => ({
     isLoading: state.security.isLoading
 });
 
-export default connect(mapStateToProps, {updateUserPassword})(ChangeUserPassword);
+export default connect(mapStateToProps, {updateUserPassword, cleanErrors})(ChangeUserPassword);

@@ -4,13 +4,14 @@ import {connect} from "react-redux";
 import Loading from "../layout/Loading"
 import classnames from "classnames";
 import {login, cleanErrors, resetForgottenPassword} from "../../actions/securityActions";
-import validationUtils from "../../utils/validationUtils";
-import notFoundErrorHandle from "../../utils/notFoundErrorHandle";
+import {validationUtils} from "../../utils/validationUtils";
+import {notFoundErrorHandle} from "../../utils/errorHandleUtils";
 
 class Login extends Component {
 
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
+
         this.state = {
             email: "",
             errors: {},

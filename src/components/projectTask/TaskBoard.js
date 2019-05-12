@@ -7,8 +7,8 @@ import PropTypes from "prop-types";
 import {getProjectTasks, cleanErrors} from "../../actions/projectTaskActions";
 import {getProjectBoard} from "../../actions/projectBoardActions";
 import AddTask from "./AddTask";
-import notFoundErrorHandle from "../../utils/notFoundErrorHandle";
-import {MDBIcon, MDBModal, MDBModalBody, MDBModalHeader} from 'mdbreact';
+import {notFoundErrorHandle} from "../../utils/errorHandleUtils";
+import {MDBModal, MDBModalBody, MDBModalHeader} from 'mdbreact';
 import UpdateTask from "./UpdateTask";
 
 class TaskBoard extends Component {

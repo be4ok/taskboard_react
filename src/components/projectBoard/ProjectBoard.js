@@ -6,7 +6,7 @@ import {getProjectBoards, searchProjectBoards, cleanErrors} from "../../actions/
 import Loading from "../layout/Loading"
 import {ButtonToolbar} from "react-bootstrap";
 import AddBoard from "./AddBoard";
-import Footer from "../../components/layout/Footer";
+
 
 class ProjectBoard extends Component {
 

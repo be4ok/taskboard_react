@@ -1,16 +1,15 @@
 import React, {Component} from "react";
 import {createNewUser, cleanErrors} from "../../actions/securityActions";
 import PropTypes from "prop-types";
-import Loading from "../layout/Loading";
 import {connect} from "react-redux";
 import classnames from "classnames";
-import validationUtils from "../../utils/validationUtils";
+import {validationUtils} from "../../utils/validationUtils";
 import {Link} from "react-router-dom";
 
 class Register extends Component {
 
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
 
         this.state = {
             username: "",

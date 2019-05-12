@@ -1,6 +1,5 @@
-import React from 'react';
 
-export default function authorizationErrorHandle (error) {
+export const authorizationErrorHandle = error => {
 
     let errorMessage;
 
@@ -8,7 +7,5 @@ export default function authorizationErrorHandle (error) {
         errorMessage = error.apierror.message
     }
 
-    {/*<p className="error-text">{error.apierror.message}</p>*/}
-
     return errorMessage;
-}
+};

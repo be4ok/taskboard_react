@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import classnames from "classnames";
-import validationUtils from "../../utils/validationUtils";
+import {validationUtils} from "../../utils/validationUtils";
 import {connect} from "react-redux";
 import PropTypes from "prop-types";
 import {getProjectTask, updateProjectTask} from "../../actions/projectTaskActions";

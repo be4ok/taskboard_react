@@ -2,13 +2,14 @@ import React, {Component} from "react";
 import PropTypes from "prop-types";
 import {connect} from "react-redux";
 import {activateUser} from "../../actions/securityActions";
-import authenticationErrorHandle from "../../securityUtils/authenticationErrorHandle";
+import {authorizationErrorHandle} from "../../securityUtils/authorizationErrorHandle";
 import Loading from "../layout/Loading";
 
 class Activation extends Component {
 
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
+
         this.state = {
             activationCode: '',
             errors: {}
@@ -33,7 +34,7 @@ class Activation extends Component {
         const {errors} = this.state;
         const {isLoading} = this.props;
 
-        const authenticationError = authenticationErrorHandle(errors);
+        const authenticationError = authorizationErrorHandle(errors);
 
         const success = <div className="card-header text-center alert-info">Account successfully activated!</div>;
         const authError = <div className="card-header text-center alert-danger">{authenticationError}</div>;

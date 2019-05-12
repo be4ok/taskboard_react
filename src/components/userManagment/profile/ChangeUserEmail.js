@@ -2,13 +2,14 @@ import React, {Component} from "react";
 import PropTypes from "prop-types";
 import {connect} from "react-redux";
 import classnames from "classnames";
-import validationUtils from "../../../utils/validationUtils";
-import {updateUserEmail} from "../../../actions/profileActions";
+import {validationUtils} from "../../../utils/validationUtils";
+import {updateUserEmail, cleanErrors} from "../../../actions/profileActions";
 
 class ChangeUserEmail extends Component {
 
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
+
         this.state = {
             user: {},
             email: {
@@ -39,6 +40,8 @@ class ChangeUserEmail extends Component {
 
     async onEmailSubmit(e) {
         e.preventDefault();
+
+        this.props.cleanErrors();
 
         this.setState({
             isEmailSuccessfullyChanged: false,
@@ -107,6 +110,7 @@ class ChangeUserEmail extends Component {
 
 ChangeUserEmail.propTypes = {
     updateUserEmail: PropTypes.func.isRequired,
+    cleanErrors: PropTypes.func.isRequired,
     errors: PropTypes.object.isRequired,
     security: PropTypes.object.isRequired,
     isLoading: PropTypes.bool.isRequired
@@ -118,4 +122,4 @@ const mapStateToProps = state => ({
     isLoading: state.security.isLoading
 });
 
-export default connect(mapStateToProps, {updateUserEmail})(ChangeUserEmail);
+export default connect(mapStateToProps, {updateUserEmail, cleanErrors})(ChangeUserEmail);
