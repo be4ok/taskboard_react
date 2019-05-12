@@ -1,26 +1,35 @@
 import React, {Component} from "react";
 import PropTypes from "prop-types";
 import {connect} from "react-redux";
-import {getUser, updateUser, updateUserEmail, updateUserPassword} from "../../../actions/profileActions";
-import {Link} from "react-router-dom";
+import {getUser, updateUser, updateUserEmail, updateUserPassword, uploadAvatar} from "../../../actions/profileActions";
 import ChangeUserEmail from "./ChangeUserEmail";
 import ChangeUserPassword from "./ChangeUserPassword";
+import {Link} from "react-router-dom";
+import spinner_loading from '../../../static/img/spinner-loading.svg';
+import {badRequestErrorHandle, unsupportedMediaTypeErrorHandle} from '../../../utils/errorHandleUtils';
+
 
 class Profile extends Component {
 
-    constructor(props) {
-        super(props);
+    constructor() {
+        super();
+
         this.state = {
             firstName: '',
             secondName: '',
             errors: {},
             isEditMode: false,
-            isSaving: false
+            isSaving: false,
+            isUploading: false,
+            avatar: null
         };
 
         this.onEditClick = this.onEditClick.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
         this.onChange = this.onChange.bind(this);
+        this.OnLoadAvatar = this.OnLoadAvatar.bind(this);
+
+        this.inputOpenFileRef = React.createRef();
     }
 
     componentWillReceiveProps(nextProps) {
@@ -75,6 +84,27 @@ class Profile extends Component {
     }
 
 
+    showOpenFileDlg = () => {
+        if (!this.state.isUploading) {
+            this.inputOpenFileRef.current.click();
+        }
+    };
+
+
+    async OnLoadAvatar(e) {
+        const img = e.target.files[0];
+        let fd = new FormData();
+
+        fd.append('file', img);
+
+        this.setState({isUploading: true});
+
+        await this.props.uploadAvatar(fd);
+
+        this.setState({isUploading: false})
+    }
+
+
     onEditClick(e) {
 
         e.preventDefault();
@@ -87,6 +117,10 @@ class Profile extends Component {
     render() {
 
         const {currentUser} = this.props.profile;
+        const {errors} = this.state;
+
+        const badRequestErrorMessage = badRequestErrorHandle(errors);
+        const unsupportedMediaTypeErrorMessage = unsupportedMediaTypeErrorHandle(errors);
 
         return (
             <div className="container">
@@ -100,11 +134,38 @@ class Profile extends Component {
                             <div className="col-sm-2 avatar">
 
                                 <div className="text-center">
-                                    <img src={currentUser.avatar ? currentUser.avatar : "http://ssl.gstatic.com/accounts/ui/avatar_2x.png"}
-                                         className="img-avatar border-primary user-avatar"
-                                         alt="avatar"
+
+                                    {this.state.isUploading &&
+                                    <img
+                                        src={spinner_loading}
+                                        alt="Loading..."
+                                        className="avatar-loading"
                                     />
-                                    <Link to="#" className="card-link">Upload new</Link>
+                                    }
+
+                                    <img
+                                        src={currentUser.avatar ? currentUser.avatar : "http://ssl.gstatic.com/accounts/ui/avatar_2x.png"}
+                                        className="img-avatar border-primary user-avatar cursor-pointer"
+                                        alt="avatar"
+                                        onClick={this.showOpenFileDlg}
+                                    />
+
+
+                                    <input
+                                        name="avatar"
+                                        ref={this.inputOpenFileRef}
+                                        type="file"
+                                        accept="image/jpeg,image/png"
+                                        onChange={this.OnLoadAvatar}
+                                        style={{display: 'none'}}
+                                    />
+
+                                    <Link to="#" onClick={this.showOpenFileDlg} className="card-link">Upload new</Link>
+
+                                    {badRequestErrorMessage && <p className="error-text">{badRequestErrorMessage}</p>}
+                                    {unsupportedMediaTypeErrorMessage && <p className="error-text">{unsupportedMediaTypeErrorMessage}</p>}
+
+
                                 </div>
 
                             </div>
@@ -161,7 +222,7 @@ class Profile extends Component {
                                                     <input
                                                         type="submit"
                                                         value={!this.state.isSaving ? "Save" : "Saving..."}
-                                                        className="btn btn-sm btn-outline-success"
+                                                        className="btn btn-sm btn-outline-success mb-0 mr-0"
                                                         disabled={this.state.isSaving}
                                                     />
                                                 }
@@ -202,6 +263,7 @@ Profile.propTypes = {
     updateUser: PropTypes.func.isRequired,
     updateUserEmail: PropTypes.func.isRequired,
     updateUserPassword: PropTypes.func.isRequired,
+    uploadAvatar: PropTypes.func.isRequired,
     errors: PropTypes.object.isRequired,
     profile: PropTypes.object.isRequired,
     security: PropTypes.object.isRequired,
@@ -215,4 +277,10 @@ const mapStateToProps = state => ({
     isLoading: state.security.isLoading
 });
 
-export default connect(mapStateToProps, {getUser, updateUser, updateUserEmail, updateUserPassword})(Profile);
+export default connect(mapStateToProps, {
+    getUser,
+    updateUser,
+    updateUserEmail,
+    updateUserPassword,
+    uploadAvatar
+})(Profile);

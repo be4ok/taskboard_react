@@ -115,3 +115,14 @@ img {
     height: 8em;
 }
 
+.cursor-pointer {
+    cursor: pointer;
+}
+
+.avatar-loading {
+    position: absolute;
+    width: 8em;
+    height: 8em;
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 50%;
+}

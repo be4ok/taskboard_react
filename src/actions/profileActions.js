@@ -97,3 +97,25 @@ export const updateUserPassword = changeUserPassword => async dispatch => {
     }
 
 };
+
+
+export const uploadAvatar = fd => async dispatch => {
+    try {
+        await axios.post(`${PROXY_LINK}/api/uploadAvatar`, fd);
+
+        dispatch({
+            type: GET_ERRORS,
+            payload: {}
+        });
+
+        dispatch(getUser());
+
+    } catch (err) {
+        if (err.response) {
+            dispatch({
+                type: GET_ERRORS,
+                payload: err.response.data
+            });
+        }
+    }
+};
